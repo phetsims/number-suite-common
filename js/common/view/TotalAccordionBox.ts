@@ -11,8 +11,8 @@ import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import { HBox, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
 import NumberPlayStrings from '../../NumberPlayStrings.js';
-import numberPlay from '../../numberPlay.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import Range from '../../../../dot/js/Range.js';
 import NumberPlayAccordionBox, { NumberPlayAccordionBoxOptions } from './NumberPlayAccordionBox.js';
 import optionize from '../../../../phet-core/js/optionize.js';
@@ -34,7 +34,7 @@ class TotalAccordionBox extends NumberPlayAccordionBox {
 
   public constructor( playArea: CountingPlayArea, height: number, options: TotalAccordionBoxOptions ) {
 
-    super( NumberPlayConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ),
+    super( NumberSuiteCommonConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ),
       optionize<TotalAccordionBoxOptions, SelfOptions, NumberPlayAccordionBoxOptions>()( {
         titleStringProperty: NumberPlayStrings.totalStringProperty,
         titleMaxWidth: 142
@@ -42,7 +42,7 @@ class TotalAccordionBox extends NumberPlayAccordionBox {
 
     // create the NumberDisplay, which is a numerical representation of the current number. always format for numbers
     // up to twenty so the display looks consistent across screens.
-    const numberDisplay = new NumberDisplay( playArea.sumProperty, new Range( 0, NumberPlayConstants.TWENTY ), {
+    const numberDisplay = new NumberDisplay( playArea.sumProperty, new Range( 0, NumberSuiteCommonConstants.TWENTY ), {
       decimalPlaces: 0,
       align: 'right',
       noValueAlign: 'left',
@@ -85,5 +85,5 @@ class TotalAccordionBox extends NumberPlayAccordionBox {
   }
 }
 
-numberPlay.register( 'TotalAccordionBox', TotalAccordionBox );
+numberSuiteCommon.register( 'TotalAccordionBox', TotalAccordionBox );
 export default TotalAccordionBox;

@@ -8,7 +8,7 @@
 
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Range from '../../../../dot/js/Range.js';
@@ -155,5 +155,5 @@ class TenFrame {
   }
 }
 
-numberPlay.register( 'TenFrame', TenFrame );
+numberSuiteCommon.register( 'TenFrame', TenFrame );
 export default TenFrame;

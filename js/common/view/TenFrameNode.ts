@@ -12,8 +12,8 @@
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
 import { Circle, HBox, Node, PaintableOptions, Path } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Range from '../../../../dot/js/Range.js';
 import optionize from '../../../../phet-core/js/optionize.js';
@@ -42,11 +42,11 @@ class TenFrameNode extends Node {
   public constructor( currentNumberProperty: TReadOnlyProperty<number>, sumRange: Range ) {
     super();
 
-    assert && assert( sumRange.max % NumberPlayConstants.TEN === 0,
+    assert && assert( sumRange.max % NumberSuiteCommonConstants.TEN === 0,
       `Provided sumRange.max should be a multiple of ten, but was: ${sumRange.max}`
     );
 
-    const numberOfTenFrames = sumRange.max / NumberPlayConstants.TEN;
+    const numberOfTenFrames = sumRange.max / NumberSuiteCommonConstants.TEN;
     const tenFramePaths: Node[] = [];
 
     // create the calculated number of ten frames needed
@@ -164,5 +164,5 @@ class TenFrameNode extends Node {
   }
 }
 
-numberPlay.register( 'TenFrameNode', TenFrameNode );
+numberSuiteCommon.register( 'TenFrameNode', TenFrameNode );
 export default TenFrameNode;

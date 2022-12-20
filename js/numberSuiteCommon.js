@@ -1,4 +1,4 @@
-// Copyright 2019-2020, University of Colorado Boulder
+// Copyright 2019-2022, University of Colorado Boulder
 
 /**
  * Creates the namespace for this simulation.
@@ -8,4 +8,4 @@
 
 import Namespace from '../../phet-core/js/Namespace.js';
 
-export default new Namespace( 'numberPlay' );
+export default new Namespace( 'numberSuiteCommon' );

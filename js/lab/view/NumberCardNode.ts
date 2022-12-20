@@ -10,7 +10,7 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CardNode, { CardNodeOptions } from './CardNode.js';
 
 type SelfOptions = {
@@ -34,5 +34,5 @@ class NumberCardNode extends CardNode {
   }
 }
 
-numberPlay.register( 'NumberCardNode', NumberCardNode );
+numberSuiteCommon.register( 'NumberCardNode', NumberCardNode );
 export default NumberCardNode;

@@ -13,8 +13,8 @@ import { Color, Path } from '../../../../scenery/js/imports.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Utterance from '../../../../utterance-queue/js/Utterance.js';
-import numberPlay from '../../numberPlay.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
@@ -60,7 +60,7 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
 
       // read out a number by integer => word or just read out a string
       speechUtterance.alert = options.stringProperty ? options.stringProperty.value :
-                              NumberPlayConstants.numberToString( preferences.secondLocaleStringsProperty.value,
+                              NumberSuiteCommonConstants.numberToString( preferences.secondLocaleStringsProperty.value,
                                 options.numberProperty.value, isPrimaryLocaleProperty.value );
 
       speechSynthesisAnnouncer.cancelUtterance( speechUtterance );
@@ -91,5 +91,5 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
   }
 }
 
-numberPlay.register( 'SpeechSynthesisButton', SpeechSynthesisButton );
+numberSuiteCommon.register( 'SpeechSynthesisButton', SpeechSynthesisButton );
 export default SpeechSynthesisButton;

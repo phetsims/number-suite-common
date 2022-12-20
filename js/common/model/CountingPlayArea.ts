@@ -15,8 +15,8 @@ import CountingObject from '../../../../counting-common/js/common/model/Counting
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import numberPlay from '../../numberPlay.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
@@ -139,7 +139,7 @@ class CountingPlayArea extends CountingCommonModel {
 
     const options = optionize<CreateCountingObjectFromBucketOptions>()( {
       shouldAnimate: true,
-      value: NumberPlayConstants.PAPER_NUMBER_INITIAL_VALUE,
+      value: NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE,
       remainder: false
     }, providedOptions );
 
@@ -150,8 +150,8 @@ class CountingPlayArea extends CountingCommonModel {
       groupingEnabledProperty: this.groupingEnabledProperty
     } );
     const origin = this.getCountingObjectOrigin().minus( countingObject.localBounds.center );
-    const scale = countingObject.groupingEnabledProperty.value ? NumberPlayConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE :
-                  NumberPlayConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE;
+    const scale = countingObject.groupingEnabledProperty.value ? NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE :
+                  NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE;
     countingObject.setDestination( origin, false, {
       targetScale: scale
     } );
@@ -196,7 +196,7 @@ class CountingPlayArea extends CountingCommonModel {
     }
 
     countingObject.setDestination( destinationPosition, options.shouldAnimate, {
-      targetScale: NumberPlayConstants.COUNTING_OBJECT_SCALE
+      targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE
     } );
     this.addCountingObject( countingObject );
 
@@ -235,12 +235,12 @@ class CountingPlayArea extends CountingCommonModel {
 
       // if the chosen paperNumber has a value greater than 1, break it up by creating a new paperNumber with a value of
       // 1 to return instead
-      if ( countingObjectToReturn.numberValueProperty.value > NumberPlayConstants.PAPER_NUMBER_INITIAL_VALUE ) {
-        const amountRemaining = countingObjectToReturn.numberValueProperty.value - NumberPlayConstants.PAPER_NUMBER_INITIAL_VALUE;
+      if ( countingObjectToReturn.numberValueProperty.value > NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ) {
+        const amountRemaining = countingObjectToReturn.numberValueProperty.value - NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE;
         countingObjectToReturn.changeNumber( amountRemaining );
 
         countingObjectToReturn = new CountingObject(
-          NumberPlayConstants.PAPER_NUMBER_INITIAL_VALUE,
+          NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE,
           countingObjectToReturn.positionProperty.value, {
             groupingEnabledProperty: this.groupingEnabledProperty
           } );
@@ -272,8 +272,8 @@ class CountingPlayArea extends CountingCommonModel {
     this.calculateTotal();
 
     const origin = this.getCountingObjectOrigin().minus( countingObject.localBounds.center );
-    const scale = countingObject.groupingEnabledProperty.value ? NumberPlayConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE :
-                  NumberPlayConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE;
+    const scale = countingObject.groupingEnabledProperty.value ? NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE :
+                  NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE;
 
     countingObject.setDestination( origin, true, {
       targetScale: scale
@@ -371,7 +371,7 @@ class CountingPlayArea extends CountingCommonModel {
       const objectToOrganize = objectsToOrganize.shift();
 
       objectToOrganize && objectToOrganize.setDestination( destination, true, {
-        targetScale: NumberPlayConstants.COUNTING_OBJECT_SCALE
+        targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE
       } );
     }
   }
@@ -393,8 +393,8 @@ class CountingPlayArea extends CountingCommonModel {
         const countingObjectPosition = countingObject.positionProperty.value;
         const countingObjectValue = countingObject.numberValueProperty.value;
 
-        const numberOfSets = countingObjectValue < NumberPlayConstants.TEN ? 1 : 2;
-        const numberOfRows = NumberPlayConstants.TEN;
+        const numberOfSets = countingObjectValue < NumberSuiteCommonConstants.TEN ? 1 : 2;
+        const numberOfRows = NumberSuiteCommonConstants.TEN;
 
         const origin = stack ? countingObjectPosition.minusXY( 0, 25 ) : countingObjectPosition;
         const offsetYSegment = stack ? ( countingObject.localBounds.height - CountingCommonConstants.PLAY_OBJECT_SIZE.height ) /
@@ -402,7 +402,7 @@ class CountingPlayArea extends CountingCommonModel {
         let offsetY = 0;
 
         let reAddedCountingObjects = 0;
-        const xShift = countingObjectValue >= NumberPlayConstants.TEN && stack ? -CountingCommonConstants.PLAY_OBJECT_SIZE.width : 0;
+        const xShift = countingObjectValue >= NumberSuiteCommonConstants.TEN && stack ? -CountingCommonConstants.PLAY_OBJECT_SIZE.width : 0;
 
         this.removeCountingObject( countingObject );
 
@@ -431,5 +431,5 @@ class CountingPlayArea extends CountingCommonModel {
   }
 }
 
-numberPlay.register( 'CountingPlayArea', CountingPlayArea );
+numberSuiteCommon.register( 'CountingPlayArea', CountingPlayArea );
 export default CountingPlayArea;

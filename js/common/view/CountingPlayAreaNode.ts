@@ -13,7 +13,7 @@ import CountingObjectNode from '../../../../counting-common/js/common/view/Count
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
 import ClosestDragListener from '../../../../sun/js/ClosestDragListener.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
 import CountingObjectCreatorPanel from './CountingObjectCreatorPanel.js';
 import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonView.js';
@@ -21,7 +21,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import DraggableTenFrameNode from '../../lab/view/DraggableTenFrameNode.js';
 
@@ -459,8 +459,8 @@ class CountingPlayAreaNode extends Node {
       // Set its destination to the proper target (with the offset so that it will disappear once centered).
       let targetPosition = this.countingObjectCreatorPanel.countingCreatorNode.getOriginPosition();
       targetPosition = targetPosition.minus( countingObject.returnAnimationBounds.center );
-      const targetScale = countingObject.groupingEnabledProperty.value ? NumberPlayConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE :
-                          NumberPlayConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE;
+      const targetScale = countingObject.groupingEnabledProperty.value ? NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE :
+                          NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE;
       countingObject.setDestination( targetPosition, true, {
         targetScale: targetScale,
         targetHandleOpacity: 0
@@ -469,5 +469,5 @@ class CountingPlayAreaNode extends Node {
   }
 }
 
-numberPlay.register( 'CountingPlayAreaNode', CountingPlayAreaNode );
+numberSuiteCommon.register( 'CountingPlayAreaNode', CountingPlayAreaNode );
 export default CountingPlayAreaNode;

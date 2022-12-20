@@ -11,7 +11,7 @@ import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstan
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import MissingVoiceWarningDialog from './MissingVoiceWarningDialog.js';
@@ -45,5 +45,5 @@ class MissingVoiceWarningButton extends RectangularPushButton {
   }
 }
 
-numberPlay.register( 'MissingVoiceWarningButton', MissingVoiceWarningButton );
+numberSuiteCommon.register( 'MissingVoiceWarningButton', MissingVoiceWarningButton );
 export default MissingVoiceWarningButton;

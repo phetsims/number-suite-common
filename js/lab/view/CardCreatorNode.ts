@@ -7,7 +7,7 @@
  */
 
 import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import SymbolCardNode, { SymbolType } from './SymbolCardNode.js';
 import LabScreenView from './LabScreenView.js';
 import Easing from '../../../../twixt/js/Easing.js';
@@ -117,5 +117,5 @@ class CardCreatorNode extends Node {
   }
 }
 
-numberPlay.register( 'CardCreatorNode', CardCreatorNode );
+numberSuiteCommon.register( 'CardCreatorNode', CardCreatorNode );
 export default CardCreatorNode;

@@ -15,7 +15,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
 import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
 
 type SelfOptions = {
@@ -106,5 +106,5 @@ class DraggableTenFrameNode extends Node {
   }
 }
 
-numberPlay.register( 'DraggableTenFrameNode', DraggableTenFrameNode );
+numberSuiteCommon.register( 'DraggableTenFrameNode', DraggableTenFrameNode );
 export default DraggableTenFrameNode;

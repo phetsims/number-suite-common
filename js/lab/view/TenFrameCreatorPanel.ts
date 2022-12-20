@@ -10,13 +10,13 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { DragListener, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import TenFrame from '../model/TenFrame.js';
 import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
 import NumberPlayCreatorPanel from '../../common/view/NumberPlayCreatorPanel.js';
-import NumberPlayConstants from '../../common/NumberPlayConstants.js';
+import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 
@@ -39,7 +39,7 @@ class TenFrameCreatorPanel extends NumberPlayCreatorPanel {
     const creatorNodeBackground = new Rectangle( 0, 0,
       iconNode.width,
       // TODO: Factor out with CountingObjectCreatorPanel
-      CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberPlayConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
+      CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
     );
     iconNode.center = creatorNodeBackground.center;
     creatorNodeBackground.addChild( iconNode );
@@ -61,5 +61,5 @@ class TenFrameCreatorPanel extends NumberPlayCreatorPanel {
   }
 }
 
-numberPlay.register( 'TenFrameCreatorPanel', TenFrameCreatorPanel );
+numberSuiteCommon.register( 'TenFrameCreatorPanel', TenFrameCreatorPanel );
 export default TenFrameCreatorPanel;

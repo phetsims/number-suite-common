@@ -9,8 +9,8 @@
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Rectangle, Text } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import numberPlay from '../../numberPlay.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TProperty from '../../../../axon/js/TProperty.js';
@@ -40,7 +40,7 @@ class NumberPlayAccordionBox extends AccordionBox {
 
     super( contentNode, optionize<NumberPlayAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       titleNode: new Text( options.titleStringProperty, {
-        font: NumberPlayConstants.ACCORDION_BOX_TITLE_FONT,
+        font: NumberSuiteCommonConstants.ACCORDION_BOX_TITLE_FONT,
         maxWidth: options.titleMaxWidth
       } ),
       titleAlignX: 'left',
@@ -83,5 +83,5 @@ class NumberPlayAccordionBox extends AccordionBox {
   }
 }
 
-numberPlay.register( 'NumberPlayAccordionBox', NumberPlayAccordionBox );
+numberSuiteCommon.register( 'NumberPlayAccordionBox', NumberPlayAccordionBox );
 export default NumberPlayAccordionBox;

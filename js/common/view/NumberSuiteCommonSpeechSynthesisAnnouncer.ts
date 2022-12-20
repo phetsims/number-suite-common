@@ -12,7 +12,7 @@
  */
 
 import SpeechSynthesisAnnouncer from '../../../../utterance-queue/js/SpeechSynthesisAnnouncer.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
@@ -82,5 +82,5 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   }
 }
 
-numberPlay.register( 'NumberSuiteCommonSpeechSynthesisAnnouncer', NumberSuiteCommonSpeechSynthesisAnnouncer );
+numberSuiteCommon.register( 'NumberSuiteCommonSpeechSynthesisAnnouncer', NumberSuiteCommonSpeechSynthesisAnnouncer );
 export default NumberSuiteCommonSpeechSynthesisAnnouncer;

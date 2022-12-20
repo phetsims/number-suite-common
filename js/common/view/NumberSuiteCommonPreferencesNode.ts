@@ -9,7 +9,7 @@
 
 import { HBox, Node, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import SecondLocaleSelectorCarousel from './SecondLocaleSelectorCarousel.js';
@@ -105,4 +105,4 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
   }
 }
 
-numberPlay.register( 'NumberSuiteCommonPreferencesNode', NumberSuiteCommonPreferencesNode );
+numberSuiteCommon.register( 'NumberSuiteCommonPreferencesNode', NumberSuiteCommonPreferencesNode );

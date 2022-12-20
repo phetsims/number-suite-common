@@ -11,8 +11,8 @@ import ScreenIcon from '../../../joist/js/ScreenIcon.js';
 import { Image } from '../../../scenery/js/imports.js';
 import Tandem from '../../../tandem/js/Tandem.js';
 import labScreenIcon_png from '../../images/labScreenIcon_png.js';
-import NumberPlayColors from '../common/NumberPlayColors.js';
-import numberPlay from '../numberPlay.js';
+import NumberSuiteCommonColors from '../common/NumberSuiteCommonColors.js';
+import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberPlayStrings from '../NumberPlayStrings.js';
 import LabModel from './model/LabModel.js';
 import LabScreenView from './view/LabScreenView.js';
@@ -25,7 +25,7 @@ class LabScreen<T extends NumberSuiteCommonPreferences> extends Screen<LabModel,
 
     const options = {
       name: NumberPlayStrings.screen.labStringProperty,
-      backgroundColorProperty: NumberPlayColors.lightPurpleBackgroundColorProperty,
+      backgroundColorProperty: NumberSuiteCommonColors.lightPurpleBackgroundColorProperty,
       homeScreenIcon: new ScreenIcon( new Image( labScreenIcon_png ), {
         maxIconWidthProportion: 1,
         maxIconHeightProportion: 1
@@ -41,5 +41,5 @@ class LabScreen<T extends NumberSuiteCommonPreferences> extends Screen<LabModel,
   }
 }
 
-numberPlay.register( 'LabScreen', LabScreen );
+numberSuiteCommon.register( 'LabScreen', LabScreen );
 export default LabScreen;

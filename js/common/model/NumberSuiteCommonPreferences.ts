@@ -8,8 +8,8 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import numberPlay from '../../numberPlay.js';
-import NumberPlayQueryParameters from '../NumberPlayQueryParameters.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameters.js';
 import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -28,24 +28,24 @@ class NumberSuiteCommonPreferences {
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<IntentionalAny>;
 
   public constructor() {
-    this.readAloudProperty = new BooleanProperty( NumberPlayQueryParameters.readAloud );
+    this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
 
     const isSecondLocaleProvided = QueryStringMachine.containsKey( 'secondLocale' );
-    const isSecondLocaleValid = !!phet.chipper.strings[ NumberPlayQueryParameters.secondLocale! ] &&
+    const isSecondLocaleValid = !!phet.chipper.strings[ NumberSuiteCommonQueryParameters.secondLocale! ] &&
                                 Object.keys( phet.chipper.strings ).length > 1;
 
     if ( isSecondLocaleProvided && !isSecondLocaleValid ) {
-      QueryStringMachine.addWarning( 'secondLocale', NumberPlayQueryParameters.secondLocale,
-        `Second locale doesn't exist: ${NumberPlayQueryParameters.secondLocale}` );
-      NumberPlayQueryParameters.secondLocale = phet.chipper.locale;
+      QueryStringMachine.addWarning( 'secondLocale', NumberSuiteCommonQueryParameters.secondLocale,
+        `Second locale doesn't exist: ${NumberSuiteCommonQueryParameters.secondLocale}` );
+      NumberSuiteCommonQueryParameters.secondLocale = phet.chipper.locale;
     }
 
     // if a valid second locale was provided via a query parameter, display the second locale on sim startup
     this.showSecondLocaleProperty = new BooleanProperty( isSecondLocaleProvided && isSecondLocaleValid );
 
-    this.secondLocaleProperty = new Property<Locale>( NumberPlayQueryParameters.secondLocale! as Locale );
+    this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale! as Locale );
 
-    this.showLabOnesProperty = new BooleanProperty( NumberPlayQueryParameters.showLabOnes );
+    this.showLabOnesProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.showLabOnes );
 
     this.secondLocaleStringsProperty = new DerivedProperty( [ this.secondLocaleProperty ], secondLocale => {
       return phet.chipper.strings[ secondLocale ];
@@ -53,5 +53,5 @@ class NumberSuiteCommonPreferences {
   }
 }
 
-numberPlay.register( 'NumberSuiteCommonPreferences', NumberSuiteCommonPreferences );
+numberSuiteCommon.register( 'NumberSuiteCommonPreferences', NumberSuiteCommonPreferences );
 export default NumberSuiteCommonPreferences;

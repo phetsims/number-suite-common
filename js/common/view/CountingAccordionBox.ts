@@ -13,9 +13,9 @@ import CountingObjectType from '../../../../counting-common/js/common/model/Coun
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { Color, Image, Node } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupItem } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberPlayStrings from '../../NumberPlayStrings.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import CountingPlayAreaNode from './CountingPlayAreaNode.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
 import BaseNumberNode from '../../../../counting-common/js/common/view/BaseNumberNode.js';
@@ -47,7 +47,7 @@ class CountingAccordionBox extends NumberPlayAccordionBox {
     super( width, new Property<number>( height ),
       optionize<CountingAccordionBoxOptions, SelfOptions, NumberPlayAccordionBoxOptions>()( {
         titleStringProperty: NumberPlayStrings.objectsStringProperty,
-        titleMaxWidth: NumberPlayConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH,
+        titleMaxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH,
         countingObjectTypes: null,
         linkedPlayArea: null,
         groupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
@@ -114,5 +114,5 @@ class CountingAccordionBox extends NumberPlayAccordionBox {
   }
 }
 
-numberPlay.register( 'CountingAccordionBox', CountingAccordionBox );
+numberSuiteCommon.register( 'CountingAccordionBox', CountingAccordionBox );
 export default CountingAccordionBox;

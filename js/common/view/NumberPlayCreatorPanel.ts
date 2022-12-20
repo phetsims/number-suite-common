@@ -9,7 +9,7 @@
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 type SelfOptions = EmptySelfOptions;
 type NumberPlayCreatorPanelOptions = SelfOptions & Pick<PanelOptions, 'xMargin'>;
@@ -28,5 +28,5 @@ class NumberPlayCreatorPanel extends Panel {
   }
 }
 
-numberPlay.register( 'NumberPlayCreatorPanel', NumberPlayCreatorPanel );
+numberSuiteCommon.register( 'NumberPlayCreatorPanel', NumberPlayCreatorPanel );
 export default NumberPlayCreatorPanel;

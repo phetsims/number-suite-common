@@ -10,7 +10,7 @@
  */
 
 import { Color, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import NumberPlayStrings from '../../NumberPlayStrings.js';
@@ -85,4 +85,4 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
   }
 }
 
-numberPlay.register( 'ReadAloudPreferenceControl', ReadAloudPreferenceControl );
+numberSuiteCommon.register( 'ReadAloudPreferenceControl', ReadAloudPreferenceControl );

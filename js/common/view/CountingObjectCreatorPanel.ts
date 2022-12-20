@@ -12,11 +12,11 @@ import CountingCreatorNode from '../../../../counting-common/js/common/view/Coun
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { HBox, Rectangle, VBox } from '../../../../scenery/js/imports.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
 import CountingPlayAreaNode from './CountingPlayAreaNode.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import NumberPlayCreatorPanel from './NumberPlayCreatorPanel.js';
 
@@ -47,8 +47,8 @@ class CountingObjectCreatorPanel extends NumberPlayCreatorPanel {
     } );
 
     const creatorNodeBackground = new Rectangle( 0, 0,
-      CountingCommonConstants.PLAY_OBJECT_SIZE.width * NumberPlayConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE + 8,
-      CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberPlayConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
+      CountingCommonConstants.PLAY_OBJECT_SIZE.width * NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE + 8,
+      CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
     );
 
     // @ts-expect-error TODO-TS: Remove if/when CountingPlayAreaNode extends CountingCommonView
@@ -57,8 +57,8 @@ class CountingObjectCreatorPanel extends NumberPlayCreatorPanel {
       countingObjectTypeProperty: screenView.countingObjectTypeProperty,
       groupingEnabledProperty: screenView.playArea.groupingEnabledProperty,
       backTargetOffset: new Vector2( -5, -5 ),
-      ungroupedTargetScale: NumberPlayConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
-      groupedTargetScale: NumberPlayConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
+      ungroupedTargetScale: NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
+      groupedTargetScale: NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
       touchAreaXDilation: 6.5,
       touchAreaYDilation: 5,
       touchAreaXShift: 3
@@ -88,5 +88,5 @@ class CountingObjectCreatorPanel extends NumberPlayCreatorPanel {
   }
 }
 
-numberPlay.register( 'CountingObjectCreatorPanel', CountingObjectCreatorPanel );
+numberSuiteCommon.register( 'CountingObjectCreatorPanel', CountingObjectCreatorPanel );
 export default CountingObjectCreatorPanel;

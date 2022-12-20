@@ -1,29 +1,19 @@
 {
-  "name": "number-play",
-  "version": "1.1.0-dev.8",
+  "name": "number-suite-common",
+  "version": "1.0.0-dev.0",
   "license": "GPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phetsims/number-play.git"
+    "url": "https://github.com/phetsims/number-suite-common.git"
   },
   "devDependencies": {
     "grunt": "~1.5.3"
   },
   "phet": {
-    "requirejsNamespace": "NUMBER_PLAY",
+    "requirejsNamespace": "NUMBER_SUITE_COMMON",
     "phetLibs": [
       "counting-common",
-      "twixt",
-      "vegas"
-    ],
-    "simFeatures": {
-      "supportsSound": true
-    },
-    "simulation": true,
-    "runnable": true,
-    "supportedBrands": [
-      "phet",
-      "adapted-from-phet"
+      "twixt"
     ],
     "supportsOutputJS": true
   },

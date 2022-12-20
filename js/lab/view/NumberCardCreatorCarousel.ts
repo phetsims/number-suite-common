@@ -8,7 +8,7 @@
 
 import { Node } from '../../../../scenery/js/imports.js';
 import Carousel from '../../../../sun/js/Carousel.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabScreenView from './LabScreenView.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import CardCreatorNode from './CardCreatorNode.js';
@@ -83,5 +83,5 @@ class NumberCardCreatorCarousel extends Carousel {
   }
 }
 
-numberPlay.register( 'NumberCardCreatorCarousel', NumberCardCreatorCarousel );
+numberSuiteCommon.register( 'NumberCardCreatorCarousel', NumberCardCreatorCarousel );
 export default NumberCardCreatorCarousel;

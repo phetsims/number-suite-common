@@ -7,7 +7,7 @@
  */
 
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
-import numberPlay from '../numberPlay.js';
+import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberPlayStrings from '../NumberPlayStrings.js';
 import { AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
@@ -82,7 +82,7 @@ const NUMBER_TO_STRING_VALUE = {
   20: 'twenty'
 } as NumberToString;
 
-const NumberPlayConstants = {
+const NumberSuiteCommonConstants = {
 
   // the two defining numbers of this sim
   TEN: 10,
@@ -170,5 +170,5 @@ const NumberPlayConstants = {
   TOUCH_AREA_DILATION: 9
 };
 
-numberPlay.register( 'NumberPlayConstants', NumberPlayConstants );
-export default NumberPlayConstants;
+numberSuiteCommon.register( 'NumberSuiteCommonConstants', NumberSuiteCommonConstants );
+export default NumberSuiteCommonConstants;

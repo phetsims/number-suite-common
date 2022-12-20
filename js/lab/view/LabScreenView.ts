@@ -11,9 +11,9 @@ import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import { ManualConstraint, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
-import NumberPlayConstants from '../../common/NumberPlayConstants.js';
+import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import CountingPlayAreaNode from '../../common/view/CountingPlayAreaNode.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
 import DraggableTenFrameNode from './DraggableTenFrameNode.js';
 import NumberCardCreatorCarousel from './NumberCardCreatorCarousel.js';
@@ -81,17 +81,17 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.addChild( this.tenFrameCreatorPanel );
 
     this.numberCardBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
-      return visibleBounds.withMaxY( visibleBounds.maxY - NumberPlayConstants.SCREEN_VIEW_PADDING_Y -
+      return visibleBounds.withMaxY( visibleBounds.maxY - NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y -
                                      this.tenFrameCreatorPanel.height )
         .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
     } );
     this.symbolCardBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
-      return visibleBounds.withMinY( visibleBounds.minY + NumberPlayConstants.SCREEN_VIEW_PADDING_Y +
+      return visibleBounds.withMinY( visibleBounds.minY + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y +
                                      this.numberCardCreatorCarousel.height ).withMaxY(
         visibleBounds.maxY - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN - this.tenFrameCreatorPanel.height );
     } );
     this.objectPlayAreaBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
-      return visibleBounds.withMinY( visibleBounds.minY + NumberPlayConstants.SCREEN_VIEW_PADDING_Y +
+      return visibleBounds.withMinY( visibleBounds.minY + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y +
                                      this.numberCardCreatorCarousel.height )
         .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
     } );
@@ -238,7 +238,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         this.numberCardCreatorCarousel.reset();
         this.symbolCardCreatorPanel.reset();
       },
-      right: this.layoutBounds.maxX - NumberPlayConstants.SCREEN_VIEW_PADDING_X,
+      right: this.layoutBounds.maxX - NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_X,
       tandem: tandem.createTandem( 'resetAllButton' )
     } );
     this.addChild( resetAllButton );
@@ -246,7 +246,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     // update the y-position of panels when the visible bounds change so everything floats to the top or bottom
     Multilink.multilink( [ this.visibleBoundsProperty, preferences.showLabOnesProperty ],
       ( visibleBounds, showLabOnes ) => {
-        this.numberCardCreatorCarousel.top = visibleBounds.top + NumberPlayConstants.SCREEN_VIEW_PADDING_Y;
+        this.numberCardCreatorCarousel.top = visibleBounds.top + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y;
 
         this.symbolCardCreatorPanel.right = visibleBounds.right - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
         resetAllButton.right = visibleBounds.right - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
@@ -373,5 +373,5 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   }
 }
 
-numberPlay.register( 'LabScreenView', LabScreenView );
+numberSuiteCommon.register( 'LabScreenView', LabScreenView );
 export default LabScreenView;

@@ -7,7 +7,7 @@
  */
 
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrameNode from './TenFrameNode.js';
 import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstants.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
@@ -35,5 +35,5 @@ class OrganizeButton extends RectangularPushButton {
   }
 }
 
-numberPlay.register( 'OrganizeButton', OrganizeButton );
+numberSuiteCommon.register( 'OrganizeButton', OrganizeButton );
 export default OrganizeButton;

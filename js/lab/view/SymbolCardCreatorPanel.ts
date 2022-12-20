@@ -7,7 +7,7 @@
  */
 
 import { Rectangle, VBox, Node } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
 import NumberPlayCreatorPanel from '../../common/view/NumberPlayCreatorPanel.js';
@@ -103,5 +103,5 @@ class SymbolCardCreatorPanel extends NumberPlayCreatorPanel {
   }
 }
 
-numberPlay.register( 'SymbolCardCreatorPanel', SymbolCardCreatorPanel );
+numberSuiteCommon.register( 'SymbolCardCreatorPanel', SymbolCardCreatorPanel );
 export default SymbolCardCreatorPanel;

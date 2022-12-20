@@ -6,7 +6,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
 import { GridBox } from '../../../../scenery/js/imports.js';
@@ -50,5 +50,5 @@ class SecondLocaleSelectorCarousel<T extends NumberSuiteCommonPreferences> exten
   }
 }
 
-numberPlay.register( 'SecondLocaleSelectorCarousel', SecondLocaleSelectorCarousel );
+numberSuiteCommon.register( 'SecondLocaleSelectorCarousel', SecondLocaleSelectorCarousel );
 export default SecondLocaleSelectorCarousel;

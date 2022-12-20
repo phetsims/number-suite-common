@@ -12,7 +12,7 @@ import Property from '../../../../axon/js/Property.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CountingPlayArea from '../../common/model/CountingPlayArea.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from './TenFrame.js';
 
 // constants
@@ -85,5 +85,5 @@ class LabModel {
   }
 }
 
-numberPlay.register( 'LabModel', LabModel );
+numberSuiteCommon.register( 'LabModel', LabModel );
 export default LabModel;

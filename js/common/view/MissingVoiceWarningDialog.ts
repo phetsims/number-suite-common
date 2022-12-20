@@ -11,7 +11,7 @@ import OopsDialog from '../../../../scenery-phet/js/OopsDialog.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, Path } from '../../../../scenery/js/imports.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberPlayStrings from '../../NumberPlayStrings.js';
 
 class MissingVoiceWarningDialog extends OopsDialog {
@@ -37,5 +37,5 @@ class MissingVoiceWarningDialog extends OopsDialog {
   }
 }
 
-numberPlay.register( 'MissingVoiceWarningDialog', MissingVoiceWarningDialog );
+numberSuiteCommon.register( 'MissingVoiceWarningDialog', MissingVoiceWarningDialog );
 export default MissingVoiceWarningDialog;

@@ -6,7 +6,7 @@
 /* eslint-disable */
 import getStringModule from '../../chipper/js/getStringModule.js';
 import LinkableProperty from '../../axon/js/LinkableProperty.js';
-import numberPlay from './numberPlay.js';
+import numberSuiteCommon from './numberSuiteCommon.js';
 
 type StringsType = {
   'number-play': {
@@ -117,6 +117,6 @@ type StringsType = {
 
 const NumberPlayStrings = getStringModule( 'NUMBER_PLAY' ) as StringsType;
 
-numberPlay.register( 'NumberPlayStrings', NumberPlayStrings );
+numberSuiteCommon.register( 'NumberPlayStrings', NumberPlayStrings );
 
 export default NumberPlayStrings;

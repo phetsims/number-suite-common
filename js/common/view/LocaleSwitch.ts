@@ -11,9 +11,9 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberPlayStrings from '../../NumberPlayStrings.js';
-import NumberPlayConstants from '../NumberPlayConstants.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 
@@ -38,7 +38,7 @@ class LocaleSwitch extends ABSwitch<boolean> {
       maxWidth: ( maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2 ) * 0.5
     };
 
-    const secondLanguageStringKey = `${NumberPlayConstants.NUMBER_PLAY_STRING_KEY_PREFIX}language`;
+    const secondLanguageStringKey = `${NumberSuiteCommonConstants.NUMBER_PLAY_STRING_KEY_PREFIX}language`;
     const secondLanguageText = new Text( '', switchTextOptions );
 
     secondLocaleStringsProperty.link( secondLocaleStrings => {
@@ -60,5 +60,5 @@ class LocaleSwitch extends ABSwitch<boolean> {
   }
 }
 
-numberPlay.register( 'LocaleSwitch', LocaleSwitch );
+numberSuiteCommon.register( 'LocaleSwitch', LocaleSwitch );
 export default LocaleSwitch;

@@ -15,7 +15,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import { Color, DragListener, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 // constants
 const WIDTH = 50;
@@ -115,5 +115,5 @@ class CardNode extends Node {
   }
 }
 
-numberPlay.register( 'CardNode', CardNode );
+numberSuiteCommon.register( 'CardNode', CardNode );
 export default CardNode;
