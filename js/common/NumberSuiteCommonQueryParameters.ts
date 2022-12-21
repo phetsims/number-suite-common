@@ -1,4 +1,4 @@
-// Copyright 2021-2022, University of Colorado Boulder
+// Copyright 2022, University of Colorado Boulder
 
 /**
  * NumberSuiteCommonQueryParameters defines query parameters that are specific to Number Suite sims.
