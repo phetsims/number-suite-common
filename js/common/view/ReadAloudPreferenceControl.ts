@@ -36,7 +36,7 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
       labelNode: new Text( labelProperty, NumberSuiteCommonPreferencesNode.CONTROL_TEXT_BOLD_OPTIONS ),
       descriptionNode: new Text( NumberSuiteCommonStrings.readAloudDescriptionStringProperty,
         NumberSuiteCommonPreferencesNode.CONTROL_TEXT_OPTIONS ),
-      descriptionSpacing: NumberSuiteCommonPreferencesNode.CONTROL_DESCRIPTION_SPACING,
+      ySpacing: NumberSuiteCommonPreferencesNode.CONTROL_DESCRIPTION_SPACING,
       controlNode: toggleSwitch
     } );
     this.addChild( control );

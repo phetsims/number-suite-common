@@ -56,7 +56,7 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
     const showSecondLocaleControl = new PreferencesControl( {
       labelNode: new Text( NumberSuiteCommonStrings.secondLanguageStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
       descriptionNode: new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
-      descriptionSpacing: CONTROL_DESCRIPTION_SPACING,
+      ySpacing: CONTROL_DESCRIPTION_SPACING,
       controlNode: showSecondLocaleToggleSwitch
     } );
 
@@ -94,7 +94,7 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
     this.showLabOnesControl = new PreferencesControl( {
       labelNode: new Text( NumberSuiteCommonStrings.showOnesStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
       descriptionNode: new Text( NumberSuiteCommonStrings.showOnesDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
-      descriptionSpacing: CONTROL_DESCRIPTION_SPACING,
+      ySpacing: CONTROL_DESCRIPTION_SPACING,
       controlNode: showLabOnesToggleSwitch
     } );
     const rightControls = new VBox( combineOptions<VBoxOptions>( {
