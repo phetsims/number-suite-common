@@ -21,7 +21,7 @@ import CountingPlayArea from '../model/CountingPlayArea.js';
 import BaseNumberNode from '../../../../counting-common/js/common/view/BaseNumberNode.js';
 import BaseNumber from '../../../../counting-common/js/common/model/BaseNumber.js';
 import GroupAndLinkType from '../model/GroupAndLinkType.js';
-import NumberPlayAccordionBox, { NumberPlayAccordionBoxOptions } from './NumberPlayAccordionBox.js';
+import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
 
@@ -31,12 +31,12 @@ type SelfOptions = {
   linkedPlayArea?: CountingPlayArea | null;
   groupAndLinkTypeProperty?: EnumerationProperty<GroupAndLinkType>;
 };
-export type CountingAccordionBoxOptions = SelfOptions & NumberPlayAccordionBoxOptions;
+export type CountingAccordionBoxOptions = SelfOptions & NumberSuiteCommonAccordionBoxOptions;
 
 // constants
 const RADIO_BUTTON_SIZE = new Dimension2( 28, 28 ); // in screen coordinates
 
-class CountingAccordionBox extends NumberPlayAccordionBox {
+class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
 
   public constructor( playArea: CountingPlayArea,
                       countingObjectTypeProperty: EnumerationProperty<CountingObjectType>,
@@ -45,7 +45,7 @@ class CountingAccordionBox extends NumberPlayAccordionBox {
                       options: CountingAccordionBoxOptions ) {
 
     super( width, new Property<number>( height ),
-      optionize<CountingAccordionBoxOptions, SelfOptions, NumberPlayAccordionBoxOptions>()( {
+      optionize<CountingAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
         titleStringProperty: NumberPlayStrings.objectsStringProperty,
         titleMaxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH,
         countingObjectTypes: null,

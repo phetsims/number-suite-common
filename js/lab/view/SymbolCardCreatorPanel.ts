@@ -10,7 +10,7 @@ import { Rectangle, VBox, Node } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
-import NumberPlayCreatorPanel from '../../common/view/NumberPlayCreatorPanel.js';
+import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
 import SymbolCardNode, { SymbolType } from './SymbolCardNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import CardCreatorNode from './CardCreatorNode.js';
@@ -21,7 +21,7 @@ import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPr
 const MAX_SYMBOL_PIECE_COUNT = 10;
 const SPACING = 10;
 
-class SymbolCardCreatorPanel extends NumberPlayCreatorPanel {
+class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
   private readonly symbolTypeToCountPropertyMap: Map<SymbolType, Property<number>>;
   private readonly clearSymbolNodes: () => void;
   private readonly screenView: LabScreenView<NumberSuiteCommonPreferences>;

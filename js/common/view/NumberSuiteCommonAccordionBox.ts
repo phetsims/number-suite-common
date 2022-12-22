@@ -1,7 +1,7 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * Base class for all Number Play accordion boxes.
+ * Base class for all accordion boxes in Number Suite sims.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
@@ -20,25 +20,25 @@ type SelfOptions = {
   titleStringProperty: TReadOnlyProperty<string>;
   titleMaxWidth: number;
 };
-export type NumberPlayAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
+export type NumberSuiteCommonAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
 
 // constants
 const PADDING = 10;
 const EXPAND_COLLAPSE_BUTTON_SIZE = 20;
 
-class NumberPlayAccordionBox extends AccordionBox {
+class NumberSuiteCommonAccordionBox extends AccordionBox {
   protected readonly contentNode: Rectangle;
   protected readonly contentBoundsProperty: TProperty<Bounds2>;
 
   protected constructor( contentWidth: number, contentHeightProperty: TReadOnlyProperty<number>,
-                         options: NumberPlayAccordionBoxOptions ) {
+                         options: NumberSuiteCommonAccordionBoxOptions ) {
 
     const contentNode = new Rectangle( {
       rectWidth: contentWidth - EXPAND_COLLAPSE_BUTTON_SIZE - ( PADDING * 2 ),
       rectHeight: contentHeightProperty.value
     } );
 
-    super( contentNode, optionize<NumberPlayAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
+    super( contentNode, optionize<NumberSuiteCommonAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
       titleNode: new Text( options.titleStringProperty, {
         font: NumberSuiteCommonConstants.ACCORDION_BOX_TITLE_FONT,
         maxWidth: options.titleMaxWidth
@@ -83,5 +83,5 @@ class NumberPlayAccordionBox extends AccordionBox {
   }
 }
 
-numberSuiteCommon.register( 'NumberPlayAccordionBox', NumberPlayAccordionBox );
-export default NumberPlayAccordionBox;
+numberSuiteCommon.register( 'NumberSuiteCommonAccordionBox', NumberSuiteCommonAccordionBox );
+export default NumberSuiteCommonAccordionBox;

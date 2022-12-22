@@ -18,9 +18,9 @@ import CountingPlayAreaNode from './CountingPlayAreaNode.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import NumberPlayCreatorPanel from './NumberPlayCreatorPanel.js';
+import NumberSuiteCommonPanel from './NumberSuiteCommonPanel.js';
 
-class CountingObjectCreatorPanel extends NumberPlayCreatorPanel {
+class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
   public countingCreatorNode: CountingCreatorNode;
 
   public constructor( playArea: CountingPlayArea, screenView: CountingPlayAreaNode ) {

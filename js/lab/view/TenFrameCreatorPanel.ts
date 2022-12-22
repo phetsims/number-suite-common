@@ -15,14 +15,14 @@ import TenFrameNode from '../../common/view/TenFrameNode.js';
 import TenFrame from '../model/TenFrame.js';
 import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
-import NumberPlayCreatorPanel from '../../common/view/NumberPlayCreatorPanel.js';
+import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 
 const ICON_SIE_LENGTH = 20;
 
-class TenFrameCreatorPanel extends NumberPlayCreatorPanel {
+class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
   public readonly iconNode: Node;
 
   // the scale of the icon relative to the standard ten frame size, which is the size of the ten frames in the play area

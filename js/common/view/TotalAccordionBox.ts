@@ -14,7 +14,7 @@ import NumberPlayStrings from '../../NumberPlayStrings.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import Range from '../../../../dot/js/Range.js';
-import NumberPlayAccordionBox, { NumberPlayAccordionBoxOptions } from './NumberPlayAccordionBox.js';
+import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
@@ -28,14 +28,14 @@ type SelfOptions = {
 } & PickRequired<TextOptions, 'font'>;
 export type TotalAccordionBoxOptions =
   SelfOptions
-  & StrictOmit<NumberPlayAccordionBoxOptions, 'titleStringProperty' | 'titleMaxWidth'>;
+  & StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty' | 'titleMaxWidth'>;
 
-class TotalAccordionBox extends NumberPlayAccordionBox {
+class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
   public constructor( playArea: CountingPlayArea, height: number, options: TotalAccordionBoxOptions ) {
 
     super( NumberSuiteCommonConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ),
-      optionize<TotalAccordionBoxOptions, SelfOptions, NumberPlayAccordionBoxOptions>()( {
+      optionize<TotalAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
         titleStringProperty: NumberPlayStrings.totalStringProperty,
         titleMaxWidth: 142
       }, options ) );

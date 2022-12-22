@@ -12,13 +12,13 @@ import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 type SelfOptions = EmptySelfOptions;
-type NumberPlayCreatorPanelOptions = SelfOptions & Pick<PanelOptions, 'xMargin'>;
+type NumberSuiteCommonPanelOptions = SelfOptions & Pick<PanelOptions, 'xMargin'>;
 
-class NumberPlayCreatorPanel extends Panel {
+class NumberSuiteCommonPanel extends Panel {
 
-  public constructor( content: Node, providedOptions?: NumberPlayCreatorPanelOptions ) {
+  public constructor( content: Node, providedOptions?: NumberSuiteCommonPanelOptions ) {
 
-    const options = optionize<NumberPlayCreatorPanelOptions, SelfOptions, PanelOptions>()( {
+    const options = optionize<NumberSuiteCommonPanelOptions, SelfOptions, PanelOptions>()( {
       stroke: 'rgb(201,203,203)',
       xMargin: 8,
       yMargin: 8
@@ -28,5 +28,5 @@ class NumberPlayCreatorPanel extends Panel {
   }
 }
 
-numberSuiteCommon.register( 'NumberPlayCreatorPanel', NumberPlayCreatorPanel );
-export default NumberPlayCreatorPanel;
+numberSuiteCommon.register( 'NumberSuiteCommonPanel', NumberSuiteCommonPanel );
+export default NumberSuiteCommonPanel;
