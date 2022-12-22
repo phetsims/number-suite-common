@@ -13,7 +13,7 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import labScreenIcon_png from '../../images/labScreenIcon_png.js';
 import NumberSuiteCommonColors from '../common/NumberSuiteCommonColors.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
-import NumberPlayStrings from '../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import LabModel from './model/LabModel.js';
 import LabScreenView from './view/LabScreenView.js';
 import NumberSuiteCommonPreferences from '../common/model/NumberSuiteCommonPreferences.js';
@@ -24,7 +24,7 @@ class LabScreen<T extends NumberSuiteCommonPreferences> extends Screen<LabModel,
   public constructor( symbolTypes: SymbolType[], preferences: T, tandem: Tandem ) {
 
     const options = {
-      name: NumberPlayStrings.screen.labStringProperty,
+      name: NumberSuiteCommonStrings.screen.labStringProperty,
       backgroundColorProperty: NumberSuiteCommonColors.lightPurpleBackgroundColorProperty,
       homeScreenIcon: new ScreenIcon( new Image( labScreenIcon_png ), {
         maxIconWidthProportion: 1,

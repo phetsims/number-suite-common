@@ -14,7 +14,7 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { Color, Image, Node } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupItem } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberPlayStrings from '../../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import CountingPlayAreaNode from './CountingPlayAreaNode.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
@@ -46,7 +46,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
 
     super( width, new Property<number>( height ),
       optionize<CountingAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
-        titleStringProperty: NumberPlayStrings.objectsStringProperty,
+        titleStringProperty: NumberSuiteCommonStrings.objectsStringProperty,
         titleMaxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH,
         countingObjectTypes: null,
         linkedPlayArea: null,

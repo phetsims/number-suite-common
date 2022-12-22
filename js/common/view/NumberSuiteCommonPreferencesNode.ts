@@ -13,7 +13,7 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import SecondLocaleSelectorCarousel from './SecondLocaleSelectorCarousel.js';
-import NumberPlayStrings from '../../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
@@ -54,8 +54,8 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
     const showSecondLocaleToggleSwitch = new ToggleSwitch( preferences.showSecondLocaleProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
     const showSecondLocaleControl = new PreferencesControl( {
-      labelNode: new Text( NumberPlayStrings.secondLanguageStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
-      descriptionNode: new Text( NumberPlayStrings.secondLanguageDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
+      labelNode: new Text( NumberSuiteCommonStrings.secondLanguageStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
+      descriptionNode: new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
       descriptionSpacing: CONTROL_DESCRIPTION_SPACING,
       controlNode: showSecondLocaleToggleSwitch
     } );
@@ -92,8 +92,8 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     this.showLabOnesControl = new PreferencesControl( {
-      labelNode: new Text( NumberPlayStrings.showOnesStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
-      descriptionNode: new Text( NumberPlayStrings.showOnesDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
+      labelNode: new Text( NumberSuiteCommonStrings.showOnesStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
+      descriptionNode: new Text( NumberSuiteCommonStrings.showOnesDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
       descriptionSpacing: CONTROL_DESCRIPTION_SPACING,
       controlNode: showLabOnesToggleSwitch
     } );

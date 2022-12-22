@@ -12,7 +12,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberPlayStrings from '../../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
@@ -46,7 +46,7 @@ class LocaleSwitch extends ABSwitch<boolean> {
     } );
 
     super( isPrimaryLocaleProperty,
-      true, new Text( NumberPlayStrings.languageStringProperty, switchTextOptions ),
+      true, new Text( NumberSuiteCommonStrings.languageStringProperty, switchTextOptions ),
       false, secondLanguageText,
       AB_SWITCH_OPTIONS
     );

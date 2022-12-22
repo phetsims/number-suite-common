@@ -8,32 +8,32 @@
 
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
-import NumberPlayStrings from '../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { AccordionBoxOptions } from '../../../sun/js/AccordionBox.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
 // strings
-const zeroString = NumberPlayStrings.zero;
-const oneString = NumberPlayStrings.one;
-const twoString = NumberPlayStrings.two;
-const threeString = NumberPlayStrings.three;
-const fourString = NumberPlayStrings.four;
-const fiveString = NumberPlayStrings.five;
-const sixString = NumberPlayStrings.six;
-const sevenString = NumberPlayStrings.seven;
-const eightString = NumberPlayStrings.eight;
-const nineString = NumberPlayStrings.nine;
-const tenString = NumberPlayStrings.ten;
-const elevenString = NumberPlayStrings.eleven;
-const twelveString = NumberPlayStrings.twelve;
-const thirteenString = NumberPlayStrings.thirteen;
-const fourteenString = NumberPlayStrings.fourteen;
-const fifteenString = NumberPlayStrings.fifteen;
-const sixteenString = NumberPlayStrings.sixteen;
-const seventeenString = NumberPlayStrings.seventeen;
-const eighteenString = NumberPlayStrings.eighteen;
-const nineteenString = NumberPlayStrings.nineteen;
-const twentyString = NumberPlayStrings.twenty;
+const zeroString = NumberSuiteCommonStrings.zero;
+const oneString = NumberSuiteCommonStrings.one;
+const twoString = NumberSuiteCommonStrings.two;
+const threeString = NumberSuiteCommonStrings.three;
+const fourString = NumberSuiteCommonStrings.four;
+const fiveString = NumberSuiteCommonStrings.five;
+const sixString = NumberSuiteCommonStrings.six;
+const sevenString = NumberSuiteCommonStrings.seven;
+const eightString = NumberSuiteCommonStrings.eight;
+const nineString = NumberSuiteCommonStrings.nine;
+const tenString = NumberSuiteCommonStrings.ten;
+const elevenString = NumberSuiteCommonStrings.eleven;
+const twelveString = NumberSuiteCommonStrings.twelve;
+const thirteenString = NumberSuiteCommonStrings.thirteen;
+const fourteenString = NumberSuiteCommonStrings.fourteen;
+const fifteenString = NumberSuiteCommonStrings.fifteen;
+const sixteenString = NumberSuiteCommonStrings.sixteen;
+const seventeenString = NumberSuiteCommonStrings.seventeen;
+const eighteenString = NumberSuiteCommonStrings.eighteen;
+const nineteenString = NumberSuiteCommonStrings.nineteen;
+const twentyString = NumberSuiteCommonStrings.twenty;
 
 // types
 type NumberToString = Record<number, string>;
@@ -145,7 +145,7 @@ const NumberSuiteCommonConstants = {
     const stringKey = NUMBER_TO_STRING_VALUE[ number ];
 
     // @ts-expect-error
-    return isPrimaryLocale ? NumberPlayStrings[ stringKey ] :
+    return isPrimaryLocale ? NumberSuiteCommonStrings[ stringKey ] :
            numberPlaySecondaryStrings[ `${prefix}${stringKey}` ];
   },
   NUMBER_PLAY_STRING_KEY_PREFIX: NUMBER_PLAY_STRING_KEY_PREFIX,

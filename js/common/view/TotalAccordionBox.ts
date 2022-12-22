@@ -10,7 +10,7 @@
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import { HBox, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
-import NumberPlayStrings from '../../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import Range from '../../../../dot/js/Range.js';
@@ -36,7 +36,7 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
     super( NumberSuiteCommonConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ),
       optionize<TotalAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
-        titleStringProperty: NumberPlayStrings.totalStringProperty,
+        titleStringProperty: NumberSuiteCommonStrings.totalStringProperty,
         titleMaxWidth: 142
       }, options ) );
 

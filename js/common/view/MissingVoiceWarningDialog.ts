@@ -12,14 +12,14 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, Node, Path } from '../../../../scenery/js/imports.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberPlayStrings from '../../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 
 class MissingVoiceWarningDialog extends OopsDialog {
 
   public constructor() {
 
-    const messageProperty = new DerivedProperty( [ NumberPlayStrings.noDeviceFoundDescriptionStringProperty,
-        NumberPlayStrings.yourDeviceMaySupportDescriptionStringProperty ],
+    const messageProperty = new DerivedProperty( [ NumberSuiteCommonStrings.noDeviceFoundDescriptionStringProperty,
+        NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty ],
       ( noDeviceFoundDescriptionString, yourDeviceMaySupportDescription ) => {
       return `<br>${noDeviceFoundDescriptionString}<br><br>${yourDeviceMaySupportDescription}`;
       } );

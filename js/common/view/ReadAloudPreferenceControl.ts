@@ -13,7 +13,7 @@ import { Color, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import NumberPlayStrings from '../../NumberPlayStrings.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonPreferencesNode from './NumberSuiteCommonPreferencesNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
@@ -34,7 +34,7 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
     const control = new PreferencesControl( {
       labelNode: new Text( labelProperty, NumberSuiteCommonPreferencesNode.CONTROL_TEXT_BOLD_OPTIONS ),
-      descriptionNode: new Text( NumberPlayStrings.readAloudDescriptionStringProperty,
+      descriptionNode: new Text( NumberSuiteCommonStrings.readAloudDescriptionStringProperty,
         NumberSuiteCommonPreferencesNode.CONTROL_TEXT_OPTIONS ),
       descriptionSpacing: NumberSuiteCommonPreferencesNode.CONTROL_DESCRIPTION_SPACING,
       controlNode: toggleSwitch
@@ -49,9 +49,9 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
     const missingVoiceWarningTextOptions = {
       font: new PhetFont( 14 )
     };
-    const noDeviceFoundDescriptionText = new Text( NumberPlayStrings.noDeviceFoundDescriptionStringProperty,
+    const noDeviceFoundDescriptionText = new Text( NumberSuiteCommonStrings.noDeviceFoundDescriptionStringProperty,
       missingVoiceWarningTextOptions );
-    const yourDeviceMaySupportDescriptionText = new Text( NumberPlayStrings.yourDeviceMaySupportDescriptionStringProperty,
+    const yourDeviceMaySupportDescriptionText = new Text( NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty,
       missingVoiceWarningTextOptions );
 
     const missingVoiceWarning = new Node();
