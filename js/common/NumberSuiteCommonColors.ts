@@ -1,7 +1,7 @@
 // Copyright 2021-2022, University of Colorado Boulder
 
 /**
- * NumberSuiteCommonColors defines the colors used in more than one Number Suite sim.
+ * Colors used in more than one Number Suite sim.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
