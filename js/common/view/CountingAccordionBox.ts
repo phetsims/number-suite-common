@@ -60,8 +60,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
     const objectsPlayAreaNode = new CountingPlayAreaNode( playArea, countingObjectTypeProperty, this.contentBoundsProperty );
     this.contentNode.addChild( objectsPlayAreaNode );
 
-    // TODO-TS: use specific RadioButtonGroup type
-    let radioButtonGroup: Node | null = null;
+    let radioButtonGroup: RectangularRadioButtonGroup<CountingObjectType> | null = null;
     if ( options.countingObjectTypes ) {
 
       // create the icons for the RectangularRadioButtonGroup
