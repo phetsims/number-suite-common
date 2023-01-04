@@ -282,7 +282,8 @@ class CountingPlayAreaNode extends Node {
 
       // if grouping is turned off, repel away
       if ( !this.playArea.groupingEnabledProperty.value || !droppedCountingObject.groupingEnabledProperty.value ) {
-        if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < 7 ) { // TODO: https://github.com/phetsims/number-play/issues/19 match this with the card object spacing
+        // TODO: https://github.com/phetsims/number-play/issues/19 match this with the card object spacing
+        if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < 7 ) {
           this.playArea.repelAway( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject, () => {
             return {
               left: -10,
