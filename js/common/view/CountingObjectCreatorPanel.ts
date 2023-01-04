@@ -23,7 +23,7 @@ import NumberSuiteCommonPanel from './NumberSuiteCommonPanel.js';
 class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
   public countingCreatorNode: CountingCreatorNode;
 
-  public constructor( playArea: CountingPlayArea, screenView: CountingPlayAreaNode ) {
+  public constructor( playArea: CountingPlayArea, countingPlayAreaNode: CountingPlayAreaNode ) {
 
     // create the arrow buttons, which change the value of currentNumberProperty by -1 or +1
     const arrowButtonOptions = {
@@ -51,11 +51,11 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
       CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
     );
 
-    // @ts-expect-error TODO-TS: Remove if/when CountingPlayAreaNode extends CountingCommonScreenView
-    const countingCreatorNode = new CountingCreatorNode( 0, screenView, playArea.sumProperty, playArea.resetEmitter, {
+    const countingCreatorNode = new CountingCreatorNode( 0, countingPlayAreaNode, playArea.sumProperty,
+      playArea.resetEmitter, countingPlayAreaNode.addAndDragNumber.bind( countingPlayAreaNode ), {
       updateCurrentNumber: true,
-      countingObjectTypeProperty: screenView.countingObjectTypeProperty,
-      groupingEnabledProperty: screenView.playArea.groupingEnabledProperty,
+      countingObjectTypeProperty: countingPlayAreaNode.countingObjectTypeProperty,
+      groupingEnabledProperty: countingPlayAreaNode.playArea.groupingEnabledProperty,
       backTargetOffset: new Vector2( -5, -5 ),
       ungroupedTargetScale: NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
       groupedTargetScale: NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
@@ -65,7 +65,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
     } );
     creatorNodeBackground.addChild( countingCreatorNode );
 
-    screenView.playArea.groupingEnabledProperty.link( groupingEnabled => {
+    countingPlayAreaNode.playArea.groupingEnabledProperty.link( groupingEnabled => {
       countingCreatorNode.center = creatorNodeBackground.selfBounds.center;
     } );
 
