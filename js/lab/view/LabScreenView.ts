@@ -296,42 +296,48 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
    * Called when a new Ten Frame is added to the model.
    */
   private addTenFrame( tenFrame: TenFrame ): void {
+
+    // Called when DraggableTenFrameNode drag cycle ends.
+    const dropListener = () => {
+
+      const tenFrameNode = this.getTenFrameNode( tenFrame );
+      if ( tenFrameNode.bounds.intersectsBounds( this.bottomReturnZoneProperty.value ) ) {
+        tenFrameNode.inputEnabled = false;
+        tenFrame.countingObjects.clear();
+
+        // calculate icon's origin
+        let trail = this.getUniqueLeafTrailTo( this.tenFrameCreatorPanel.iconNode );
+        trail = trail.slice( 1, trail.length );
+        const globalOrigin = trail.localToGlobalPoint( this.tenFrameCreatorPanel.iconNode.localBounds.leftTop );
+
+        const removeAnimation = new Animation( {
+          duration: 0.3,
+          targets: [ {
+            property: tenFrame.positionProperty,
+            easing: Easing.CUBIC_IN_OUT,
+            to: globalOrigin
+          }, {
+            property: tenFrame.scaleProperty,
+            easing: Easing.CUBIC_IN_OUT,
+            to: TenFrameCreatorPanel.ICON_SCALE
+          } ]
+        } );
+
+        removeAnimation.finishEmitter.addListener( () => {
+          this.model.tenFrames.includes( tenFrame ) && this.model.tenFrames.remove( tenFrame );
+        } );
+        removeAnimation.start();
+      }
+    };
+
     const tenFrameNode = new DraggableTenFrameNode( tenFrame, this.model.selectedTenFrameProperty,
       this.objectPlayAreaBoundsProperty, {
-        dropListener: () => {
-
-          const tenFrameNode = this.getTenFrameNode( tenFrame );
-          if ( tenFrameNode.bounds.intersectsBounds( this.bottomReturnZoneProperty.value ) ) {
-            tenFrameNode.inputEnabled = false;
-            tenFrame.countingObjects.clear();
-
-            // calculate icon's origin
-            let trail = this.getUniqueLeafTrailTo( this.tenFrameCreatorPanel.iconNode );
-            trail = trail.slice( 1, trail.length );
-            const globalOrigin = trail.localToGlobalPoint( this.tenFrameCreatorPanel.iconNode.localBounds.leftTop );
-
-            const removeAnimation = new Animation( {
-              duration: 0.3,
-              targets: [ {
-                property: tenFrame.positionProperty,
-                easing: Easing.CUBIC_IN_OUT,
-                to: globalOrigin
-              }, {
-                property: tenFrame.scaleProperty,
-                easing: Easing.CUBIC_IN_OUT,
-                to: TenFrameCreatorPanel.ICON_SCALE
-              } ]
-            } );
-
-            removeAnimation.finishEmitter.addListener( () => {
-              this.model.tenFrames.includes( tenFrame ) && this.model.tenFrames.remove( tenFrame );
-            } );
-            removeAnimation.start();
-          }
-        }, removeCountingObjectListener: countingObject => {
+        dropListener: dropListener,
+        removeCountingObjectListener: countingObject => {
           const playAreaNode = this.getCorrespondingPlayAreaNode( countingObject );
           playAreaNode.playArea.sendCountingObjectToCreatorNode( countingObject );
-        }, getCountingObjectNode: countingObject => {
+        },
+        getCountingObjectNode: countingObject => {
           const playAreaNode = this.getCorrespondingPlayAreaNode( countingObject );
           return playAreaNode.getCountingObjectNode( countingObject );
         }
