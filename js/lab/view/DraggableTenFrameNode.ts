@@ -19,7 +19,7 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
 
 type SelfOptions = {
-  dropListener: () => void;
+  dropListener: ( tenFrameNode: DraggableTenFrameNode ) => void;
   removeCountingObjectListener: ( countingObject: CountingObject ) => void;
   getCountingObjectNode: ( countingObject: CountingObject ) => CountingObjectNode;
 };
@@ -65,7 +65,7 @@ class DraggableTenFrameNode extends Node {
         } );
       },
       end: () => {
-        options.dropListener();
+        options.dropListener( this );
       }
     } );
 

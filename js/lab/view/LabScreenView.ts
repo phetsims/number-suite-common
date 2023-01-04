@@ -298,10 +298,11 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   private addTenFrame( tenFrame: TenFrame ): void {
 
     // Called when DraggableTenFrameNode drag cycle ends.
-    const dropListener = () => {
+    const dropListener = ( tenFrameNode: DraggableTenFrameNode ) => {
 
-      const tenFrameNode = this.getTenFrameNode( tenFrame );
-      if ( tenFrameNode.bounds.intersectsBounds( this.bottomReturnZoneProperty.value ) ) {
+      // If a drag was interrupted by pressing the Reset All button (multitouch), then tenFrameNode will already
+      // have been disposed, and this can be short-circuited. See https://github.com/phetsims/number-play/issues/195
+      if ( !tenFrameNode.isDisposed && tenFrameNode.bounds.intersectsBounds( this.bottomReturnZoneProperty.value ) ) {
         tenFrameNode.inputEnabled = false;
         tenFrame.countingObjects.clear();
 
