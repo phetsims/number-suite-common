@@ -36,6 +36,8 @@ const DISTANCE_BETWEEN_TEN_FRAMES = SIDE_LENGTH / 2; // horizontal spacing betwe
 const LINE_WIDTH = 0.8; // the line width of the lines in a ten frame. used in this class, not necessarily in getTenFramePath
 
 class TenFrameNode extends Node {
+
+  public readonly numberOfTenFrames: number;
   private readonly dotsLayer: Node;
   private readonly dotSpots: Vector2[];
 
@@ -43,14 +45,13 @@ class TenFrameNode extends Node {
     super();
 
     assert && assert( sumRange.max % NumberSuiteCommonConstants.TEN === 0,
-      `Provided sumRange.max should be a multiple of ten, but was: ${sumRange.max}`
-    );
+      `sumRange.max must be a multiple of ten, but was: ${sumRange.max}` );
 
-    const numberOfTenFrames = sumRange.max / NumberSuiteCommonConstants.TEN;
-    const tenFramePaths: Node[] = [];
+    this.numberOfTenFrames = sumRange.max / NumberSuiteCommonConstants.TEN;
 
     // create the calculated number of ten frames needed
-    _.times( numberOfTenFrames, () => {
+    const tenFramePaths: Node[] = [];
+    _.times( this.numberOfTenFrames, () => {
       tenFramePaths.push( TenFrameNode.getTenFramePath() );
     } );
 
@@ -67,7 +68,7 @@ class TenFrameNode extends Node {
 
     // the center of every dot spot available
     this.dotSpots = TenFrameNode.getSpotCenters( {
-      numberOfTenFrames: numberOfTenFrames
+      numberOfTenFrames: this.numberOfTenFrames
     } );
 
     // update the number of dots shown whenever the current number changes
