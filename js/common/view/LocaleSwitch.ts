@@ -9,7 +9,7 @@
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, AlignBoxOptions, AlignGroup, Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
@@ -38,16 +38,24 @@ class LocaleSwitch extends ABSwitch<boolean> {
       maxWidth: ( maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2 ) * 0.5
     };
 
-    const secondLanguageStringKey = `${NumberSuiteCommonConstants.NUMBER_PLAY_STRING_KEY_PREFIX}language`;
+    const firstLanguageText = new Text( NumberSuiteCommonStrings.languageStringProperty, switchTextOptions );
     const secondLanguageText = new Text( '', switchTextOptions );
 
+    const secondLanguageStringKey = `${NumberSuiteCommonConstants.NUMBER_PLAY_STRING_KEY_PREFIX}language`;
     secondLocaleStringsProperty.link( secondLocaleStrings => {
       secondLanguageText.setText( secondLocaleStrings[ secondLanguageStringKey ] );
     } );
 
+    // To give the labels the same effective width
+    const alignBoxOptions: AlignBoxOptions = {
+      group: new AlignGroup()
+    };
+
     super( isPrimaryLocaleProperty,
-      true, new Text( NumberSuiteCommonStrings.languageStringProperty, switchTextOptions ),
-      false, secondLanguageText,
+      true,
+      new AlignBox( firstLanguageText, alignBoxOptions ),
+      false,
+      new AlignBox( secondLanguageText, alignBoxOptions ),
       AB_SWITCH_OPTIONS
     );
 
