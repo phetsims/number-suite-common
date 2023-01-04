@@ -38,7 +38,11 @@ const LINE_WIDTH = 0.8; // the line width of the lines in a ten frame. used in t
 class TenFrameNode extends Node {
 
   public readonly numberOfTenFrames: number;
+
+  // create and add a layer for the dots
   private readonly dotsLayer: Node;
+
+  // the center of every dot spot available
   private readonly dotSpots: Vector2[];
 
   public constructor( currentNumberProperty: TReadOnlyProperty<number>, sumRange: Range ) {
@@ -62,11 +66,9 @@ class TenFrameNode extends Node {
     } );
     this.addChild( alignedTenFrames );
 
-    // create and add a later for the dots
     this.dotsLayer = new Node();
     this.addChild( this.dotsLayer );
 
-    // the center of every dot spot available
     this.dotSpots = TenFrameNode.getSpotCenters( {
       numberOfTenFrames: this.numberOfTenFrames
     } );

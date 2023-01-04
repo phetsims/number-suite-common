@@ -16,9 +16,10 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 
+// preference Properties directly controlled by UI
 class NumberSuiteCommonPreferences {
 
-  // preference Properties directly controlled by UI
+  // if a valid second locale was provided via a query parameter, display the second locale on sim startup
   public readonly showSecondLocaleProperty: Property<boolean>;
   public readonly secondLocaleProperty: Property<Locale>;
   public readonly showLabOnesProperty: Property<boolean>;
@@ -40,7 +41,6 @@ class NumberSuiteCommonPreferences {
       NumberSuiteCommonQueryParameters.secondLocale = phet.chipper.locale;
     }
 
-    // if a valid second locale was provided via a query parameter, display the second locale on sim startup
     this.showSecondLocaleProperty = new BooleanProperty( isSecondLocaleProvided && isSecondLocaleValid );
 
     this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale! as Locale );

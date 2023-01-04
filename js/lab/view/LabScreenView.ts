@@ -53,6 +53,8 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   public readonly objectPlayAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly numberCardBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly symbolCardBoundsProperty: TReadOnlyProperty<Bounds2>;
+
+  // return zone where any pieces from the bottom row will return to their home if they intersect when dropped
   public readonly bottomReturnZoneProperty: TProperty<Bounds2>;
 
   public constructor( model: LabModel, symbolTypes: SymbolType[], preferences: T, tandem: Tandem ) {
@@ -96,7 +98,6 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
     } );
 
-    // return zone where any pieces from the bottom row will return to their home if they intersect when dropped
     this.bottomReturnZoneProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
 
     // create and add the left ObjectsPlayAreaNode

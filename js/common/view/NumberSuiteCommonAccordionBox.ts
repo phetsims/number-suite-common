@@ -27,7 +27,11 @@ const PADDING = 10;
 const EXPAND_COLLAPSE_BUTTON_SIZE = 20;
 
 class NumberSuiteCommonAccordionBox extends AccordionBox {
+
+  // expose contentNode so subclasses can add their content to it
   protected readonly contentNode: Rectangle;
+
+  // expose the full bounds of the visible area inside the accordion box (updated in the link below)
   protected readonly contentBoundsProperty: TProperty<Bounds2>;
 
   protected constructor( contentWidth: number, contentHeightProperty: TReadOnlyProperty<number>,
@@ -59,10 +63,8 @@ class NumberSuiteCommonAccordionBox extends AccordionBox {
       }
     }, options ) );
 
-    // expose contentNode so subclasses can add their content to it
     this.contentNode = contentNode;
 
-    // expose the full bounds of the visible area inside the accordion box (updated in the link below)
     this.contentBoundsProperty = new Property( Bounds2.NOTHING );
 
     // update the accordion box content bounds when the height changes

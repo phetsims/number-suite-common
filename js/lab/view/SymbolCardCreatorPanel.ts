@@ -22,7 +22,11 @@ const MAX_SYMBOL_PIECE_COUNT = 10;
 const SPACING = 10;
 
 class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
+
+  // create a map from SymbolType to countProperty
   private readonly symbolTypeToCountPropertyMap: Map<SymbolType, Property<number>>;
+
+  // removes and disposes all types of symbol nodes
   private readonly clearSymbolNodes: () => void;
   private readonly screenView: LabScreenView<NumberSuiteCommonPreferences>;
 
@@ -32,7 +36,6 @@ class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
     const yMargin = symbolTypes.length > 3 ? SPACING * 2 : SPACING;
     const creatorNodeBackground = new Rectangle( 0, 0, SymbolCardNode.WIDTH, cardsHeight + yMargin );
 
-    // create a map from SymbolType to countProperty
     const symbolTypeToCountPropertyMap = new Map<SymbolType, Property<number>>();
     const symbolTypeToCreatorNodeMap = new Map<SymbolType, Node>();
 
@@ -73,7 +76,6 @@ class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
       } );
     } );
 
-    // removes and disposes all types of symbol nodes
     this.clearSymbolNodes = () => {
       const allSymbolNodes = this.getAllSymbolNodes();
       allSymbolNodes.forEach( symbolNode => {

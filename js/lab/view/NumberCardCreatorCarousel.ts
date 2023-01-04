@@ -21,6 +21,8 @@ const MAX_NUMBER_PIECE_COUNT = 20;
 
 class NumberCardCreatorCarousel extends Carousel {
   private readonly screenView: LabScreenView<NumberSuiteCommonPreferences>;
+
+  // removes and disposes all types of symbol nodes
   private readonly clearNumberCardsNodes: () => void;
   private readonly numberToCountPropertyMap: Map<number, Property<number>>;
 
@@ -58,7 +60,6 @@ class NumberCardCreatorCarousel extends Carousel {
     this.screenView = screenView;
     this.numberToCountPropertyMap = numberToCountPropertyMap;
 
-    // removes and disposes all types of symbol nodes
     this.clearNumberCardsNodes = () => {
       const allNumberCardNodes = this.getAllNumberCardNodes();
       allNumberCardNodes.forEach( numberCardNode => {

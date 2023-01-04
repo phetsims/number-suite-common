@@ -44,9 +44,15 @@ class CountingPlayArea extends CountingCommonModel {
   private getCountingObjectOrigin: () => Vector2;
   private playAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   private organizedObjectSpots: Vector2[];
+
+  // true when this.getCountingObjectOrigin() and this.playAreaBoundsProperty have been set
   private initialized: boolean;
   private countingObjectCreatorNodeHeight: number;
+
+  // contains any ten frames that are in the play area
   public readonly tenFrames: ObservableArray<TenFrame> | null;
+
+  // when the GroupLinkType is switched to no grouping, break apart any object groups
   public readonly groupingEnabledProperty: TReadOnlyProperty<boolean>;
 
   public constructor( highestCount: number, groupingEnabledProperty: TReadOnlyProperty<boolean>, name: string,
@@ -65,13 +71,10 @@ class CountingPlayArea extends CountingCommonModel {
     this.playAreaBoundsProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
     this.organizedObjectSpots = [ Vector2.ZERO ];
 
-    // true when this.getCountingObjectOrigin() and this.playAreaBoundsProperty have been set
     this.initialized = false;
 
-    // contains any ten frames that are in the play area
     this.tenFrames = options.tenFrames;
 
-    // when the GroupLinkType is switched to no grouping, break apart any object groups
     this.groupingEnabledProperty.lazyLink( groupingEnabled => {
       !groupingEnabled && this.breakApartCountingObjects( true );
     } );

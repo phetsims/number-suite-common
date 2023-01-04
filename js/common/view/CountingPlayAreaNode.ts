@@ -39,20 +39,36 @@ type CountingPlayAreaNodeOptions = SelfOptions;
 const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5;  // empirically determined to be an appropriate length for just 10s and 1s
 
 class CountingPlayAreaNode extends Node {
+
+  // Called with function( countingObjectNode ) on number splits
   private readonly numberSplitListener: ( countingObjectNode: CountingObjectNode ) => void;
+
+  // Called with function( countingObjectNode ) when a number begins to be interacted with.
   private readonly numberInteractionListener: ( countingObjectNode: CountingObjectNode ) => void;
+
+  // Called with function( countingObject ) when a number finishes animation
   private readonly numberAnimationFinishedListener: ( countingObject: CountingObject ) => void;
+
+  // Called with function( countingObject ) when a number finishes being dragged
   private readonly numberDragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
   public readonly playArea: CountingPlayArea;
   private readonly tryToCombineNumbersCallback: ( draggedCountingObject: CountingObject ) => void;
   private readonly addAndDragNumberCallback: ( event: PressListenerEvent, countingObject: CountingObject ) => void;
+
+  // CountingObject.id => {CountingObjectNode} - lookup map for efficiency
   private readonly countingObjectNodeMap: CountingObjectNodeMap;
 
   // the bounds of the play area where counting objects can be dragged
   public readonly playAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly countingObjectTypeProperty: TReadOnlyProperty<CountingObjectType>;
+
+  // see options.viewHasIndependentModel for doc
   private readonly viewHasIndependentModel: boolean;
+
+  // Handle touches nearby to the numbers, and interpret those as the proper drag.
   private readonly closestDragListener: ClosestDragListener;
+
+  // Where all of the counting Objects are. Created if not provided.
   private readonly countingObjectLayerNode: Node | null;
   public readonly countingObjectCreatorPanel: CountingObjectCreatorPanel;
   private readonly includeCountingObjectCreatorPanel: boolean;
@@ -76,16 +92,12 @@ class CountingPlayAreaNode extends Node {
 
     // TODO-TS: Get rid of this binding pattern. Update function signatures in the attributes.
 
-    // Called with function( countingObjectNode ) on number splits
     this.numberSplitListener = this.onNumberSplit.bind( this );
 
-    // Called with function( countingObjectNode ) when a number begins to be interacted with.
     this.numberInteractionListener = CountingPlayAreaNode.onNumberInteractionStarted.bind( this );
 
-    // Called with function( countingObject ) when a number finishes animation
     this.numberAnimationFinishedListener = this.onNumberAnimationFinished.bind( this );
 
-    // Called with function( countingObject ) when a number finishes being dragged
     this.numberDragFinishedListener = ( countingObjectNode: CountingObjectNode ) => {
       this.onNumberDragFinished( countingObjectNode.countingObject );
     };
@@ -95,16 +107,13 @@ class CountingPlayAreaNode extends Node {
     this.tryToCombineNumbersCallback = this.tryToCombineNumbers.bind( this );
     this.addAndDragNumberCallback = this.addAndDragNumber.bind( this );
 
-    // CountingObject.id => {CountingObjectNode} - lookup map for efficiency
     this.countingObjectNodeMap = {};
 
     this.playAreaBoundsProperty = playAreaBoundsProperty;
     this.countingObjectTypeProperty = countingObjectTypeProperty;
 
-    // see options.viewHasIndependentModel for doc
     this.viewHasIndependentModel = options.viewHasIndependentModel;
 
-    // Handle touches nearby to the numbers, and interpret those as the proper drag.
     this.closestDragListener = new ClosestDragListener( 30, 0 );
     let backgroundDragTargetNode = null;
     if ( options.backgroundDragTargetNode ) {
@@ -160,7 +169,6 @@ class CountingPlayAreaNode extends Node {
       this.playArea.initialize( this.getCountingObjectOrigin, countingObjectCreatorNodeHeight, playAreaBoundsProperty );
     }
 
-    // Where all of the counting Objects are. Created if not provided.
     this.countingObjectLayerNode = null;
     if ( options.countingObjectLayerNode ) {
       this.countingObjectLayerNode = options.countingObjectLayerNode;
