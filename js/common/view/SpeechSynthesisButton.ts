@@ -23,6 +23,7 @@ import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 
 type SelfOptions = {
   stringProperty?: TReadOnlyProperty<string> | null;
@@ -82,7 +83,7 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
         fill: Color.BLACK
       } ),
       size: new Dimension2( SIDE_LENGTH, SIDE_LENGTH ),
-      baseColor: Color.YELLOW,
+      baseColor: PhetColorScheme.BUTTON_YELLOW,
       listener: listener
     } );
 
