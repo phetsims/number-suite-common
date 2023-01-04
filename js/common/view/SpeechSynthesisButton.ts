@@ -11,7 +11,7 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstants.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
-import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Utterance from '../../../../utterance-queue/js/Utterance.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
@@ -22,6 +22,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 
 type SelfOptions = {
   stringProperty?: TReadOnlyProperty<string> | null;
@@ -31,6 +32,7 @@ type SelfOptions = {
   // see https://github.com/phetsims/number-play/issues/157
   numberProperty: TReadOnlyProperty<number>;
   secondNumberProperty?: TReadOnlyProperty<number>;
+  comparisonSignsAndTextVisibleProperty?: TReadOnlyProperty<boolean>;
 };
 type SpeechSynthesisButtonOptions = SelfOptions;
 
@@ -44,9 +46,10 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
   public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>, preferences: P, speechSynthesisAnnouncer: A,
                       utteranceQueue: U, providedOptions?: SpeechSynthesisButtonOptions ) {
 
-    const options = optionize<SpeechSynthesisButtonOptions, SelfOptions>()( {
+    const options = optionize<SpeechSynthesisButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
       stringProperty: null,
-      secondNumberProperty: new NumberProperty( 0 )
+      secondNumberProperty: new NumberProperty( 0 ),
+      comparisonSignsAndTextVisibleProperty: new BooleanProperty( true )
     }, providedOptions );
 
     // update the voice is when the primary locale, secondary locale, or which of the two we are choosing changes.
@@ -83,10 +86,15 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
       listener: listener
     } );
 
-    Multilink.multilink( [ speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
-        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty, isPrimaryLocaleProperty ],
-      ( primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled, isPrimaryLocale ) => {
-        this.enabled = isPrimaryLocale ? primaryLocaleVoiceEnabled : secondaryLocaleVoiceEnabled;
+    Multilink.multilink( [
+        options.comparisonSignsAndTextVisibleProperty,
+        speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
+        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty,
+        isPrimaryLocaleProperty
+      ],
+      ( comparisonSignsAndTextVisible, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled, isPrimaryLocale ) => {
+        this.enabled = comparisonSignsAndTextVisible &&
+                       ( isPrimaryLocale ? primaryLocaleVoiceEnabled : secondaryLocaleVoiceEnabled );
       } );
   }
 }
