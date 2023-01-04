@@ -70,6 +70,8 @@ const NumberSuiteCommonConstants = {
   numberToString: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
     const stringKey = NUMBER_TO_STRING_VALUE[ number ] as keyof typeof NumberSuiteCommonStrings;
     assert && assert( stringKey, `no stringKey found for number=${number}` );
+
+    // TODO: This is relying on NumberSuiteCommonStrings having non-dynamic string keys at runtime. Is that okay?
     return isPrimaryLocale ? NumberSuiteCommonStrings[ stringKey ] :
            numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${stringKey}` ];
   },
