@@ -68,9 +68,8 @@ const NumberSuiteCommonConstants = {
   // map number values to their corresponding string
   // TODO: type string map
   numberToString: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
-    const stringKey = NUMBER_TO_STRING_VALUE[ number ];
-
-    // @ts-expect-error
+    const stringKey = NUMBER_TO_STRING_VALUE[ number ] as keyof typeof NumberSuiteCommonStrings;
+    assert && assert( stringKey, `no stringKey found for number=${number}` );
     return isPrimaryLocale ? NumberSuiteCommonStrings[ stringKey ] :
            numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${stringKey}` ];
   },
