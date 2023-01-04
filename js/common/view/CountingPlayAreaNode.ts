@@ -1,7 +1,7 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * Play area node for counting objects. This file was copied from counting-common/common/view/CountingCommonView.js and
+ * Play area node for counting objects. This file was copied from counting-common/common/view/CountingCommonScreenView.js and
  * make-a-ten/explore/view/MakeATenExploreScreenView.js and then modified by @chrisklus to be used in number-play.
  *
  * @author Sharfudeen Ashraf
@@ -16,7 +16,7 @@ import ClosestDragListener from '../../../../sun/js/ClosestDragListener.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
 import CountingObjectCreatorPanel from './CountingObjectCreatorPanel.js';
-import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonView.js';
+import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
