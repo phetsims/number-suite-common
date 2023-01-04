@@ -10,6 +10,7 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
 import Property from '../../../../axon/js/Property.js';
 import TProperty from '../../../../axon/js/TProperty.js';
+import TModel from '../../../../joist/js/TModel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CountingPlayArea from '../../common/model/CountingPlayArea.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
@@ -18,7 +19,7 @@ import TenFrame from './TenFrame.js';
 // constants
 const HIGHEST_COUNT = 20;
 
-class LabModel {
+class LabModel implements TModel {
   public readonly tenFrames: ObservableArray<TenFrame>;
   public readonly onesPlayArea: CountingPlayArea;
   public readonly dogPlayArea: CountingPlayArea;
