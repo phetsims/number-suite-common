@@ -24,14 +24,16 @@ import GroupAndLinkType from '../model/GroupAndLinkType.js';
 import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 // types
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
   linkedPlayArea?: CountingPlayArea | null;
   groupAndLinkTypeProperty?: EnumerationProperty<GroupAndLinkType>;
+  titleMaxWidth?: number;
 };
-export type CountingAccordionBoxOptions = SelfOptions & NumberSuiteCommonAccordionBoxOptions;
+export type CountingAccordionBoxOptions = SelfOptions & StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleMaxWidth'>;
 
 // constants
 const RADIO_BUTTON_SIZE = new Dimension2( 28, 28 ); // in screen coordinates
