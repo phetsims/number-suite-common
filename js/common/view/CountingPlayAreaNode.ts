@@ -36,7 +36,8 @@ type SelfOptions = {
 type CountingPlayAreaNodeOptions = SelfOptions;
 
 // constants
-const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5;  // empirically determined to be an appropriate length for just 10s and 1s
+const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5; // empirically determined to be an appropriate length for just 10s and 1s, in screen coords
+const COUNTING_OBJECT_REPEL_DISTANCE = 10; // empirically determined to look nice, in screen coords
 
 class CountingPlayAreaNode extends Node {
 
@@ -290,12 +291,11 @@ class CountingPlayAreaNode extends Node {
 
       // if grouping is turned off, repel away
       if ( !this.playArea.groupingEnabledProperty.value || !droppedCountingObject.groupingEnabledProperty.value ) {
-        // TODO: https://github.com/phetsims/number-play/issues/19 match this with the card object spacing
         if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < 7 ) {
           this.playArea.repelAway( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject, () => {
             return {
-              left: -10,
-              right: 10
+              left: -COUNTING_OBJECT_REPEL_DISTANCE,
+              right: COUNTING_OBJECT_REPEL_DISTANCE
             };
           } );
         }
