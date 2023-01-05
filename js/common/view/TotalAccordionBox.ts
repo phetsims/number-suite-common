@@ -28,7 +28,7 @@ type SelfOptions = {
 } & PickRequired<TextOptions, 'font'>;
 export type TotalAccordionBoxOptions =
   SelfOptions
-  & StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty' | 'titleMaxWidth'>;
+  & StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'>;
 
 class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
@@ -37,7 +37,9 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
     super( NumberSuiteCommonConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ),
       optionize<TotalAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
         titleStringProperty: NumberSuiteCommonStrings.totalStringProperty,
-        titleMaxWidth: 142
+        titleTextOptions: {
+          maxWidth: 142
+        }
       }, options ) );
 
     // create the NumberDisplay, which is a numerical representation of the current number. always format for numbers

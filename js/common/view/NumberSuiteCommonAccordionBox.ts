@@ -7,20 +7,21 @@
  */
 
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { Rectangle, Text } from '../../../../scenery/js/imports.js';
+import { Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import Property from '../../../../axon/js/Property.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {
   titleStringProperty: TReadOnlyProperty<string>;
-  titleMaxWidth: number;
+  titleTextOptions?: StrictOmit<TextOptions, 'tandem'>;
 };
-export type NumberSuiteCommonAccordionBoxOptions = SelfOptions & AccordionBoxOptions;
+export type NumberSuiteCommonAccordionBoxOptions = SelfOptions & StrictOmit<AccordionBoxOptions, 'titleNode'>;
 
 // constants
 const PADDING = 10;
@@ -35,18 +36,14 @@ class NumberSuiteCommonAccordionBox extends AccordionBox {
   protected readonly contentBoundsProperty: TProperty<Bounds2>;
 
   protected constructor( contentWidth: number, contentHeightProperty: TReadOnlyProperty<number>,
-                         options: NumberSuiteCommonAccordionBoxOptions ) {
+                         providedOptions: NumberSuiteCommonAccordionBoxOptions ) {
 
-    const contentNode = new Rectangle( {
-      rectWidth: contentWidth - EXPAND_COLLAPSE_BUTTON_SIZE - ( PADDING * 2 ),
-      rectHeight: contentHeightProperty.value
-    } );
+    const titleText = new Text( providedOptions.titleStringProperty, combineOptions<TextOptions>( {
+                        font: NumberSuiteCommonConstants.ACCORDION_BOX_TITLE_FONT
+                      }, providedOptions.titleTextOptions ) );
 
-    super( contentNode, optionize<NumberSuiteCommonAccordionBoxOptions, SelfOptions, AccordionBoxOptions>()( {
-      titleNode: new Text( options.titleStringProperty, {
-        font: NumberSuiteCommonConstants.ACCORDION_BOX_TITLE_FONT,
-        maxWidth: options.titleMaxWidth
-      } ),
+    const options = optionize<NumberSuiteCommonAccordionBoxOptions, StrictOmit<SelfOptions, 'titleTextOptions'>, AccordionBoxOptions>()( {
+      titleNode: titleText,
       titleAlignX: 'left',
       titleXSpacing: 8,
       showTitleWhenExpanded: false,
@@ -61,7 +58,14 @@ class NumberSuiteCommonAccordionBox extends AccordionBox {
       expandCollapseButtonOptions: {
         sideLength: EXPAND_COLLAPSE_BUTTON_SIZE
       }
-    }, options ) );
+    }, providedOptions );
+
+    const contentNode = new Rectangle( {
+      rectWidth: contentWidth - EXPAND_COLLAPSE_BUTTON_SIZE - ( PADDING * 2 ),
+      rectHeight: contentHeightProperty.value
+    } );
+
+    super( contentNode, options );
 
     this.contentNode = contentNode;
 

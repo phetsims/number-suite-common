@@ -25,17 +25,17 @@ import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } f
 import optionize from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 
 // types
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
   linkedPlayArea?: CountingPlayArea | null;
   groupAndLinkTypeProperty?: EnumerationProperty<GroupAndLinkType>;
-  titleMaxWidth?: number;
-  titleStringProperty?: TReadOnlyProperty<string>;
 };
-export type CountingAccordionBoxOptions = SelfOptions & StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleMaxWidth' | 'titleStringProperty'>;
+export type CountingAccordionBoxOptions = SelfOptions &
+  StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'> &
+  PickOptional<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'>;
 
 // constants
 const RADIO_BUTTON_SIZE = new Dimension2( 28, 28 ); // in screen coordinates
@@ -51,7 +51,9 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
     super( width, new Property<number>( height ),
       optionize<CountingAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
         titleStringProperty: NumberSuiteCommonStrings.objectsStringProperty,
-        titleMaxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH,
+        titleTextOptions: {
+          maxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH
+        },
         countingObjectTypes: null,
         linkedPlayArea: null,
         groupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
