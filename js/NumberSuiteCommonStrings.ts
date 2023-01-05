@@ -9,13 +9,7 @@ import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import numberSuiteCommon from './numberSuiteCommon.js';
 
 type StringsType = {
-  'number-play': {
-    'titleStringProperty': LinkableProperty<string>;
-  };
   'screen': {
-    'tenStringProperty': LinkableProperty<string>;
-    'twentyStringProperty': LinkableProperty<string>;
-    'gameStringProperty': LinkableProperty<string>;
     'labStringProperty': LinkableProperty<string>;
   };
   'zeroStringProperty': LinkableProperty<string>;
@@ -39,28 +33,14 @@ type StringsType = {
   'eighteenStringProperty': LinkableProperty<string>;
   'nineteenStringProperty': LinkableProperty<string>;
   'twentyStringProperty': LinkableProperty<string>;
-  'wordStringProperty': LinkableProperty<string>;
-  'wordLanguageStringProperty': LinkableProperty<string>;
   'totalStringProperty': LinkableProperty<string>;
-  'tenFrameStringProperty': LinkableProperty<string>;
-  'onesStringProperty': LinkableProperty<string>;
   'objectsStringProperty': LinkableProperty<string>;
-  'gameNameLevelNumberPatternStringProperty': LinkableProperty<string>;
-  'chooseYourGameStringProperty': LinkableProperty<string>;
-  'countingLevel1DescriptionStringProperty': LinkableProperty<string>;
-  'countingLevel2DescriptionStringProperty': LinkableProperty<string>;
-  'subitizingLevel1DescriptionStringProperty': LinkableProperty<string>;
-  'subitizingLevel2DescriptionStringProperty': LinkableProperty<string>;
-  'gamesStringProperty': LinkableProperty<string>;
   'languageStringProperty': LinkableProperty<string>;
-  'readAloudStringProperty': LinkableProperty<string>;
   'readAloudDescriptionStringProperty': LinkableProperty<string>;
   'secondLanguageStringProperty': LinkableProperty<string>;
   'secondLanguageDescriptionStringProperty': LinkableProperty<string>;
   'showOnesStringProperty': LinkableProperty<string>;
   'showOnesDescriptionStringProperty': LinkableProperty<string>;
-  'subitizeTimeStringProperty': LinkableProperty<string>;
-  'subitizeTimeDescriptionStringProperty': LinkableProperty<string>;
   'noDeviceFoundDescriptionStringProperty': LinkableProperty<string>;
   'yourDeviceMaySupportDescriptionStringProperty': LinkableProperty<string>;
 };
