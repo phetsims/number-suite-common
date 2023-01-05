@@ -6,7 +6,6 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignBoxOptions, AlignGroup, Text } from '../../../../scenery/js/imports.js';
@@ -16,6 +15,7 @@ import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import Property from '../../../../axon/js/Property.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -28,7 +28,7 @@ const AB_SWITCH_OPTIONS = {
 
 class LocaleSwitch extends ABSwitch<boolean> {
 
-  public constructor( isPrimaryLocaleProperty: BooleanProperty, showSecondLocaleProperty: TReadOnlyProperty<boolean>,
+  public constructor( isPrimaryLocaleProperty: Property<boolean>, showSecondLocaleProperty: TReadOnlyProperty<boolean>,
                       secondLocaleStringsProperty: TReadOnlyProperty<IntentionalAny>, maxWidth: number ) {
 
     // options for the switch text. calculate the maxWidth for each string as half of the available horizontal space
