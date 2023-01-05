@@ -28,6 +28,7 @@ class TenFrame {
   public readonly positionProperty: Vector2Property;
   public readonly scaleProperty: NumberProperty;
   public readonly localBounds: Bounds2;
+  private readonly originBounds: Bounds2;
 
   // the side length of the squares that make up the ten frame
   public static readonly SQUARE_SIDE_LENGTH = SQUARE_SIDE_LENGTH;
@@ -50,6 +51,8 @@ class TenFrame {
     this.scaleProperty = new NumberProperty( 1, {
       range: new Range( 0, 1 )
     } );
+
+    this.originBounds = new Bounds2( 0, 0, 0, 0 );
   }
 
   public tryToAddCountingObject( countingObject: CountingObject ): void {
@@ -127,12 +130,11 @@ class TenFrame {
    * Determine how this ten frame's origin can be placed in the provided bounds.
    */
   public getOriginBounds( viewBounds: Bounds2 ): Bounds2 {
-    return new Bounds2(
-      viewBounds.left - this.localBounds.left,
-      viewBounds.top - this.localBounds.top,
-      viewBounds.right - this.localBounds.right,
-      viewBounds.bottom - this.localBounds.bottom
-    ).eroded( CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
+    this.originBounds.minX = viewBounds.left - this.localBounds.left;
+    this.originBounds.minY = viewBounds.top - this.localBounds.top;
+    this.originBounds.maxX = viewBounds.right - this.localBounds.right;
+    this.originBounds.maxY = viewBounds.bottom - this.localBounds.bottom;
+    return this.originBounds.erode( CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
   }
 
   /**
@@ -152,6 +154,12 @@ class TenFrame {
 
     const countingObjectOffset = countingObject.localBounds.center;
     return countingObjectSpotCenter.minus( countingObjectOffset );
+  }
+
+  public dispose(): void {
+    this.countingObjects.dispose();
+    this.positionProperty.dispose();
+    this.scaleProperty.dispose();
   }
 }
 

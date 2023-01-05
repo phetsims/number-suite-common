@@ -8,12 +8,13 @@
 
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
-import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
+import { DragListener, Node, PressListenerEvent, TInputListener } from '../../../../scenery/js/imports.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
@@ -28,6 +29,9 @@ type DraggableTenFrameNodeOptions = SelfOptions;
 class DraggableTenFrameNode extends Node {
   public readonly tenFrame: TenFrame;
   public readonly dragListener: DragListener;
+  private readonly forwardingDragListener: TInputListener;
+  private readonly positionPropertyLink: PropertyLinkListener<Vector2>;
+  private readonly scalePropertyLink: PropertyLinkListener<number>;
 
   public constructor( tenFrame: TenFrame, selectedTenFrameProperty: TProperty<TenFrame | null>,
                       dragBoundsProperty: TReadOnlyProperty<Bounds2>, options: DraggableTenFrameNodeOptions ) {
@@ -70,17 +74,17 @@ class DraggableTenFrameNode extends Node {
     } );
 
     this.cursor = 'pointer';
-    this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
+
+    this.forwardingDragListener = DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
       this.dragListener.press( event, this );
-    } ) );
-
-    tenFrame.positionProperty.link( position => {
-      this.translation = position;
     } );
+    this.addInputListener( this.forwardingDragListener );
 
-    tenFrame.scaleProperty.link( scale => {
-      this.setScaleMagnitude( scale );
-    } );
+    this.positionPropertyLink = position => { this.translation = position; };
+    tenFrame.positionProperty.link( this.positionPropertyLink );
+
+    this.scalePropertyLink = scale => {this.setScaleMagnitude( scale ); };
+    tenFrame.scaleProperty.link( this.scalePropertyLink );
 
     tenFrame.countingObjects.addItemAddedListener( countingObject => {
       const countingObjectNode = options.getCountingObjectNode( countingObject );
@@ -103,6 +107,14 @@ class DraggableTenFrameNode extends Node {
       ( selectedTenFrame, numberOfCountingObjects ) => {
         returnButton.visible = selectedTenFrame === tenFrame && numberOfCountingObjects > 0;
       } );
+  }
+
+  public override dispose(): void {
+    this.removeInputListener( this.forwardingDragListener );
+    this.tenFrame.positionProperty.unlink( this.positionPropertyLink );
+    this.tenFrame.scaleProperty.unlink( this.scalePropertyLink );
+    this.tenFrame.dispose();
+    super.dispose();
   }
 }
 
