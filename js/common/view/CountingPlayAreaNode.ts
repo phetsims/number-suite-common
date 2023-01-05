@@ -11,11 +11,11 @@
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import { Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
+import { Node, NodeOptions, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
 import ClosestDragListener from '../../../../sun/js/ClosestDragListener.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
-import CountingObjectCreatorPanel from './CountingObjectCreatorPanel.js';
+import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
 import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
@@ -24,6 +24,7 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import DraggableTenFrameNode from '../../lab/view/DraggableTenFrameNode.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {
   countingObjectLayerNode?: null | Node;
@@ -32,6 +33,7 @@ type SelfOptions = {
   includeCountingObjectCreatorPanel?: boolean;
   creatorPanelX?: null | number;
   returnZoneProperty?: null | TReadOnlyProperty<Bounds2>;
+  countingObjectCreatorPanelOptions?: CountingObjectCreatorPanelOptions;
 };
 type CountingPlayAreaNodeOptions = SelfOptions;
 
@@ -80,9 +82,8 @@ class CountingPlayAreaNode extends Node {
                       countingObjectTypeProperty: TReadOnlyProperty<CountingObjectType>,
                       playAreaBoundsProperty: TReadOnlyProperty<Bounds2>,
                       providedOptions?: CountingPlayAreaNodeOptions ) {
-    super();
 
-    const options = optionize<CountingPlayAreaNodeOptions, SelfOptions>()( {
+    const options = optionize<CountingPlayAreaNodeOptions, StrictOmit<SelfOptions, 'countingObjectCreatorPanelOptions'>, NodeOptions>()( {
       countingObjectLayerNode: null,
       backgroundDragTargetNode: null,
       viewHasIndependentModel: true,
@@ -90,6 +91,8 @@ class CountingPlayAreaNode extends Node {
       creatorPanelX: null,
       returnZoneProperty: null
     }, providedOptions );
+
+    super( options );
 
     // TODO-TS: Get rid of this binding pattern. Update function signatures in the attributes.
 
@@ -142,7 +145,7 @@ class CountingPlayAreaNode extends Node {
     } );
 
     // create the CountingObjectCreatorPanel
-    this.countingObjectCreatorPanel = new CountingObjectCreatorPanel( playArea, this );
+    this.countingObjectCreatorPanel = new CountingObjectCreatorPanel( playArea, this, options.countingObjectCreatorPanelOptions );
     if ( options.creatorPanelX ) {
       this.countingObjectCreatorPanel.centerX = options.creatorPanelX;
     }

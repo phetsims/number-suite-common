@@ -12,7 +12,7 @@ import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 type SelfOptions = EmptySelfOptions;
-type NumberSuiteCommonPanelOptions = SelfOptions & Pick<PanelOptions, 'xMargin'>;
+export type NumberSuiteCommonPanelOptions = SelfOptions & Pick<PanelOptions, 'xMargin'>;
 
 class NumberSuiteCommonPanel extends Panel {
 

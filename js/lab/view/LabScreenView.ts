@@ -100,15 +100,22 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     this.bottomReturnZoneProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
 
+    const countingPlayAreaNodeOptions = {
+      countingObjectCreatorPanelOptions: {
+        arrowButtonsVisible: false, // see https://github.com/phetsims/number-suite-common/issues/11
+        xMargin: 20 // increase a bit because we're not showing arrow buttons
+      },
+      countingObjectLayerNode: this.pieceLayer,
+      backgroundDragTargetNode: backgroundDragTargetNode,
+      returnZoneProperty: this.bottomReturnZoneProperty
+    };
+
     // create and add the left ObjectsPlayAreaNode
     this.dogPlayAreaNode = new CountingPlayAreaNode(
       model.dogPlayArea,
       new EnumerationProperty( CountingObjectType.DOG ),
-      this.objectPlayAreaBoundsProperty, {
-        countingObjectLayerNode: this.pieceLayer,
-        backgroundDragTargetNode: backgroundDragTargetNode,
-        returnZoneProperty: this.bottomReturnZoneProperty
-      }
+      this.objectPlayAreaBoundsProperty,
+      countingPlayAreaNodeOptions
     );
     this.addChild( this.dogPlayAreaNode );
 
@@ -116,11 +123,8 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.applePlayAreaNode = new CountingPlayAreaNode(
       model.applePlayArea,
       new EnumerationProperty( CountingObjectType.APPLE ),
-      this.objectPlayAreaBoundsProperty, {
-        countingObjectLayerNode: this.pieceLayer,
-        backgroundDragTargetNode: backgroundDragTargetNode,
-        returnZoneProperty: this.bottomReturnZoneProperty
-      }
+      this.objectPlayAreaBoundsProperty,
+      countingPlayAreaNodeOptions
     );
     this.addChild( this.applePlayAreaNode );
 
@@ -128,11 +132,8 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.butterflyPlayAreaNode = new CountingPlayAreaNode(
       model.butterflyPlayArea,
       new EnumerationProperty( CountingObjectType.BUTTERFLY ),
-      this.objectPlayAreaBoundsProperty, {
-        countingObjectLayerNode: this.pieceLayer,
-        backgroundDragTargetNode: backgroundDragTargetNode,
-        returnZoneProperty: this.bottomReturnZoneProperty
-      }
+      this.objectPlayAreaBoundsProperty,
+      countingPlayAreaNodeOptions
     );
     this.addChild( this.butterflyPlayAreaNode );
 
@@ -140,11 +141,8 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.ballPlayAreaNode = new CountingPlayAreaNode(
       model.ballPlayArea,
       new EnumerationProperty( CountingObjectType.BALL ),
-      this.objectPlayAreaBoundsProperty, {
-        countingObjectLayerNode: this.pieceLayer,
-        backgroundDragTargetNode: backgroundDragTargetNode,
-        returnZoneProperty: this.bottomReturnZoneProperty
-      }
+      this.objectPlayAreaBoundsProperty,
+      countingPlayAreaNodeOptions
     );
     this.addChild( this.ballPlayAreaNode );
 
@@ -152,11 +150,8 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.onesPlayAreaNode = new CountingPlayAreaNode(
       model.onesPlayArea,
       new EnumerationProperty( CountingObjectType.PAPER_NUMBER ),
-      this.objectPlayAreaBoundsProperty, {
-        countingObjectLayerNode: this.pieceLayer,
-        backgroundDragTargetNode: backgroundDragTargetNode,
-        returnZoneProperty: this.bottomReturnZoneProperty
-      }
+      this.objectPlayAreaBoundsProperty,
+      countingPlayAreaNodeOptions
     );
     this.addChild( this.onesPlayAreaNode );
 

@@ -18,17 +18,29 @@ import CountingPlayAreaNode from './CountingPlayAreaNode.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import NumberSuiteCommonPanel from './NumberSuiteCommonPanel.js';
+import NumberSuiteCommonPanel, { NumberSuiteCommonPanelOptions } from './NumberSuiteCommonPanel.js';
+
+type SelfOptions = {
+  arrowButtonsVisible?: boolean;
+};
+
+export type CountingObjectCreatorPanelOptions = SelfOptions & NumberSuiteCommonPanelOptions;
 
 class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
   public countingCreatorNode: CountingCreatorNode;
 
-  public constructor( playArea: CountingPlayArea, countingPlayAreaNode: CountingPlayAreaNode ) {
+  public constructor( playArea: CountingPlayArea, countingPlayAreaNode: CountingPlayAreaNode,
+                      providedOptions?: CountingObjectCreatorPanelOptions ) {
+
+    const options = optionize<CountingObjectCreatorPanelOptions, SelfOptions, NumberSuiteCommonPanelOptions>()( {
+      arrowButtonsVisible: true
+    }, providedOptions );
 
     // create the arrow buttons, which change the value of currentNumberProperty by -1 or +1
     const arrowButtonOptions = {
       arrowWidth: 14,
-      arrowHeight: 14
+      arrowHeight: 14,
+      visible: options.arrowButtonsVisible
     };
     const upArrowButton = new ArrowButton( 'up', () => {
       // console.log( `about to add 1 with up arrow in in ${playArea.name}` );
@@ -75,7 +87,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
       align: 'center'
     } );
 
-    super( hBox );
+    super( hBox, options );
 
     this.countingCreatorNode = countingCreatorNode;
 
