@@ -9,13 +9,12 @@
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
-import Property from '../../../../axon/js/Property.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
-import { DragListener, Node, PressListenerEvent, TInputListener } from '../../../../scenery/js/imports.js';
+import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
@@ -49,19 +48,14 @@ class DraggableTenFrameNode extends Node {
     const returnButton = new ReturnButton( () => {
       tenFrame.removeCountingObject();
     }, {
-      visible: false,
-      listenerOptions: {
-
-        // necessary to allow input to this button via touch because the dragListener takes input priority on this
-        // node, see https://github.com/phetsims/number-suite-common/issues/16
-        attach: false
-      }
+      visible: false
     } );
     returnButton.touchArea = returnButton.localBounds.dilated( RETURN_BUTTON_MARGIN );
     returnButton.x = tenFrameNode.left - returnButton.width - 5;
     this.addChild( returnButton );
 
     this.dragListener = new DragListener( {
+      allowTouchSnag: false, // Remove upon solution for https://github.com/phetsims/scenery/issues/1515 exists.
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
         this.moveToFront();
