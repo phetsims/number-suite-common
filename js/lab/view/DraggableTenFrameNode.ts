@@ -9,6 +9,7 @@
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
@@ -18,6 +19,8 @@ import { DragListener, Node, PressListenerEvent, TInputListener } from '../../..
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
+
+const RETURN_BUTTON_MARGIN = 5;
 
 type SelfOptions = {
   dropListener: ( tenFrameNode: DraggableTenFrameNode ) => void;
@@ -29,7 +32,6 @@ type DraggableTenFrameNodeOptions = SelfOptions;
 class DraggableTenFrameNode extends Node {
   public readonly tenFrame: TenFrame;
   public readonly dragListener: DragListener;
-  private readonly forwardingDragListener: TInputListener;
   private readonly positionPropertyLink: PropertyLinkListener<Vector2>;
   private readonly scalePropertyLink: PropertyLinkListener<number>;
 
@@ -47,13 +49,19 @@ class DraggableTenFrameNode extends Node {
     const returnButton = new ReturnButton( () => {
       tenFrame.removeCountingObject();
     }, {
-      visible: false
+      visible: false,
+      listenerOptions: {
+
+        // necessary to allow input to this button via touch because the dragListener takes input priority on this
+        // node, see https://github.com/phetsims/number-suite-common/issues/16
+        attach: false
+      }
     } );
+    returnButton.touchArea = returnButton.localBounds.dilated( RETURN_BUTTON_MARGIN );
     returnButton.x = tenFrameNode.left - returnButton.width - 5;
     this.addChild( returnButton );
 
     this.dragListener = new DragListener( {
-      targetNode: this,
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
         this.moveToFront();
@@ -72,13 +80,9 @@ class DraggableTenFrameNode extends Node {
         options.dropListener( this );
       }
     } );
+    this.addInputListener( this.dragListener );
 
     this.cursor = 'pointer';
-
-    this.forwardingDragListener = DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
-      this.dragListener.press( event, this );
-    } );
-    this.addInputListener( this.forwardingDragListener );
 
     this.positionPropertyLink = position => { this.translation = position; };
     tenFrame.positionProperty.link( this.positionPropertyLink );
@@ -104,8 +108,8 @@ class DraggableTenFrameNode extends Node {
       options.removeCountingObjectListener( countingObject );
     } );
 
-    // show the return button if we this is the selected ten frame and if there's at least one counting object contained
-    // in the ten frame
+    // show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
+    // in the tenFrame
     Multilink.lazyMultilink( [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
       ( selectedTenFrame, numberOfCountingObjects ) => {
         returnButton.visible = selectedTenFrame === tenFrame && numberOfCountingObjects > 0;
@@ -113,7 +117,7 @@ class DraggableTenFrameNode extends Node {
   }
 
   public override dispose(): void {
-    this.removeInputListener( this.forwardingDragListener );
+    this.removeInputListener( this.dragListener );
     this.tenFrame.positionProperty.unlink( this.positionPropertyLink );
     this.tenFrame.scaleProperty.unlink( this.scalePropertyLink );
     this.tenFrame.dispose();
