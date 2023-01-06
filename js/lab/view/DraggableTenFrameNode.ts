@@ -93,8 +93,11 @@ class DraggableTenFrameNode extends Node {
       // drag this tenFrameNode that the countingObjectNode is on top of
       countingObjectNode.pickable = false;
 
-      // animate the countingObject to the next available space in the ten frame
+      // animate the countingObject to the next available space in the tenFrame
       countingObject.setDestination( tenFrame.getCountingObjectSpot( countingObject ), true );
+
+      // make the tenFrame selected so the user knows they can remove the newly added countingObject
+      selectedTenFrameProperty.value = tenFrame;
     } );
 
     tenFrame.countingObjects.addItemRemovedListener( countingObject => {
