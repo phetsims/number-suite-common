@@ -52,8 +52,8 @@ class NumberCardCreatorCarousel extends Carousel {
       return new Node().addChild( numberCardCreatorNode );
     } ), {
       itemsPerPage: 10,
-      margin: 14,
-      spacing: 8,
+      margin: 10,
+      spacing: 10,
       animationDuration: 0.4
     } );
 
