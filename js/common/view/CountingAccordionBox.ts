@@ -31,7 +31,7 @@ import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
   linkedPlayArea?: CountingPlayArea | null;
-  groupAndLinkTypeProperty?: EnumerationProperty<GroupAndLinkType>;
+  objectsGroupAndLinkTypeProperty?: EnumerationProperty<GroupAndLinkType>;
 };
 export type CountingAccordionBoxOptions = SelfOptions &
   StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'> &
@@ -56,7 +56,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
         },
         countingObjectTypes: null,
         linkedPlayArea: null,
-        groupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
+        objectsGroupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
       }, options ) );
 
     const objectsPlayAreaNode = new CountingPlayAreaNode( playArea, countingObjectTypeProperty, this.contentBoundsProperty );
@@ -100,7 +100,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
     }
 
     // add the linked play area
-    if ( options.linkedPlayArea && options.groupAndLinkTypeProperty ) {
+    if ( options.linkedPlayArea && options.objectsGroupAndLinkTypeProperty ) {
       const linkedObjectsPlayAreaNode = new CountingPlayAreaNode(
         options.linkedPlayArea,
         countingObjectTypeProperty,
@@ -110,7 +110,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
       );
       this.contentNode.addChild( linkedObjectsPlayAreaNode );
 
-      options.groupAndLinkTypeProperty.link( groupAndLinkType => {
+      options.objectsGroupAndLinkTypeProperty.link( groupAndLinkType => {
         objectsPlayAreaNode.visible = groupAndLinkType !== GroupAndLinkType.GROUPED_AND_LINKED;
         linkedObjectsPlayAreaNode.visible = groupAndLinkType === GroupAndLinkType.GROUPED_AND_LINKED;
         radioButtonGroup && radioButtonGroup.moveToFront();

@@ -50,7 +50,10 @@ class DraggableTenFrameNode extends Node {
     }, {
       visible: false
     } );
-    returnButton.touchArea = returnButton.localBounds.dilated( RETURN_BUTTON_MARGIN );
+
+    // expand touchArea of returnButton and shift so it doesn't overlap with the tenFrame
+    returnButton.touchArea = returnButton.localBounds
+      .dilatedY( RETURN_BUTTON_MARGIN * 2 ).dilatedX( RETURN_BUTTON_MARGIN * 1.5 ).shiftX( -RETURN_BUTTON_MARGIN * 0.5 );
     returnButton.x = tenFrameNode.left - returnButton.width - 5;
     this.addChild( returnButton );
 

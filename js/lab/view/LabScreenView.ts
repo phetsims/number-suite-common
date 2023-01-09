@@ -168,6 +168,10 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
       this.onesPlayAreaNode.visible = showLabOnes;
     } );
 
+    // Note that all CountingPlayAreaNode instances are assumed to be positioned at (0,0) and therefore are in
+    // the same coordinate frame as this ScreenView. Here we reach inside those CountingPlayAreaNode instances
+    // and position their CountingObjectCreatorPanels. This made it impossible to change the layout so that
+    // all counting objects are in a single panel, so we bailed on https://github.com/phetsims/number-suite-common/issues/11.
     ManualConstraint.create( this, [ this.tenFrameCreatorPanel, this.dogPlayAreaNode.countingObjectCreatorPanel,
         this.applePlayAreaNode.countingObjectCreatorPanel, this.butterflyPlayAreaNode.countingObjectCreatorPanel,
         this.ballPlayAreaNode.countingObjectCreatorPanel, this.onesPlayAreaNode.countingObjectCreatorPanel ],
