@@ -445,9 +445,10 @@ class CountingPlayAreaNode extends Node {
         this.countingObjectCreatorPanel.countingCreatorNode.checkTargetVisibility( countingObjectValue );
       }
     }
-      // if this view is running off of a shared model, then if a counting Object has already been removed from the model,
-    // check if creator node should be updated
     else if ( !this.viewHasIndependentModel ) {
+
+      // if this view is running off of a shared model, then if a counting Object has already been removed from the model,
+      // check if creator node should be updated
       const countingObjectValue = countingObject.numberValueProperty.value;
       this.countingObjectCreatorPanel.countingCreatorNode.checkTargetVisibility( countingObjectValue );
     }
