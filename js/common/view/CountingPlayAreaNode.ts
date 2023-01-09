@@ -71,8 +71,9 @@ class CountingPlayAreaNode extends Node {
   // Handle touches nearby to the numbers, and interpret those as the proper drag.
   private readonly closestDragListener: ClosestDragListener;
 
-  // Where all of the counting Objects are. Created if not provided.
-  private readonly countingObjectLayerNode: Node | null;
+  // Parent for all CountingObjectNode instances, created if not provided.
+  private readonly countingObjectLayerNode: Node;
+
   public readonly countingObjectCreatorPanel: CountingObjectCreatorPanel;
   private readonly includeCountingObjectCreatorPanel: boolean;
   private readonly getCountingObjectOrigin: () => Vector2 = () => Vector2.ZERO;
@@ -173,7 +174,6 @@ class CountingPlayAreaNode extends Node {
       this.playArea.initialize( this.getCountingObjectOrigin, countingObjectCreatorNodeHeight, playAreaBoundsProperty );
     }
 
-    this.countingObjectLayerNode = null;
     if ( options.countingObjectLayerNode ) {
       this.countingObjectLayerNode = options.countingObjectLayerNode;
     }
@@ -221,7 +221,7 @@ class CountingPlayAreaNode extends Node {
       } );
 
     this.countingObjectNodeMap[ countingObjectNode.countingObject.id ] = countingObjectNode;
-    this.countingObjectLayerNode!.addChild( countingObjectNode );
+    this.countingObjectLayerNode.addChild( countingObjectNode );
     countingObjectNode.attachListeners();
 
     this.closestDragListener.addDraggableItem( countingObjectNode );
@@ -270,7 +270,7 @@ class CountingPlayAreaNode extends Node {
 
     const draggedNode = this.getCountingObjectNode( draggedCountingObject );
 
-    const allCountingObjectNodes = _.filter( this.countingObjectLayerNode!.children,
+    const allCountingObjectNodes = _.filter( this.countingObjectLayerNode.children,
       child => child instanceof CountingObjectNode ) as CountingObjectNode[];
 
     // remove any countingObjects that aren't included in the sum - these are already on their way back to the bucket and
@@ -318,7 +318,7 @@ class CountingPlayAreaNode extends Node {
     }
 
     const droppedNode = this.getCountingObjectNode( droppedCountingObject );
-    const allDraggableTenFrameNodes = _.filter( this.countingObjectLayerNode!.children,
+    const allDraggableTenFrameNodes = _.filter( this.countingObjectLayerNode.children,
       child => child instanceof DraggableTenFrameNode ) as DraggableTenFrameNode[];
 
     const droppedNodeCountingType = droppedNode.countingObjectTypeProperty.value;
