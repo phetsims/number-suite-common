@@ -54,6 +54,7 @@ class CountingPlayAreaNode extends Node {
 
   // Called with function( countingObject ) when a number finishes being dragged
   private readonly numberDragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
+  private readonly positionConstrainedListener: ( countingObject: CountingObject ) => void;
   public readonly playArea: CountingPlayArea;
   private readonly tryToCombineNumbersCallback: ( draggedCountingObject: CountingObject ) => void;
   private readonly addAndDragNumberCallback: ( event: PressListenerEvent, countingObject: CountingObject ) => void;
@@ -107,6 +108,8 @@ class CountingPlayAreaNode extends Node {
       this.onNumberDragFinished( countingObjectNode.countingObject );
     };
 
+    this.positionConstrainedListener = ( countingObject: CountingObject ) => this.preventOcclusion( countingObject );
+
     this.playArea = playArea;
 
     this.tryToCombineNumbersCallback = this.tryToCombineNumbers.bind( this );
@@ -158,7 +161,7 @@ class CountingPlayAreaNode extends Node {
     // CountingObjectCreatorPanel is positioned along the bottom of the playArea bounds
     const updateCountingObjectCreatorPanelPosition = () => {
       this.countingObjectCreatorPanel.bottom = playAreaBoundsProperty.value.bottom -
-                                     CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+                                               CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
     };
     playAreaBoundsProperty.link( updateCountingObjectCreatorPanelPosition );
     this.transformEmitter.addListener( updateCountingObjectCreatorPanelPosition );
@@ -231,6 +234,7 @@ class CountingPlayAreaNode extends Node {
     countingObjectNode.interactionStartedEmitter.addListener( this.numberInteractionListener );
     countingObject.endAnimationEmitter.addListener( this.numberAnimationFinishedListener );
     countingObjectNode.endDragEmitter.addListener( this.numberDragFinishedListener );
+    countingObjectNode.positionConstrainedEmitter.addListener( this.positionConstrainedListener );
   }
 
   /**
@@ -244,6 +248,7 @@ class CountingPlayAreaNode extends Node {
     countingObject.endAnimationEmitter.removeListener( this.numberAnimationFinishedListener );
     countingObjectNode.interactionStartedEmitter.removeListener( this.numberInteractionListener );
     countingObjectNode.splitEmitter.removeListener( this.numberSplitListener );
+    countingObjectNode.positionConstrainedEmitter.removeListener( this.positionConstrainedListener );
 
     delete this.countingObjectNodeMap[ countingObjectNode.countingObject.id ];
     this.closestDragListener.removeDraggableItem( countingObjectNode );
@@ -478,6 +483,26 @@ class CountingPlayAreaNode extends Node {
         targetScale: targetScale,
         targetHandleOpacity: 0
       } );
+    }
+  }
+
+  /**
+   * If the provided CountingObject would occlude any other CountingObject, then its position is adjusted by
+   * shifting it down. This is a workaround for https://github.com/phetsims/number-play/issues/172.
+   */
+  private preventOcclusion( countingObject: CountingObject ): void {
+    const countingObjects = this.playArea.countingObjects;
+    for ( let i = 0; i < countingObjects.length - 1; i++ ) {
+      const nextCountingObject = countingObjects[ i ];
+      if ( nextCountingObject !== countingObject ) {
+        if ( nextCountingObject.positionProperty.value.y === countingObject.positionProperty.value.y ) {
+          countingObject.positionProperty.value = new Vector2(
+            countingObject.positionProperty.value.x,
+            countingObject.positionProperty.value.y + CountingCommonConstants.BREAK_APART_Y_OFFSET
+          );
+          break;
+        }
+      }
     }
   }
 }

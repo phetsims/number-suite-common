@@ -400,8 +400,8 @@ class CountingPlayArea extends CountingCommonModel {
         const numberOfRows = NumberSuiteCommonConstants.TEN;
 
         const origin = stack ? countingObjectPosition.minusXY( 0, 25 ) : countingObjectPosition;
-        const offsetYSegment = stack ? ( countingObject.localBounds.height - CountingCommonConstants.PLAY_OBJECT_SIZE.height ) /
-                                       ( numberOfRows + 1 ) : 0;
+        const offsetYSegment = stack ? CountingCommonConstants.BREAK_APART_Y_OFFSET : 0;
+
         let offsetY = 0;
 
         let reAddedCountingObjects = 0;
