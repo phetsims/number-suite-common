@@ -64,6 +64,10 @@ class LabModel implements TModel {
       'onesPlayArea', {
         tenFrames: this.tenFrames
       } );
+
+    this.tenFrames.addItemRemovedListener( tenFrame => {
+      tenFrame.dispose();
+    } );
   }
 
   /**

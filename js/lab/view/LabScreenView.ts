@@ -205,6 +205,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     this.tenFrameNodes = [];
 
+    // TODO: rename to addTenFrameNode and removeTenFrameNode
     model.tenFrames.addItemAddedListener( this.addTenFrame.bind( this ) );
     model.tenFrames.addItemRemovedListener( this.removeTenFrame.bind( this ) );
 
