@@ -401,7 +401,6 @@ class CountingPlayArea extends CountingCommonModel {
 
         const origin = stack ? countingObjectPosition.minusXY( 0, 25 ) : countingObjectPosition;
         const offsetYSegment = stack ? CountingCommonConstants.BREAK_APART_Y_OFFSET : 0;
-        console.log( `offsetYSegment=${offsetYSegment}` );//XXX
 
         let offsetY = 0;
 
