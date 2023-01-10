@@ -15,6 +15,7 @@ import CardCreatorNode from './CardCreatorNode.js';
 import NumberCardNode from './NumberCardNode.js';
 import Property from '../../../../axon/js/Property.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 // constants
 const MAX_NUMBER_PIECE_COUNT = 20;
@@ -49,7 +50,9 @@ class NumberCardCreatorCarousel extends Carousel {
     } );
 
     super( numberCardCreatorNodes.map( numberCardCreatorNode => {
-      return new Node().addChild( numberCardCreatorNode );
+      return {
+        createNode: ( tandem: Tandem ) => new Node().addChild( numberCardCreatorNode )
+      };
     } ), {
       itemsPerPage: 10,
       margin: 10,

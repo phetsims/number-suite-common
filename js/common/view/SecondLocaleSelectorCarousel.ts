@@ -11,6 +11,7 @@ import Carousel from '../../../../sun/js/Carousel.js';
 import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
 import LanguageSelectionNode from '../../../../joist/js/preferences/LanguageSelectionNode.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 class SecondLocaleSelectorCarousel<T extends NumberSuiteCommonPreferences> extends Carousel {
 
@@ -18,7 +19,9 @@ class SecondLocaleSelectorCarousel<T extends NumberSuiteCommonPreferences> exten
 
     const createInteractiveLocales = () => {
       return localeProperty.validValues!.map( locale => {
-        return new LanguageSelectionNode( preferences.secondLocaleProperty, locale );
+        return {
+          createNode: ( tandem: Tandem ) => new LanguageSelectionNode( preferences.secondLocaleProperty, locale )
+        };
       } );
     };
 
