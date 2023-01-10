@@ -16,13 +16,14 @@ import createObservableArray, { ObservableArray } from '../../../../axon/js/crea
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 
 // constants
 const SQUARE_SIDE_LENGTH = 60;
 const LINE_WIDTH = 1;
 const NUMBER_OF_SPOTS = 10;
 
-class TenFrame {
+class TenFrame extends Disposable {
   public readonly countingObjects: ObservableArray<CountingObject>;
   public readonly spotCenters: Vector2[];
   public readonly positionProperty: Vector2Property;
@@ -34,6 +35,7 @@ class TenFrame {
   public static readonly SQUARE_SIDE_LENGTH = SQUARE_SIDE_LENGTH;
 
   public constructor( initialPosition: Vector2 ) {
+    super();
 
     this.countingObjects = createObservableArray();
 
@@ -156,10 +158,11 @@ class TenFrame {
     return countingObjectSpotCenter.minus( countingObjectOffset );
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     this.countingObjects.dispose();
     this.positionProperty.dispose();
     this.scaleProperty.dispose();
+    super.dispose();
   }
 }
 

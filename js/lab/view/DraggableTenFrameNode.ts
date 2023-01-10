@@ -8,11 +8,10 @@
 
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
 import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
 import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
@@ -29,10 +28,9 @@ type SelfOptions = {
 type DraggableTenFrameNodeOptions = SelfOptions;
 
 class DraggableTenFrameNode extends Node {
+  private readonly disposeDraggableTenFrameNode: () => void;
   public readonly tenFrame: TenFrame;
   public readonly dragListener: DragListener;
-  private readonly positionPropertyLink: PropertyLinkListener<Vector2>;
-  private readonly scalePropertyLink: PropertyLinkListener<number>;
 
   public constructor( tenFrame: TenFrame, selectedTenFrameProperty: TProperty<TenFrame | null>,
                       dragBoundsProperty: TReadOnlyProperty<Bounds2>, options: DraggableTenFrameNodeOptions ) {
@@ -81,11 +79,8 @@ class DraggableTenFrameNode extends Node {
 
     this.cursor = 'pointer';
 
-    this.positionPropertyLink = position => { this.translation = position; };
-    tenFrame.positionProperty.link( this.positionPropertyLink );
-
-    this.scalePropertyLink = scale => {this.setScaleMagnitude( scale ); };
-    tenFrame.scaleProperty.link( this.scalePropertyLink );
+    tenFrame.positionProperty.link( position => { this.translation = position; } );
+    tenFrame.scaleProperty.link( scale => {this.setScaleMagnitude( scale ); } );
 
     tenFrame.countingObjects.addItemAddedListener( countingObject => {
       const countingObjectNode = options.getCountingObjectNode( countingObject );
@@ -107,17 +102,19 @@ class DraggableTenFrameNode extends Node {
 
     // show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
     // in the tenFrame
-    Multilink.lazyMultilink( [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
+    const returnButtonMultilink = Multilink.lazyMultilink( [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
       ( selectedTenFrame, numberOfCountingObjects ) => {
         returnButton.visible = selectedTenFrame === tenFrame && numberOfCountingObjects > 0;
       } );
+
+    this.disposeDraggableTenFrameNode = () => {
+      Multilink.unmultilink( returnButtonMultilink );
+      assert && assert( tenFrame.isDisposed, 'TenFrame model should have been disposed by now.' );
+    };
   }
 
   public override dispose(): void {
-    this.removeInputListener( this.dragListener );
-    this.tenFrame.positionProperty.unlink( this.positionPropertyLink );
-    this.tenFrame.scaleProperty.unlink( this.scalePropertyLink );
-    this.tenFrame.dispose();
+    this.disposeDraggableTenFrameNode();
     super.dispose();
   }
 }
