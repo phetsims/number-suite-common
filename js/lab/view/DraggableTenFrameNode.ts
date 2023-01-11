@@ -56,7 +56,7 @@ class DraggableTenFrameNode extends Node {
     this.addChild( returnButton );
 
     this.dragListener = new DragListener( {
-      allowTouchSnag: false, // Remove upon solution for https://github.com/phetsims/scenery/issues/1515 exists.
+      targetNode: this,
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
         this.moveToFront();
@@ -75,7 +75,7 @@ class DraggableTenFrameNode extends Node {
         options.dropListener( this );
       }
     } );
-    this.addInputListener( this.dragListener );
+    tenFrameNode.addInputListener( this.dragListener );
 
     this.cursor = 'pointer';
 
