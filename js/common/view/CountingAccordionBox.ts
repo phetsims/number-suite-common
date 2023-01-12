@@ -46,18 +46,19 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
                       countingObjectTypeProperty: EnumerationProperty<CountingObjectType>,
                       width: number,
                       height: number,
-                      options: CountingAccordionBoxOptions ) {
+                      providedOptions: CountingAccordionBoxOptions ) {
 
-    super( width, new Property<number>( height ),
-      optionize<CountingAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
-        titleStringProperty: NumberSuiteCommonStrings.objectsStringProperty,
-        titleTextOptions: {
-          maxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH
-        },
-        countingObjectTypes: null,
-        linkedPlayArea: null,
-        objectsGroupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
-      }, options ) );
+    const options = optionize<CountingAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
+      titleStringProperty: NumberSuiteCommonStrings.objectsStringProperty,
+      titleTextOptions: {
+        maxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH
+      },
+      countingObjectTypes: null,
+      linkedPlayArea: null,
+      objectsGroupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
+    }, providedOptions );
+
+    super( width, new Property<number>( height ), options );
 
     const objectsPlayAreaNode = new CountingPlayAreaNode( playArea, countingObjectTypeProperty, this.contentBoundsProperty );
     this.contentNode.addChild( objectsPlayAreaNode );
