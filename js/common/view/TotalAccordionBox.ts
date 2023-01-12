@@ -32,15 +32,16 @@ export type TotalAccordionBoxOptions =
 
 class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
-  public constructor( playArea: CountingPlayArea, height: number, options: TotalAccordionBoxOptions ) {
+  public constructor( playArea: CountingPlayArea, height: number, providedOptions: TotalAccordionBoxOptions ) {
 
-    super( NumberSuiteCommonConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ),
-      optionize<TotalAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
-        titleStringProperty: NumberSuiteCommonStrings.totalStringProperty,
-        titleTextOptions: {
-          maxWidth: 142
-        }
-      }, options ) );
+    const options = optionize<TotalAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
+      titleStringProperty: NumberSuiteCommonStrings.totalStringProperty,
+      titleTextOptions: {
+        maxWidth: 142
+      }
+    }, providedOptions );
+
+    super( NumberSuiteCommonConstants.TOTAL_ACCORDION_BOX_WIDTH, new Property<number>( height ), options );
 
     // create the NumberDisplay, which is a numerical representation of the current number. always format for numbers
     // up to twenty so the display looks consistent across screens.

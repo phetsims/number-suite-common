@@ -26,7 +26,7 @@ type GetSpotCentersOptions = {
 };
 type GetTenFramePathOptions = {
   sideLength?: number;
-} & Pick<PaintableOptions, 'fill'> & Pick<PaintableOptions, 'lineWidth'>;
+} & Pick<PaintableOptions, 'fill' | 'lineWidth'>;
 
 // constants - all are used for both drawing the ten frame shape and positioning the dots within the ten frame shape
 const NUMBER_OF_X_SQUARES = 5; // a ten frame is this many squares wide
