@@ -8,7 +8,7 @@
 
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, AlignBoxOptions, AlignGroup, Text } from '../../../../scenery/js/imports.js';
+import { AlignBox, AlignGroup, Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
@@ -47,15 +47,19 @@ class LocaleSwitch extends ABSwitch<boolean> {
     } );
 
     // To give the labels the same effective width
-    const alignBoxOptions: AlignBoxOptions = {
-      group: new AlignGroup()
-    };
+    const alignGroup = new AlignGroup();
 
     super( isPrimaryLocaleProperty,
       true,
-      new AlignBox( firstLanguageText, alignBoxOptions ),
+      new AlignBox( firstLanguageText, {
+        group: alignGroup,
+        xAlign: 'right'
+      } ),
       false,
-      new AlignBox( secondLanguageText, alignBoxOptions ),
+      new AlignBox( secondLanguageText, {
+        group: alignGroup,
+        xAlign: 'left'
+      } ),
       AB_SWITCH_OPTIONS
     );
 
