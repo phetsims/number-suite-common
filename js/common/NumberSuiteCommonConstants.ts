@@ -11,11 +11,8 @@ import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
 
-// types
-type NumberToString = Record<number, string>;
-
-// constants used for other constants
-const NUMBER_TO_STRING_VALUE = {
+// Maps a number to the key used to look up the translated word that corresponds to the number.
+const NUMBER_TO_STRING_KEY = {
   0: 'zero',
   1: 'one',
   2: 'two',
@@ -37,7 +34,7 @@ const NUMBER_TO_STRING_VALUE = {
   18: 'eighteen',
   19: 'nineteen',
   20: 'twenty'
-} as NumberToString;
+} as Record<number, string>;
 
 // TODO: Move strings from number-play to number-suite-common so we use NSC prefix here instead
 const NUMBER_PLAY_STRING_KEY_PREFIX = 'NUMBER_PLAY/';
@@ -69,7 +66,7 @@ const NumberSuiteCommonConstants = {
    * Maps an integer to the translated word for that integer.
    */
   numberToWord: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
-    const stringKey = NUMBER_TO_STRING_VALUE[ number ] as keyof typeof NumberSuiteCommonStrings;
+    const stringKey = NUMBER_TO_STRING_KEY[ number ] as keyof typeof NumberSuiteCommonStrings;
     assert && assert( stringKey, `no stringKey found for number=${number}` );
 
     // TODO: This is relying on NumberSuiteCommonStrings having non-dynamic string keys at runtime. Is that okay?
