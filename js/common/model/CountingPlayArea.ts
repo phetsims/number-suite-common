@@ -218,7 +218,7 @@ class CountingPlayArea extends CountingCommonModel {
     assert && assert( this.initialized, 'returnCountingObjectToBucket called before initialization' );
 
     // sort by not in a ten frame, then by lowest value, then by proximity to the bucket
-    const sortedCountingObjects = _.sortBy( this.countingObjects, [
+    const sortedCountingObjects = _.sortBy( this.getCountingObjectsIncludedInSum(), [
       countingObject => {
         return this.countingObjectContainedByTenFrame( countingObject ) ? 1 : 0;
       },
@@ -229,11 +229,6 @@ class CountingPlayArea extends CountingCommonModel {
         return countingObject.positionProperty.value.distance( this.getCountingObjectOrigin() );
       }
     ] );
-
-    // remove any countingObjects that aren't included in the sum - these are already on their way back to the bucket
-    _.remove( sortedCountingObjects, countingObject => {
-      return !countingObject.includeInSumProperty.value;
-    } );
 
     let countingObjectToReturn = sortedCountingObjects.shift();
     if ( countingObjectToReturn ) {
@@ -353,6 +348,10 @@ class CountingPlayArea extends CountingCommonModel {
     return spots;
   }
 
+  private getCountingObjectsIncludedInSum(): CountingObject[] {
+    return [ ...this.countingObjects ].filter( countingObject => countingObject.includeInSumProperty.value );
+  }
+
   /**
    * Organizes the playObjectsInPlayArea in a grid pattern. Can only be called if this.organizedObjectSpots exist.
    */
@@ -363,7 +362,7 @@ class CountingPlayArea extends CountingCommonModel {
     this.breakApartCountingObjects();
 
     // copy the current playObjectsInPlayArea so we can mutate it
-    let objectsToOrganize = [ ...this.countingObjects ].filter( countingObject => countingObject.includeInSumProperty.value );
+    let objectsToOrganize = this.getCountingObjectsIncludedInSum();
     const numberOfObjectsToOrganize = objectsToOrganize.length;
 
     for ( let i = 0; i < numberOfObjectsToOrganize; i++ ) {
@@ -390,7 +389,7 @@ class CountingPlayArea extends CountingCommonModel {
 
     // TODO: cleanup and doc
 
-    const objectsToBreakDown = [ ...this.countingObjects.filter( countingObject => countingObject.includeInSumProperty.value ) ];
+    const objectsToBreakDown = this.getCountingObjectsIncludedInSum();
     const startingCount = _.sum( objectsToBreakDown.map( x => x.numberValueProperty.value ) );
 
     objectsToBreakDown.forEach( countingObject => {
