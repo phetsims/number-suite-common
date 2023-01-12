@@ -78,6 +78,8 @@ class CountingPlayArea extends CountingCommonModel {
     this.groupingEnabledProperty.lazyLink( groupingEnabled => {
       !groupingEnabled && this.breakApartCountingObjects( true );
     } );
+
+    this.countingObjects.addItemRemovedListener( countingObject => { countingObject.dispose(); } );
   }
 
   /**

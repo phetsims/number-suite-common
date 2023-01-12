@@ -56,7 +56,7 @@ class DraggableTenFrameNode extends Node {
     this.addChild( returnButton );
 
     this.dragListener = new DragListener( {
-      allowTouchSnag: false, // Remove upon solution for https://github.com/phetsims/scenery/issues/1515 exists.
+      targetNode: this,
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
         this.moveToFront();
@@ -75,7 +75,7 @@ class DraggableTenFrameNode extends Node {
         options.dropListener( this );
       }
     } );
-    this.addInputListener( this.dragListener );
+    tenFrameNode.addInputListener( this.dragListener );
 
     this.cursor = 'pointer';
 
@@ -102,6 +102,7 @@ class DraggableTenFrameNode extends Node {
 
     // show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
     // in the tenFrame
+    // Requires disposal as it is storing references that point outside DraggableTenFrameNode and TenFrame
     const returnButtonMultilink = Multilink.lazyMultilink( [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
       ( selectedTenFrame, numberOfCountingObjects ) => {
         returnButton.visible = selectedTenFrame === tenFrame && numberOfCountingObjects > 0;
