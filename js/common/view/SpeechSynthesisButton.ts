@@ -64,7 +64,7 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
 
       // read out a number by integer => word or just read out a string
       speechUtterance.alert = options.stringProperty ? options.stringProperty.value :
-                              NumberSuiteCommonConstants.numberToString( preferences.secondLocaleStringsProperty.value,
+                              NumberSuiteCommonConstants.numberToWord( preferences.secondLocaleStringsProperty.value,
                                 options.numberProperty.value, isPrimaryLocaleProperty.value );
 
       speechSynthesisAnnouncer.cancelUtterance( speechUtterance );

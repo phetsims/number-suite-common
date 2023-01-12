@@ -65,9 +65,10 @@ const NumberSuiteCommonConstants = {
   // options for all AccordionBox instances
   ACCORDION_BOX_TITLE_FONT: new PhetFont( 16 ),
 
-  // map number values to their corresponding string
-  // TODO: type string map
-  numberToString: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
+  /**
+   * Maps an integer to the translated word for that integer.
+   */
+  numberToWord: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
     const stringKey = NUMBER_TO_STRING_VALUE[ number ] as keyof typeof NumberSuiteCommonStrings;
     assert && assert( stringKey, `no stringKey found for number=${number}` );
 
