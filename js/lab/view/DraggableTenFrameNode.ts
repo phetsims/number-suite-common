@@ -80,7 +80,7 @@ class DraggableTenFrameNode extends Node {
     this.cursor = 'pointer';
 
     tenFrame.positionProperty.link( position => { this.translation = position; } );
-    tenFrame.scaleProperty.link( scale => {this.setScaleMagnitude( scale ); } );
+    tenFrame.scaleProperty.link( scale => this.setScaleMagnitude( scale ) );
 
     tenFrame.countingObjects.addItemAddedListener( countingObject => {
       const countingObjectNode = options.getCountingObjectNode( countingObject );
@@ -101,8 +101,8 @@ class DraggableTenFrameNode extends Node {
     } );
 
     // show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
-    // in the tenFrame
-    // Requires disposal as it is storing references that point outside DraggableTenFrameNode and TenFrame
+    // in the tenFrame. Requires disposal as it is storing references that point outside DraggableTenFrameNode and
+    // TenFrame.
     const returnButtonMultilink = Multilink.lazyMultilink( [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
       ( selectedTenFrame, numberOfCountingObjects ) => {
         returnButton.visible = selectedTenFrame === tenFrame && numberOfCountingObjects > 0;
