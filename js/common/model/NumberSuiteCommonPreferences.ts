@@ -13,8 +13,11 @@ import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameter
 import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+
+//TODO https://github.com/phetsims/number-suite-common/issues/18 replace any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type SecondLocaleStrings = any;
 
 // preference Properties directly controlled by UI
 class NumberSuiteCommonPreferences {
@@ -26,7 +29,7 @@ class NumberSuiteCommonPreferences {
   public readonly readAloudProperty: Property<boolean>;
 
   // helper Properties derived from preference Properties
-  public readonly secondLocaleStringsProperty: TReadOnlyProperty<IntentionalAny>;
+  public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
 
   public constructor() {
     this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );

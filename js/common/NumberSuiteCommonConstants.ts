@@ -9,7 +9,7 @@
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 
 // Maps a number to the key used to look up the translated word that corresponds to the number.
 const NUMBER_TO_STRING_KEY = {
@@ -65,7 +65,7 @@ const NumberSuiteCommonConstants = {
   /**
    * Maps an integer to the translated word for that integer.
    */
-  numberToWord: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
+  numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
     const stringKey = NUMBER_TO_STRING_KEY[ number ] as keyof typeof NumberSuiteCommonStrings;
     assert && assert( stringKey, `no stringKey found for number=${number}` );
 

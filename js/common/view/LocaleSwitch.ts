@@ -14,8 +14,8 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import Property from '../../../../axon/js/Property.js';
+import { SecondLocaleStrings } from '../model/NumberSuiteCommonPreferences.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -29,7 +29,7 @@ const AB_SWITCH_OPTIONS = {
 class LocaleSwitch extends ABSwitch<boolean> {
 
   public constructor( isPrimaryLocaleProperty: Property<boolean>, showSecondLocaleProperty: TReadOnlyProperty<boolean>,
-                      secondLocaleStringsProperty: TReadOnlyProperty<IntentionalAny>, maxWidth: number ) {
+                      secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>, maxWidth: number ) {
 
     // options for the switch text. calculate the maxWidth for each string as half of the available horizontal space
     // without the ToggleSwitch or spacing.
