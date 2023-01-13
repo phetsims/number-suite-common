@@ -6,13 +6,14 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import LinkableProperty from '../../../axon/js/LinkableProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 
 // Maps a number to the key used to look up the translated word that corresponds to the number.
-const NUMBER_TO_STRING_KEY = {
+const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   0: 'zero',
   1: 'one',
   2: 'two',
@@ -35,6 +36,31 @@ const NUMBER_TO_STRING_KEY = {
   19: 'nineteen',
   20: 'twenty'
 } as Record<number, string>;
+
+
+const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
+  0: NumberSuiteCommonStrings.zeroStringProperty,
+  1: NumberSuiteCommonStrings.oneStringProperty,
+  2: NumberSuiteCommonStrings.twoStringProperty,
+  3: NumberSuiteCommonStrings.threeStringProperty,
+  4: NumberSuiteCommonStrings.fourStringProperty,
+  5: NumberSuiteCommonStrings.fiveStringProperty,
+  6: NumberSuiteCommonStrings.sixStringProperty,
+  7: NumberSuiteCommonStrings.sevenStringProperty,
+  8: NumberSuiteCommonStrings.eightStringProperty,
+  9: NumberSuiteCommonStrings.nineStringProperty,
+  10: NumberSuiteCommonStrings.tenStringProperty,
+  11: NumberSuiteCommonStrings.elevenStringProperty,
+  12: NumberSuiteCommonStrings.twelveStringProperty,
+  13: NumberSuiteCommonStrings.thirteenStringProperty,
+  14: NumberSuiteCommonStrings.fourteenStringProperty,
+  15: NumberSuiteCommonStrings.fifteenStringProperty,
+  16: NumberSuiteCommonStrings.sixteenStringProperty,
+  17: NumberSuiteCommonStrings.seventeenStringProperty,
+  18: NumberSuiteCommonStrings.eighteenStringProperty,
+  19: NumberSuiteCommonStrings.nineteenStringProperty,
+  20: NumberSuiteCommonStrings.twentyStringProperty
+};
 
 // TODO: Move strings from number-play to number-suite-common so we use NSC prefix here instead https://github.com/phetsims/number-suite-common/issues/23
 const NUMBER_PLAY_STRING_KEY_PREFIX = 'NUMBER_PLAY/';
@@ -64,15 +90,13 @@ const NumberSuiteCommonConstants = {
 
   /**
    * Maps an integer to the translated word for that integer.
-   * TODO: return a Property for dynamic locale, https://github.com/phetsims/number-suite-common/issues/9
    */
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
-    const stringKey = NUMBER_TO_STRING_KEY[ number ] as keyof typeof NumberSuiteCommonStrings;
-    assert && assert( stringKey, `no stringKey found for number=${number}` );
+    const string = isPrimaryLocale ? NUMBER_TO_STRING_KEY_PRIMARY[ number ].value :
+                              numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+    assert && assert( string, `no stringKey found for number=${number}` );
 
-    // TODO: This is relying on NumberSuiteCommonStrings having non-dynamic string keys at runtime. Is that okay? https://github.com/phetsims/number-suite-common/issues/9
-    return isPrimaryLocale ? NumberSuiteCommonStrings[ stringKey ] :
-           numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${stringKey}` ];
+    return string;
   },
 
   NUMBER_PLAY_STRING_KEY_PREFIX: NUMBER_PLAY_STRING_KEY_PREFIX,
