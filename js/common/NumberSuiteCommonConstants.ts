@@ -90,6 +90,7 @@ const NumberSuiteCommonConstants = {
 
   /**
    * Maps an integer to the translated word for that integer.
+   * // TODO: Need to handle when primaryLocale is not English, https://github.com/phetsims/number-suite-common/issues/22
    */
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
     const string = isPrimaryLocale ? NUMBER_TO_STRING_KEY_PRIMARY[ number ].value :
