@@ -36,7 +36,7 @@ const NUMBER_TO_STRING_KEY = {
   20: 'twenty'
 } as Record<number, string>;
 
-// TODO: Move strings from number-play to number-suite-common so we use NSC prefix here instead
+// TODO: Move strings from number-play to number-suite-common so we use NSC prefix here instead https://github.com/phetsims/number-suite-common/issues/23
 const NUMBER_PLAY_STRING_KEY_PREFIX = 'NUMBER_PLAY/';
 
 const NumberSuiteCommonConstants = {
@@ -64,12 +64,13 @@ const NumberSuiteCommonConstants = {
 
   /**
    * Maps an integer to the translated word for that integer.
+   * TODO: return a Property for dynamic locale, https://github.com/phetsims/number-suite-common/issues/9
    */
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
     const stringKey = NUMBER_TO_STRING_KEY[ number ] as keyof typeof NumberSuiteCommonStrings;
     assert && assert( stringKey, `no stringKey found for number=${number}` );
 
-    // TODO: This is relying on NumberSuiteCommonStrings having non-dynamic string keys at runtime. Is that okay?
+    // TODO: This is relying on NumberSuiteCommonStrings having non-dynamic string keys at runtime. Is that okay? https://github.com/phetsims/number-suite-common/issues/9
     return isPrimaryLocale ? NumberSuiteCommonStrings[ stringKey ] :
            numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${stringKey}` ];
   },
