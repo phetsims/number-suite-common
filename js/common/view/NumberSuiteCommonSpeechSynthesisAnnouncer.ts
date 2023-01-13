@@ -15,7 +15,7 @@ import SpeechSynthesisAnnouncer from '../../../../utterance-queue/js/SpeechSynth
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
@@ -30,7 +30,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     this.updateVoiceListener = () => this.updateVoice();
     this.secondLocaleProperty = secondLocaleProperty;
 
-    this.primaryLocaleVoiceEnabledProperty = new DerivedProperty( [ phet.joist.localeProperty, this.voiceProperty ],
+    this.primaryLocaleVoiceEnabledProperty = new DerivedProperty( [ localeProperty, this.voiceProperty ],
       ( locale: Locale ) => this.testVoiceForLocale( locale ) );
 
     this.secondaryLocaleVoiceEnabledProperty = new DerivedProperty( [ secondLocaleProperty, this.voiceProperty ],
@@ -46,7 +46,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
    */
   public updateVoice( isPrimaryLocale = true ): void {
 
-    const locale = isPrimaryLocale ? phet.joist.localeProperty.value : this.secondLocaleProperty.value;
+    const locale = isPrimaryLocale ? localeProperty.value : this.secondLocaleProperty.value;
     assert && assert( locale, `locale does not exist: ${locale}` );
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
