@@ -11,11 +11,10 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { AlignBox, AlignGroup, Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import Property from '../../../../axon/js/Property.js';
+import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -29,7 +28,7 @@ const AB_SWITCH_OPTIONS = {
 class LocaleSwitch extends ABSwitch<boolean> {
 
   public constructor( isPrimaryLocaleProperty: Property<boolean>, showSecondLocaleProperty: TReadOnlyProperty<boolean>,
-                      secondLocaleStringsProperty: TReadOnlyProperty<IntentionalAny>, maxWidth: number ) {
+                      secondLocaleProperty: TReadOnlyProperty<Locale>, maxWidth: number ) {
 
     // options for the switch text. calculate the maxWidth for each string as half of the available horizontal space
     // without the ToggleSwitch or spacing.
@@ -38,12 +37,11 @@ class LocaleSwitch extends ABSwitch<boolean> {
       maxWidth: ( maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2 ) * 0.5
     };
 
-    const firstLanguageText = new Text( NumberSuiteCommonStrings.languageStringProperty, switchTextOptions );
+    const firstLanguageText = new Text( localeInfoModule[ localeProperty.value ].localizedName, switchTextOptions );
     const secondLanguageText = new Text( '', switchTextOptions );
 
-    const secondLanguageStringKey = `${NumberSuiteCommonConstants.NUMBER_PLAY_STRING_KEY_PREFIX}language`;
-    secondLocaleStringsProperty.link( secondLocaleStrings => {
-      secondLanguageText.setText( secondLocaleStrings[ secondLanguageStringKey ] );
+    secondLocaleProperty.link( locale => {
+      secondLanguageText.setText( localeInfoModule[ locale ].localizedName );
     } );
 
     // To give the labels the same effective width
