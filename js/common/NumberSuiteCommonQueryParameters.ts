@@ -18,11 +18,16 @@ const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
   },
 
   // specifies a second locale to make available on the 'Ten', 'Twenty', and 'Compare' screens. Values are specified
-  // with a locale code, e.g. 'en'.
+  // with a locale code, e.g. "en" or "zh_CN".
   secondLocale: {
     public: true,
     type: 'string',
-    defaultValue: phet.chipper.locale
+    isValidValue: locale => locale === null || // default value
+                            ( !!locale && phet.chipper.strings.hasOwnProperty( locale ) &&
+
+                              // This part is valuable if you tried this query parameter on the _en.html version
+                              Object.keys( phet.chipper.strings ).length > 1 ),
+    defaultValue: null
   },
 
   // whether the paper ones are visible on the 'Lab' screen

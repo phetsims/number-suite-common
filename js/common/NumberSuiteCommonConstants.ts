@@ -62,8 +62,7 @@ const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
   20: NumberSuiteCommonStrings.twentyStringProperty
 };
 
-// TODO: Move strings from number-play to number-suite-common so we use NSC prefix here instead https://github.com/phetsims/number-suite-common/issues/23
-const NUMBER_PLAY_STRING_KEY_PREFIX = 'NUMBER_PLAY/';
+const NUMBER_SUITE_COMMON_STRING_KEY_PREFIX = 'NUMBER_SUITE_COMMON/';
 
 const NumberSuiteCommonConstants = {
 
@@ -93,13 +92,13 @@ const NumberSuiteCommonConstants = {
    */
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
     const string = isPrimaryLocale ? NUMBER_TO_STRING_KEY_PRIMARY[ number ].value :
-                              numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+                              numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_STRING_KEY_PREFIX}${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
     assert && assert( string, `no stringKey found for number=${number}` );
 
     return string;
   },
 
-  NUMBER_PLAY_STRING_KEY_PREFIX: NUMBER_PLAY_STRING_KEY_PREFIX,
+  NUMBER_SUITE_COMMON_STRING_KEY_PREFIX: NUMBER_SUITE_COMMON_STRING_KEY_PREFIX,
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,

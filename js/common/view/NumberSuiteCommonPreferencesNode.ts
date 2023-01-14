@@ -74,8 +74,8 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
     } );
 
     // disable the second locale toggle and show the all_html link if there's only one locale available
-    if ( Object.keys( phet.chipper.strings ).length < 2 ) {
-      showSecondLocaleToggleSwitch.enabled = false;
+    if ( !NumberSuiteCommonPreferences.SECOND_LOCALE_SELECTION_AVAILABLE ) {
+      showSecondLocaleControl.enabled = false;
       loadAllHtmlText.visible = true;
     }
 

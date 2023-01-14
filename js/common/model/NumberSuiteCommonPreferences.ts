@@ -13,21 +13,24 @@ import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameter
 import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty, { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
 
 // TODO: type string map, perhaps getStringModule.TStringModule? https://github.com/phetsims/number-suite-common/issues/18
 //TODO https://github.com/phetsims/number-suite-common/issues/18 replace any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SecondLocaleStrings = any;
 
-// preference Properties directly controlled by UI
 class NumberSuiteCommonPreferences {
 
+  // preference Properties directly controlled by UI
   // if a valid second locale was provided via a query parameter, display the second locale on sim startup
   public readonly showSecondLocaleProperty: Property<boolean>;
   public readonly secondLocaleProperty: Property<Locale>;
   public readonly showLabOnesProperty: Property<boolean>;
   public readonly readAloudProperty: Property<boolean>;
+
+  // True when the second locale can be turned on, because there are sufficient locales in the runtime.
+  public static readonly SECOND_LOCALE_SELECTION_AVAILABLE = availableRuntimeLocales.length > 1;
 
   // helper Properties derived from preference Properties
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
@@ -35,19 +38,11 @@ class NumberSuiteCommonPreferences {
   public constructor() {
     this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
 
-    const isSecondLocaleProvided = QueryStringMachine.containsKey( 'secondLocale' );
-    const isSecondLocaleValid = !!phet.chipper.strings[ NumberSuiteCommonQueryParameters.secondLocale! ] &&
-                                Object.keys( phet.chipper.strings ).length > 1;
+    this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
 
-    if ( isSecondLocaleProvided && !isSecondLocaleValid ) {
-      QueryStringMachine.addWarning( 'secondLocale', NumberSuiteCommonQueryParameters.secondLocale,
-        `Second locale doesn't exist: ${NumberSuiteCommonQueryParameters.secondLocale}` );
-      NumberSuiteCommonQueryParameters.secondLocale = phet.chipper.locale;
-    }
-
-    this.showSecondLocaleProperty = new BooleanProperty( isSecondLocaleProvided && isSecondLocaleValid );
-
-    this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale! as Locale );
+    this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale as Locale || localeProperty.value, {
+      validValues: availableRuntimeLocales
+    } );
 
     this.showLabOnesProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.showLabOnes );
 
