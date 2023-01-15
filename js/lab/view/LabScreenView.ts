@@ -67,7 +67,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.pieceLayer = new Node();
     const backgroundDragTargetNode = new Rectangle( this.layoutBounds ); // see CountingPlayAreaNode for doc
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/28 make file constants?
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 make file constants?
     const tenFrameCreatorPanelLeft = 143;
     const creatorNodeSpacing = 18;
 
@@ -205,7 +205,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     this.tenFrameNodes = [];
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/28 rename to addTenFrameNode and removeTenFrameNode
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 rename to addTenFrameNode and removeTenFrameNode
     model.tenFrames.addItemAddedListener( this.addTenFrame.bind( this ) );
     model.tenFrames.addItemRemovedListener( this.removeTenFrame.bind( this ) );
 

@@ -96,7 +96,7 @@ class CountingPlayAreaNode extends Node {
 
     super( options );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/28 TODO-TS Get rid of this binding pattern. Update function signatures in the attributes.
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 TODO-TS Get rid of this binding pattern. Update function signatures in the attributes.
 
     this.numberSplitListener = this.onNumberSplit.bind( this );
 
@@ -268,7 +268,7 @@ class CountingPlayAreaNode extends Node {
    * When the user drops a counting Object they were dragging, see if it can combine with any other nearby counting Objects.
    */
   public tryToCombineNumbers( draggedCountingObject: CountingObject ): void {
-    //TODO https://github.com/phetsims/number-suite-common/issues/28 This seems like a weird sidestep to try tenframes first and maybe be moved
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 This seems like a weird sidestep to try tenframes first and maybe be moved
     if ( this.tryToAddToTenFrame( draggedCountingObject ) ) {
       return;
     }
@@ -334,7 +334,7 @@ class CountingPlayAreaNode extends Node {
 
     const attachableDroppedTenFrameNodes = this.findAttachableTenFrameNodes( droppedNode, allDraggableTenFrameNodes );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/28 Docs and cleanup
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 Docs and cleanup
     if ( attachableDroppedTenFrameNodes.length ) {
       attachableDroppedTenFrameNodes.forEach( droppedTenFrameNode => {
         if ( !this.isCountingObjectContainedByTenFrame( droppedCountingObject ) ) {
@@ -364,7 +364,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * TODO https://github.com/phetsims/number-suite-common/issues/28 document
+   * TODO https://github.com/phetsims/number-suite-common/issues/29 document
    */
   private isCountingObjectContainedByTenFrame( countingObject: CountingObject ): boolean {
     let isContained = false;
@@ -378,7 +378,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * TODO https://github.com/phetsims/number-suite-common/issues/28 document
+   * TODO https://github.com/phetsims/number-suite-common/issues/29 document
    */
   private findAttachableTenFrameNodes( countingObjectNode: CountingObjectNode,
                                        allDraggableTenFrameNodes: DraggableTenFrameNode[] ): DraggableTenFrameNode[] {
