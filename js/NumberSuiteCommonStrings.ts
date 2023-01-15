@@ -9,9 +9,6 @@ import LinkableProperty from '../../axon/js/LinkableProperty.js';
 import numberSuiteCommon from './numberSuiteCommon.js';
 
 type StringsType = {
-  'number-play': {
-    'titleStringProperty': LinkableProperty<string>;
-  };
   'screen': {
     'tenStringProperty': LinkableProperty<string>;
     'twentyStringProperty': LinkableProperty<string>;
