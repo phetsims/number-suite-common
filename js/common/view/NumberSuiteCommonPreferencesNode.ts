@@ -60,7 +60,7 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
       controlNode: showSecondLocaleToggleSwitch
     } );
 
-    // TODO: factor out this string if we like this, https://github.com/phetsims/number-suite-common/issues/26
+    //TODO https://github.com/phetsims/number-suite-common/issues/28 factor out this string if we like this
     const loadAllHtmlText = new RichText(
       'To display a second language, run the <a href="{{url}}">“all” version</a> of Number Play.', {
         font: new PhetFont( 12 ),

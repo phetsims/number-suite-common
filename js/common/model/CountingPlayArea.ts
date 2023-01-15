@@ -161,7 +161,7 @@ class CountingPlayArea extends CountingCommonModel {
       targetScale: scale
     } );
 
-    // TODO: This is kind of a band-aid to keep the grouped objects' handles from sticking out of the top of the play https://github.com/phetsims/number-suite-common/issues/24
+    //TODO https://github.com/phetsims/number-suite-common/issues/28 This is kind of a band-aid to keep the grouped objects' handles from sticking out of the top of the play
     // area since they are not yet included in countingObject.localBounds above without a view created
     const playAreaBoundsMinY = this.groupingEnabledProperty.value ? 30 : 0;
 
@@ -172,7 +172,7 @@ class CountingPlayArea extends CountingCommonModel {
       .withMaxY( this.playAreaBoundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
     const countingObjectOriginBounds = countingObject.getOriginBounds( playAreaBounds );
 
-    // TODO: this algorithm does not take into account paper numbers that are on their way to a spot, and should https://github.com/phetsims/number-suite-common/issues/24
+    //TODO https://github.com/phetsims/number-suite-common/issues/28 this algorithm does not take into account paper numbers that are on their way to a spot, and should
     // be rewritten to be better and accommodate that constraint
     // looks for positions that are not overlapping with other playObjects in the play area
     while ( !destinationPosition ) {
@@ -211,8 +211,8 @@ class CountingPlayArea extends CountingCommonModel {
   /**
    * Finds the closest countingObject to their origin and animates it back over the bucket. If only countingObjects with
    * values greater than one exist, break them up and send their components with values of one back.
-   * TODO: Rename to something that indicates finding closest paper number to return https://github.com/phetsims/number-suite-common/issues/24
    */
+  //TODO https://github.com/phetsims/number-suite-common/issues/28 Rename to something that indicates finding closest paper number to return
   public returnCountingObjectToBucket(): void {
     assert && assert( this.countingObjects.lengthProperty.value > 0, 'countingObjects should exist in play area' );
     assert && assert( this.initialized, 'returnCountingObjectToBucket called before initialization' );
@@ -332,7 +332,8 @@ class CountingPlayArea extends CountingCommonModel {
     const numberOfColumns = 5; // rows
     const numberOfRows = this.sumProperty.range.max / numberOfColumns;
 
-    const xMargin = 88; // empirically determined to center group TODO: figure out why math isn't working for this https://github.com/phetsims/number-suite-common/issues/24
+    //TODO https://github.com/phetsims/number-suite-common/issues/28 figure out why math isn't working for this
+    const xMargin = 88; // empirically determined to center group
     const yMargin = CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
 
     const spots = [];
@@ -387,7 +388,7 @@ class CountingPlayArea extends CountingCommonModel {
    */
   public breakApartCountingObjects( stack = false ): void {
 
-    // TODO: cleanup and doc https://github.com/phetsims/number-suite-common/issues/24
+    //TODO https://github.com/phetsims/number-suite-common/issues/28 cleanup and doc
 
     const objectsToBreakDown = this.getCountingObjectsIncludedInSum();
     const startingCount = _.sum( objectsToBreakDown.map( x => x.numberValueProperty.value ) );
