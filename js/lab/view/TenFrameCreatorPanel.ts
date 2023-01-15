@@ -38,7 +38,7 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
 
     const creatorNodeBackground = new Rectangle( 0, 0,
       iconNode.width,
-      // TODO: Factor out with CountingObjectCreatorPanel
+      //TODO https://github.com/phetsims/number-suite-common/issues/28 Factor out with CountingObjectCreatorPanel
       CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
     );
     iconNode.center = creatorNodeBackground.center;

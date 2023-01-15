@@ -17,7 +17,7 @@ import Multilink from '../../../../axon/js/Multilink.js';
 import MissingVoiceWarningDialog from './MissingVoiceWarningDialog.js';
 
 // constants
-// TODO: Factor out with other buttons
+//TODO https://github.com/phetsims/number-suite-common/issues/28 Factor out with other buttons
 const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the size of the ResetAllButton, in screen coords
 
 class MissingVoiceWarningButton extends RectangularPushButton {

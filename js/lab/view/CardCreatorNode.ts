@@ -23,7 +23,7 @@ type SelfOptions = {
 };
 export type CardNodeOptions = SelfOptions;
 
-// TODO: add comments
+//TODO https://github.com/phetsims/number-suite-common/issues/28 add comments
 class CardCreatorNode extends Node {
 
   public constructor( screenView: LabScreenView<NumberSuiteCommonPreferences>, contentToCountPropertyMap: Map<SymbolType | number, TProperty<number>>,
