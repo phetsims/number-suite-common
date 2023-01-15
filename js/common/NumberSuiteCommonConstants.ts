@@ -62,7 +62,8 @@ const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
   20: NumberSuiteCommonStrings.twentyStringProperty
 };
 
-const NUMBER_SUITE_COMMON_STRING_KEY_PREFIX = 'NUMBER_SUITE_COMMON/';
+// RequireJS namespace, used for looking up translated strings
+const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
 
 const NumberSuiteCommonConstants = {
 
@@ -91,14 +92,13 @@ const NumberSuiteCommonConstants = {
    * Maps an integer to the translated word for that integer.
    */
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
-    const string = isPrimaryLocale ? NUMBER_TO_STRING_KEY_PRIMARY[ number ].value :
-                              numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_STRING_KEY_PREFIX}${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+    const string = isPrimaryLocale ?
+                   NUMBER_TO_STRING_KEY_PRIMARY[ number ].value :
+                   numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
     assert && assert( string, `no stringKey found for number=${number}` );
 
     return string;
   },
-
-  NUMBER_SUITE_COMMON_STRING_KEY_PREFIX: NUMBER_SUITE_COMMON_STRING_KEY_PREFIX,
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,
