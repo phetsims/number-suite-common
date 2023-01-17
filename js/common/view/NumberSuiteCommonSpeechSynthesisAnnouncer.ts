@@ -36,9 +36,14 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     this.secondaryLocaleVoiceEnabledProperty = new DerivedProperty( [ secondLocaleProperty, this.voiceProperty ],
       locale => this.testVoiceForLocale( locale ) );
 
-    // Voices may not be available on load or the list of voices may change - update if we get an indication that
-    // the list of available voices has changed.
+    // When the SpeechSynthesisAnnouncer becomes initialized or when voices change, update the voice used by this
+    // currently being used by this Announcer.
     this.voicesProperty.lazyLink( this.updateVoiceListener );
+    this.isInitializedProperty.link( initialized => {
+      if ( initialized ) {
+        this.updateVoice();
+      }
+    } );
   }
 
   /**
