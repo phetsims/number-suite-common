@@ -51,8 +51,6 @@ class CountingPlayArea extends CountingCommonModel {
 
   // contains any ten frames that are in the play area
   public readonly tenFrames: ObservableArray<TenFrame> | null;
-
-  // when the GroupLinkType is switched to no grouping, break apart any object groups
   public readonly groupingEnabledProperty: TReadOnlyProperty<boolean>;
 
   public constructor( highestCount: number, groupingEnabledProperty: TReadOnlyProperty<boolean>, name: string,
@@ -75,6 +73,7 @@ class CountingPlayArea extends CountingCommonModel {
 
     this.tenFrames = options.tenFrames;
 
+    // when grouping is turned off, break apart any object groups
     this.groupingEnabledProperty.lazyLink( groupingEnabled => {
       !groupingEnabled && this.breakApartCountingObjects( true );
     } );

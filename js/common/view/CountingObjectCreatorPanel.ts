@@ -64,7 +64,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
     );
 
     const countingCreatorNode = new CountingCreatorNode( 0, countingPlayAreaNode, playArea.sumProperty,
-      playArea.resetEmitter, countingPlayAreaNode.addAndDragNumber.bind( countingPlayAreaNode ), {
+      playArea.resetEmitter, countingPlayAreaNode.addAndDragCountingObject.bind( countingPlayAreaNode ), {
       updateCurrentNumber: true,
       countingObjectTypeProperty: countingPlayAreaNode.countingObjectTypeProperty,
       groupingEnabledProperty: countingPlayAreaNode.playArea.groupingEnabledProperty,

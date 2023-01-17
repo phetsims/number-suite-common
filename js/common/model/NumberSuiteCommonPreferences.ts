@@ -29,11 +29,11 @@ class NumberSuiteCommonPreferences {
   public readonly showLabOnesProperty: Property<boolean>;
   public readonly readAloudProperty: Property<boolean>;
 
-  // True when the second locale can be turned on, because there are sufficient locales in the runtime.
-  public static readonly SECOND_LOCALE_SELECTION_AVAILABLE = availableRuntimeLocales.length > 1;
-
   // helper Properties derived from preference Properties
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
+
+  // True when the second locale can be turned on, because there are sufficient locales in the runtime.
+  public static readonly SECOND_LOCALE_SELECTION_AVAILABLE = availableRuntimeLocales.length > 1;
 
   public constructor() {
     this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
