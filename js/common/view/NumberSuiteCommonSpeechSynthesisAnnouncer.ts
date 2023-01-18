@@ -55,7 +55,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     assert && assert( locale, `locale does not exist: ${locale}` );
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
-    if ( this.initialized ) {
+    if ( this.initialized && this.voicesProperty.value.length > 0 ) {
 
       const translatedVoices = _.filter( this.getPrioritizedVoices(), voice => {
         return voice.lang.includes( locale );
