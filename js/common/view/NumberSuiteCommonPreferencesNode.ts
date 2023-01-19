@@ -17,6 +17,8 @@ import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
+import LabScreen from '../../lab/LabScreen.js';
+import Screen from '../../../../joist/js/Screen.js';
 
 // constants
 const FONT_SIZE = 16;
@@ -102,6 +104,16 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
     }, V_BOX_OPTIONS ) );
 
     this.children = [ leftControls, rightControls ];
+
+    // disable showLabOnesControl if there is no LabScreen
+    this.showLabOnesControl.enabled = NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen );
+  }
+
+  /**
+   * Determines whether the sim is running with a screen of the specified type.
+   */
+  protected static hasScreenType( constructor: new ( ...args: IntentionalAny[] ) => Screen ): boolean {
+    return ( _.find( phet.joist.sim.screens, screen => screen instanceof constructor ) !== undefined );
   }
 }
 
