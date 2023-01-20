@@ -11,6 +11,18 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
+import { CreditsData } from '../../../joist/js/CreditsNode.js';
+
+
+// Credits shared between Number Play and Number Compare
+const CREDITS: CreditsData = {
+  leadDesign: 'Amanda McGarry',
+  softwareDevelopment: 'Chris Klusendorf, Luisa Vargas',
+  team: 'Sylvia Celedón-Pattichis, Ariel Paul, Kathy Perkins, Ian Whitacre',
+  qualityAssurance: 'Clifford Hardin, Emily Miller, Nancy Salpepi, Kathryn Woessner',
+  graphicArts: 'Mariah Hermsmeyer',
+  thanks: 'Andrea Barraugh (Math Transformations), Kristin Donley, Bertha Orona'
+};
 
 // Maps a number to the key used to look up the translated word that corresponds to the number.
 const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
@@ -87,6 +99,8 @@ const NumberSuiteCommonConstants = {
 
   // options for all AccordionBox instances
   ACCORDION_BOX_TITLE_FONT: new PhetFont( 16 ),
+
+  CREDITS: CREDITS,
 
   /**
    * Maps an integer to the translated word for that integer.
