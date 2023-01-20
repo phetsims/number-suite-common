@@ -39,7 +39,9 @@ type CountingPlayAreaNodeOptions = SelfOptions;
 
 // constants
 const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5; // empirically determined to be an appropriate length for just 10s and 1s, in screen coords
-const COUNTING_OBJECT_REPEL_DISTANCE = 10; // empirically determined to look nice, in screen coords
+
+const COUNTING_OBJECT_REPEL_DISTANCE = 10; // empirically determined to look nice, in screen coords, repel this much
+const COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN = 7; // If object are closer than this, than commence repel
 
 class CountingPlayAreaNode extends Node {
 
@@ -308,7 +310,7 @@ class CountingPlayAreaNode extends Node {
 
       // if grouping is turned off, repel away
       if ( !this.playArea.groupingEnabledProperty.value || !droppedCountingObject.groupingEnabledProperty.value ) {
-        if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < 7 ) {
+        if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN ) {
           this.playArea.repelAway( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject, () => {
             return {
               left: -COUNTING_OBJECT_REPEL_DISTANCE,
