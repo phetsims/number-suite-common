@@ -65,7 +65,7 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
 
     //TODO https://github.com/phetsims/number-suite-common/issues/35 make translatable, support ?allowLinks
     const loadAllHtmlText = new RichText(
-      'To display a second language, run the <a href="{{url}}">“all” version</a> of Number Play.', {
+      'To display a second language, run <a href="{{url}}">the “all” version</a> of Number Play.', {
         font: new PhetFont( 12 ),
         links: { url: 'https://phet.colorado.edu/sims/html/number-play/latest/number-play_all.html' },
         visible: false
