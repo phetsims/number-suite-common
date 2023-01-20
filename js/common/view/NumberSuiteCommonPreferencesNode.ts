@@ -19,6 +19,7 @@ import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import LabScreen from '../../lab/LabScreen.js';
 import Screen from '../../../../joist/js/Screen.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 
 // constants
 const FONT_SIZE = 16;
