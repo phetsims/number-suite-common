@@ -23,7 +23,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
-export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPreferences,
+export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
   A extends NumberSuiteCommonSpeechSynthesisAnnouncer> extends Node {
 
   public constructor( preferences: T, speechSynthesisAnnouncer: A, screens: number[],
@@ -91,4 +91,4 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
   }
 }
 
-numberSuiteCommon.register( 'ReadAloudPreferenceControl', ReadAloudPreferenceControl );
+numberSuiteCommon.register( 'ReadAloudControl', ReadAloudControl );
