@@ -14,7 +14,6 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import NumberSuiteCommonPreferencesNode from './NumberSuiteCommonPreferencesNode.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
@@ -22,6 +21,7 @@ import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeech
 import Multilink from '../../../../axon/js/Multilink.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPreferences,
   A extends NumberSuiteCommonSpeechSynthesisAnnouncer> extends Node {
@@ -32,12 +32,17 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
 
     const toggleSwitch = new ToggleSwitch( preferences.readAloudProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
+
     const control = new PreferencesControl( {
-      labelNode: new Text( labelProperty, NumberSuiteCommonPreferencesNode.CONTROL_TEXT_BOLD_OPTIONS ),
-      descriptionNode: new Text( NumberSuiteCommonStrings.readAloudDescriptionStringProperty,
-        NumberSuiteCommonPreferencesNode.CONTROL_TEXT_OPTIONS ),
-      ySpacing: NumberSuiteCommonPreferencesNode.CONTROL_DESCRIPTION_SPACING,
-      controlNode: toggleSwitch
+      labelNode: new Text( labelProperty, {
+        fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE,
+        fontWeight: 'bold'
+      } ),
+      descriptionNode: new Text( NumberSuiteCommonStrings.readAloudDescriptionStringProperty, {
+        fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE
+      } ),
+      controlNode: toggleSwitch,
+      ySpacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING
     } );
     this.addChild( control );
 

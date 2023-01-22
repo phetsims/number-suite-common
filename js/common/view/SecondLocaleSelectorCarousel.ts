@@ -7,19 +7,31 @@
  */
 
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import Carousel from '../../../../sun/js/Carousel.js';
-import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
+import Carousel, { CarouselOptions } from '../../../../sun/js/Carousel.js';
+import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import { GridBox } from '../../../../scenery/js/imports.js';
 import LanguageSelectionNode from '../../../../joist/js/preferences/LanguageSelectionNode.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
+import Property from '../../../../axon/js/Property.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
-class SecondLocaleSelectorCarousel<T extends NumberSuiteCommonPreferences> extends Carousel {
+type SelfOptions = EmptySelfOptions;
 
-  public constructor( preferences: T ) {
+type SecondLocaleSelectorCarouselOptions = SelfOptions & CarouselOptions;
+
+class SecondLocaleSelectorCarousel extends Carousel {
+
+  public constructor( secondLocaleProperty: Property<Locale>, providedOptions?: SecondLocaleSelectorCarouselOptions ) {
+
+    const options = optionize<SecondLocaleSelectorCarouselOptions, SelfOptions, CarouselOptions>()( {
+      itemsPerPage: 1,
+      spacing: 0,
+      margin: 0,
+      orientation: 'vertical'
+    }, providedOptions );
 
     const createInteractiveLocales = () => {
       return localeProperty.validValues!.map( locale => {
-        return new LanguageSelectionNode( preferences.secondLocaleProperty, locale );
+        return new LanguageSelectionNode( secondLocaleProperty, locale );
       } );
     };
 
@@ -37,16 +49,7 @@ class SecondLocaleSelectorCarousel<T extends NumberSuiteCommonPreferences> exten
       } );
     } );
 
-    super( carouselItems, {
-      itemsPerPage: 1,
-      spacing: 0,
-      margin: 0,
-      orientation: 'vertical'
-    } );
-
-    preferences.showSecondLocaleProperty.link( showSecondLocale => {
-      this.visible = showSecondLocale;
-    } );
+    super( carouselItems, options );
   }
 }
 

@@ -102,7 +102,12 @@ const NumberSuiteCommonConstants = {
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,
-  COUNTING_OBJECT_SCALE: 1
+  COUNTING_OBJECT_SCALE: 1,
+
+  // Preferences dialog controls
+  PREFERENCES_FONT_SIZE: 16,
+  PREFERENCES_VBOX_SPACING: 15,
+  PREFERENCES_DESCRIPTION_Y_SPACING: 5
 };
 
 numberSuiteCommon.register( 'NumberSuiteCommonConstants', NumberSuiteCommonConstants );
