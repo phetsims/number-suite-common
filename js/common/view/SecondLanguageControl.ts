@@ -129,6 +129,11 @@ class AdditionalDescriptionNode extends VBox {
       align: 'left'
     } );
   }
+
+  public override dispose(): void {
+    assert && assert( false, 'dispose is not supported, exists for the lifetime of the sim' );
+    super.dispose();
+  }
 }
 
 numberSuiteCommon.register( 'SecondLanguageControl', SecondLanguageControl );
