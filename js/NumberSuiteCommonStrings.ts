@@ -35,7 +35,6 @@ type StringsType = {
   'twentyStringProperty': LinkableProperty<string>;
   'totalStringProperty': LinkableProperty<string>;
   'objectsStringProperty': LinkableProperty<string>;
-  'readAloudDescriptionStringProperty': LinkableProperty<string>;
   'secondLanguageStringProperty': LinkableProperty<string>;
   'secondLanguageDescriptionStringProperty': LinkableProperty<string>;
   'toDisplayASecondLanguageDescriptionStringProperty': LinkableProperty<string>;

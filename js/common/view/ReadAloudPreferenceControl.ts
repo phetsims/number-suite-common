@@ -26,7 +26,8 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPreferences,
   A extends NumberSuiteCommonSpeechSynthesisAnnouncer> extends Node {
 
-  public constructor( preferences: T, speechSynthesisAnnouncer: A, screens: number[], labelProperty: TReadOnlyProperty<string> ) {
+  public constructor( preferences: T, speechSynthesisAnnouncer: A, screens: number[],
+                      labelStringProperty: TReadOnlyProperty<string>, descriptionStringProperty: TReadOnlyProperty<string> ) {
 
     super();
 
@@ -34,11 +35,11 @@ export default class ReadAloudPreferenceControl<T extends NumberSuiteCommonPrefe
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     const control = new PreferencesControl( {
-      labelNode: new Text( labelProperty, {
+      labelNode: new Text( labelStringProperty, {
         fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE,
         fontWeight: 'bold'
       } ),
-      descriptionNode: new Text( NumberSuiteCommonStrings.readAloudDescriptionStringProperty, {
+      descriptionNode: new Text( descriptionStringProperty, {
         fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE
       } ),
       controlNode: toggleSwitch,
