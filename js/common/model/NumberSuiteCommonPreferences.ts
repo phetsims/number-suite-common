@@ -15,7 +15,7 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import localeProperty, { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
 
-// TODO: type string map, perhaps getStringModule.TStringModule? https://github.com/phetsims/number-suite-common/issues/18
+//TODO https://github.com/phetsims/number-suite-common/issues/18 type string map, perhaps getStringModule.TStringModule?
 //TODO https://github.com/phetsims/number-suite-common/issues/18 replace any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type SecondLocaleStrings = any;
