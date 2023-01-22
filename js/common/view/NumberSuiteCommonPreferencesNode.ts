@@ -7,7 +7,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import { HBox, Node, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { allowLinksProperty, HBox, Node, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
@@ -20,6 +20,8 @@ import PreferencesDialogConstants from '../../../../joist/js/preferences/Prefere
 import LabScreen from '../../lab/LabScreen.js';
 import Screen from '../../../../joist/js/Screen.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import { availableRuntimeLocales } from '../../../../joist/js/i18n/localeProperty.js';
 
 // constants
 const FONT_SIZE = 16;
@@ -36,8 +38,13 @@ const V_BOX_OPTIONS: VBoxOptions = {
   align: 'left',
   spacing: V_BOX_SPACING
 };
+const ALL_URL = 'https://phet.colorado.edu/sims/html/number-play/latest/number-play_all.html';
+
+// Number of locales that are available in the runtime.
+const NUMBER_OF_LOCALES = availableRuntimeLocales.length;
 
 export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommonPreferences> extends HBox {
+
   public static readonly FONT_SIZE = FONT_SIZE;
   public static readonly CONTROL_TEXT_OPTIONS = CONTROL_TEXT_OPTIONS;
   public static readonly CONTROL_TEXT_BOLD_OPTIONS = CONTROL_TEXT_BOLD_OPTIONS;
@@ -56,31 +63,41 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
 
     const showSecondLocaleToggleSwitch = new ToggleSwitch( preferences.showSecondLocaleProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
+
     const showSecondLocaleControl = new PreferencesControl( {
       labelNode: new Text( NumberSuiteCommonStrings.secondLanguageStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
       descriptionNode: new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
+      enabled: ( NUMBER_OF_LOCALES > 1 ), // disabled if we do not have multiple locales available
       ySpacing: CONTROL_DESCRIPTION_SPACING,
       controlNode: showSecondLocaleToggleSwitch
     } );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/35 make translatable, support ?allowLinks
-    const loadAllHtmlText = new RichText(
-      'To display a second language, run <a href="{{url}}">the “all” version</a> of Number Play.', {
-        font: new PhetFont( 12 ),
-        links: { url: 'https://phet.colorado.edu/sims/html/number-play/latest/number-play_all.html' },
-        visible: false
-      } );
-    this.showSecondLocaleControl = new VBox( {
-      children: [ showSecondLocaleControl, loadAllHtmlText ],
+    const toDisplayASecondLanguageText = new RichText( NumberSuiteCommonStrings.toDisplayASecondLanguageDescriptionStringProperty, {
+      font: new PhetFont( 12 )
+    } );
+
+    // If links are not allowed, show the URL as plain text.
+    const urlStringProperty = new DerivedProperty( [ allowLinksProperty ],
+      allowLinks => allowLinks ? `<a href="{{url}}">${ALL_URL}</a>` : ALL_URL
+    );
+    const urlText = new RichText( urlStringProperty, {
+      links: { url: ALL_URL },
+      font: new PhetFont( 12 )
+    } );
+
+    // Additional description that is visible when the Second Language control is disabled.
+    const additionalDescription = new VBox( {
+      visible: !showSecondLocaleControl.enabled,
+      children: [ toDisplayASecondLanguageText, urlText ],
       spacing: CONTROL_DESCRIPTION_SPACING,
       align: 'left'
     } );
 
-    // disable the second locale toggle and show the all_html link if there's only one locale available
-    if ( !NumberSuiteCommonPreferences.SECOND_LOCALE_SELECTION_AVAILABLE ) {
-      showSecondLocaleControl.enabled = false;
-      loadAllHtmlText.visible = true;
-    }
+    this.showSecondLocaleControl = new VBox( {
+      children: [ showSecondLocaleControl, additionalDescription ],
+      spacing: CONTROL_DESCRIPTION_SPACING,
+      align: 'left'
+    } );
 
     const secondLocaleSelectorNode = new SecondLocaleSelectorCarousel( preferences );
 
@@ -100,6 +117,7 @@ export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberS
       ySpacing: CONTROL_DESCRIPTION_SPACING,
       controlNode: showLabOnesToggleSwitch
     } );
+
     const rightControls = new VBox( combineOptions<VBoxOptions>( {
       children: [ ...additionalControls, this.showLabOnesControl ]
     }, V_BOX_OPTIONS ) );

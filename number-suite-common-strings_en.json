@@ -80,6 +80,9 @@
   "secondLanguageDescription": {
     "value": "Select a second language to support multilingual learning."
   },
+  "toDisplayASecondLanguageDescription": {
+    "value": "To display a second language, run the multilingual version of this simulation at:"
+  },
   "showOnes": {
     "value": "Show Ones"
   },
