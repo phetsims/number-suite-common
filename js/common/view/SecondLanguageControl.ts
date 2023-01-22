@@ -8,7 +8,6 @@
  */
 
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import SecondLocaleSelectorCarousel from './SecondLocaleSelectorCarousel.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import { allowLinksProperty, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
@@ -17,10 +16,12 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty, { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import Carousel from '../../../../sun/js/Carousel.js';
+import LanguageSelectionNode from '../../../../joist/js/preferences/LanguageSelectionNode.js';
 
 const ALL_URL = 'https://phet.colorado.edu/sims/html/number-play/latest/number-play_all.html';
 
@@ -65,8 +66,14 @@ export default class SecondLanguageControl extends VBox {
     const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled );
 
     // Carousel for choosing the second language.
-    const secondLanguageCarousel = new SecondLocaleSelectorCarousel( secondLocaleProperty, {
-      visibleProperty: showSecondLocaleProperty
+    const carouselItems = localeProperty.validValues!.map(
+      locale => new LanguageSelectionNode( secondLocaleProperty, locale ) );
+    const secondLanguageCarousel = new Carousel( carouselItems, {
+      visibleProperty: showSecondLocaleProperty,
+      itemsPerPage: 10,
+      spacing: 6,
+      margin: 5,
+      orientation: 'vertical'
     } );
 
     options.children = [
