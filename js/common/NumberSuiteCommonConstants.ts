@@ -92,12 +92,18 @@ const NumberSuiteCommonConstants = {
    * Maps an integer to the translated word for that integer.
    */
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
-    const string = isPrimaryLocale ?
-                   NUMBER_TO_STRING_KEY_PRIMARY[ number ].value :
-                   numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
-    assert && assert( string, `no stringKey found for number=${number}` );
 
-    return string;
+    // The word for number in the primary language
+    const primaryWord = NUMBER_TO_STRING_KEY_PRIMARY[ number ].value;
+
+    // The word for number in the secondary language
+    const secondaryWord = numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+
+    // Fallback to primaryWord if there is no secondary translation.
+    const word = ( !isPrimaryLocale && secondaryWord ) ? secondaryWord : primaryWord;
+    assert && assert( word, `no word found for number=${number}` );
+
+    return word;
   },
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
