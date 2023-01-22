@@ -66,7 +66,7 @@ export default class SecondLanguageControl extends VBox {
     const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled );
 
     // Carousel for choosing the second language.
-    const carouselItems = localeProperty.validValues!.map(
+    const carouselItems: LanguageSelectionNode[] = localeProperty.validValues!.map(
       locale => new LanguageSelectionNode( secondLocaleProperty, locale ) );
     const secondLanguageCarousel = new Carousel( carouselItems, {
       visibleProperty: showSecondLocaleProperty,
@@ -75,6 +75,11 @@ export default class SecondLanguageControl extends VBox {
       margin: 5,
       orientation: 'vertical'
     } );
+
+    // Scroll the carousel so that the initial selection is shown. See https://github.com/phetsims/number-suite-common/issues/38
+    const selectedNode = _.find( carouselItems, item => item.locale === secondLocaleProperty.value )!;
+    assert && assert( selectedNode );
+    secondLanguageCarousel.scrollToItem( selectedNode );
 
     options.children = [
       new VBox( {
