@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * A toggle control in the Preferences Dialog that controls whether the sim automatically reads the current total out loud
