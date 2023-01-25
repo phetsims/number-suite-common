@@ -7,6 +7,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstants.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
@@ -54,7 +55,7 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
     }, providedOptions );
 
     // update the voice is when the primary locale, secondary locale, or which of the two we are choosing changes.
-    Multilink.multilink( [ isPrimaryLocaleProperty, phet.joist.localeProperty, preferences.secondLocaleProperty ],
+    Multilink.multilink( [ isPrimaryLocaleProperty, localeProperty, preferences.secondLocaleProperty ],
       isPrimaryLocale => {
         speechSynthesisAnnouncer.updateVoice( isPrimaryLocale );
       } );
@@ -64,7 +65,7 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
 
       // read out a number by integer => word or just read out a string
       speechUtterance.alert = options.stringProperty ? options.stringProperty.value :
-                              NumberSuiteCommonConstants.numberToString( preferences.secondLocaleStringsProperty.value,
+                              NumberSuiteCommonConstants.numberToWord( preferences.secondLocaleStringsProperty.value,
                                 options.numberProperty.value, isPrimaryLocaleProperty.value );
 
       speechSynthesisAnnouncer.cancelUtterance( speechUtterance );

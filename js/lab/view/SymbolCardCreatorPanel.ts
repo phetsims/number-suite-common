@@ -23,7 +23,6 @@ const SPACING = 10;
 
 class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
 
-  // create a map from SymbolType to countProperty
   private readonly symbolTypeToCountPropertyMap: Map<SymbolType, Property<number>>;
 
   // removes and disposes all types of symbol nodes

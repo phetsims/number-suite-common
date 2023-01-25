@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * Panel that contains a stack of  paper ones or objects, which can be clicked or dragged to create draggable
@@ -38,7 +38,7 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
 
     const creatorNodeBackground = new Rectangle( 0, 0,
       iconNode.width,
-      // TODO: Factor out with CountingObjectCreatorPanel
+      //TODO https://github.com/phetsims/number-suite-common/issues/29 Factor out with CountingObjectCreatorPanel
       CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
     );
     iconNode.center = creatorNodeBackground.center;

@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * NumberSuiteCommonPreferencesNode is the user interface for sim-specific preferences for all Number suite sims,
@@ -7,101 +7,62 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import { HBox, Node, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
-import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { HBox, HBoxOptions, Node, VBox } from '../../../../scenery/js/imports.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
-import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import SecondLocaleSelectorCarousel from './SecondLocaleSelectorCarousel.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
-import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
+import Screen from '../../../../joist/js/Screen.js';
+import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import SecondLanguageControl from './SecondLanguageControl.js';
+import ShowOnesControl from './ShowOnesControl.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import LabScreen from '../../lab/LabScreen.js';
 
-// constants
-const FONT_SIZE = 16;
-const CONTROL_TEXT_OPTIONS = {
-  fontSize: FONT_SIZE
-};
-const CONTROL_TEXT_BOLD_OPTIONS = {
-  fontSize: FONT_SIZE,
-  fontWeight: 'bold'
-};
-const CONTROL_DESCRIPTION_SPACING = 5;
-const V_BOX_SPACING = 15;
-const V_BOX_OPTIONS: VBoxOptions = {
-  align: 'left',
-  spacing: V_BOX_SPACING
+type SelfOptions = {
+  secondLanguageControlEnabled?: boolean; // should the 'Second Language' control be enabled?
 };
 
-export default abstract class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommonPreferences> extends HBox {
-  public static readonly FONT_SIZE = FONT_SIZE;
-  public static readonly CONTROL_TEXT_OPTIONS = CONTROL_TEXT_OPTIONS;
-  public static readonly CONTROL_TEXT_BOLD_OPTIONS = CONTROL_TEXT_BOLD_OPTIONS;
-  public static readonly CONTROL_DESCRIPTION_SPACING = CONTROL_DESCRIPTION_SPACING;
-  public static readonly V_BOX_SPACING = V_BOX_SPACING;
-  public static readonly V_BOX_OPTIONS = V_BOX_OPTIONS;
-  protected readonly showSecondLocaleControl: Node;
-  protected readonly showLabOnesControl: Node;
+export type NumberSuiteCommonPreferencesNodeOptions = SelfOptions & StrictOmit<HBoxOptions, 'children'>;
 
-  protected constructor( preferences: T, additionalControls: Node[] ) {
+export default class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommonPreferences> extends HBox {
 
-    super( {
+  protected constructor( preferences: T, additionalRightControls: Node[], providedOptions?: NumberSuiteCommonPreferencesNodeOptions ) {
+
+    const options = optionize<NumberSuiteCommonPreferencesNodeOptions, SelfOptions, HBoxOptions>()( {
+
+      // SelfOptions
+      secondLanguageControlEnabled: true,
+
+      // HBoxOptions
       spacing: 40,
       align: 'top'
+    }, providedOptions );
+
+    const secondLanguageControl = new SecondLanguageControl( preferences.showSecondLocaleProperty, preferences.secondLocaleProperty, {
+      enabled: options.secondLanguageControlEnabled
     } );
 
-    const showSecondLocaleToggleSwitch = new ToggleSwitch( preferences.showSecondLocaleProperty, false, true,
-      PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
-    const showSecondLocaleControl = new PreferencesControl( {
-      labelNode: new Text( NumberSuiteCommonStrings.secondLanguageStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
-      descriptionNode: new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
-      ySpacing: CONTROL_DESCRIPTION_SPACING,
-      controlNode: showSecondLocaleToggleSwitch
+    const showOnesControl = new ShowOnesControl( preferences.showLabOnesProperty, {
+      enabled: NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen )
     } );
 
-    // TODO: factor out this string if we like this
-    const loadAllHtmlText = new RichText(
-      'To display a second language, run the <a href="{{url}}">“all” version</a> of Number Play.', {
-        font: new PhetFont( 12 ),
-        links: { url: 'https://phet.colorado.edu/sims/html/number-play/latest/number-play_all.html' },
-        visible: false
-      } );
-    this.showSecondLocaleControl = new VBox( {
-      children: [ showSecondLocaleControl, loadAllHtmlText ],
-      spacing: CONTROL_DESCRIPTION_SPACING,
-      align: 'left'
+    const rightControls = new VBox( {
+      children: [ ...additionalRightControls, showOnesControl ],
+      align: 'left',
+      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING
     } );
 
-    // disable the second locale toggle and show the all_html link if there's only one locale available
-    if ( Object.keys( phet.chipper.strings ).length < 2 ) {
-      showSecondLocaleToggleSwitch.enabled = false;
-      loadAllHtmlText.visible = true;
-    }
+    options.children = [ secondLanguageControl, rightControls ];
 
-    const secondLocaleSelectorNode = new SecondLocaleSelectorCarousel( preferences );
+    super( options );
+  }
 
-    const leftControls = new VBox( {
-      children: [ this.showSecondLocaleControl, secondLocaleSelectorNode ],
-      excludeInvisibleChildrenFromBounds: false,
-      align: 'center',
-      spacing: V_BOX_SPACING
-    } );
-
-    const showLabOnesToggleSwitch = new ToggleSwitch( preferences.showLabOnesProperty, false, true,
-      PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
-
-    this.showLabOnesControl = new PreferencesControl( {
-      labelNode: new Text( NumberSuiteCommonStrings.showOnesStringProperty, CONTROL_TEXT_BOLD_OPTIONS ),
-      descriptionNode: new Text( NumberSuiteCommonStrings.showOnesDescriptionStringProperty, CONTROL_TEXT_OPTIONS ),
-      ySpacing: CONTROL_DESCRIPTION_SPACING,
-      controlNode: showLabOnesToggleSwitch
-    } );
-    const rightControls = new VBox( combineOptions<VBoxOptions>( {
-      children: [ ...additionalControls, this.showLabOnesControl ]
-    }, V_BOX_OPTIONS ) );
-
-    this.children = [ leftControls, rightControls ];
+  /**
+   * Determines whether the sim is running with a screen of the specified type.
+   */
+  protected static hasScreenType( constructor: new ( ...args: IntentionalAny[] ) => Screen ): boolean {
+    return ( _.find( phet.joist.sim.screens, screen => screen instanceof constructor ) !== undefined );
   }
 }
 

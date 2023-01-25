@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * A CardNode with an inequality symbol on it.
@@ -13,7 +13,7 @@ import { Text } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CardNode, { CardNodeOptions } from './CardNode.js';
 
-// TODO: This should be in its own file, not exported as a type here.
+//TODO https://github.com/phetsims/number-suite-common/issues/29 This should be in its own file, not exported as a type here.
 export type SymbolType = '<' | '=' | '>' | '+' | '-';
 type SelfOptions = {
   symbolType: SymbolType;

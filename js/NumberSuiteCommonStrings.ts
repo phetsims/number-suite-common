@@ -35,10 +35,9 @@ type StringsType = {
   'twentyStringProperty': LinkableProperty<string>;
   'totalStringProperty': LinkableProperty<string>;
   'objectsStringProperty': LinkableProperty<string>;
-  'languageStringProperty': LinkableProperty<string>;
-  'readAloudDescriptionStringProperty': LinkableProperty<string>;
   'secondLanguageStringProperty': LinkableProperty<string>;
   'secondLanguageDescriptionStringProperty': LinkableProperty<string>;
+  'toDisplayASecondLanguageDescriptionStringProperty': LinkableProperty<string>;
   'showOnesStringProperty': LinkableProperty<string>;
   'showOnesDescriptionStringProperty': LinkableProperty<string>;
   'noDeviceFoundDescriptionStringProperty': LinkableProperty<string>;

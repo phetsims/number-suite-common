@@ -39,7 +39,7 @@ class TenFrameNode extends Node {
 
   public readonly numberOfTenFrames: number;
 
-  // create and add a layer for the dots
+  // a Node layer for the dots
   private readonly dotsLayer: Node;
 
   // the center of every dot spot available

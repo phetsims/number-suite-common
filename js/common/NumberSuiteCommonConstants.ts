@@ -6,16 +6,14 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import LinkableProperty from '../../../axon/js/LinkableProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
-import IntentionalAny from '../../../phet-core/js/types/IntentionalAny.js';
+import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 
-// types
-type NumberToString = Record<number, string>;
-
-// constants used for other constants
-const NUMBER_TO_STRING_VALUE = {
+// Maps a number to the key used to look up the translated word that corresponds to the number.
+const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   0: 'zero',
   1: 'one',
   2: 'two',
@@ -37,10 +35,35 @@ const NUMBER_TO_STRING_VALUE = {
   18: 'eighteen',
   19: 'nineteen',
   20: 'twenty'
-} as NumberToString;
+} as Record<number, string>;
 
-// TODO: Move strings from number-play to number-suite-common so we use NSC prefix here instead
-const NUMBER_PLAY_STRING_KEY_PREFIX = 'NUMBER_PLAY/';
+
+const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
+  0: NumberSuiteCommonStrings.zeroStringProperty,
+  1: NumberSuiteCommonStrings.oneStringProperty,
+  2: NumberSuiteCommonStrings.twoStringProperty,
+  3: NumberSuiteCommonStrings.threeStringProperty,
+  4: NumberSuiteCommonStrings.fourStringProperty,
+  5: NumberSuiteCommonStrings.fiveStringProperty,
+  6: NumberSuiteCommonStrings.sixStringProperty,
+  7: NumberSuiteCommonStrings.sevenStringProperty,
+  8: NumberSuiteCommonStrings.eightStringProperty,
+  9: NumberSuiteCommonStrings.nineStringProperty,
+  10: NumberSuiteCommonStrings.tenStringProperty,
+  11: NumberSuiteCommonStrings.elevenStringProperty,
+  12: NumberSuiteCommonStrings.twelveStringProperty,
+  13: NumberSuiteCommonStrings.thirteenStringProperty,
+  14: NumberSuiteCommonStrings.fourteenStringProperty,
+  15: NumberSuiteCommonStrings.fifteenStringProperty,
+  16: NumberSuiteCommonStrings.sixteenStringProperty,
+  17: NumberSuiteCommonStrings.seventeenStringProperty,
+  18: NumberSuiteCommonStrings.eighteenStringProperty,
+  19: NumberSuiteCommonStrings.nineteenStringProperty,
+  20: NumberSuiteCommonStrings.twentyStringProperty
+};
+
+// RequireJS namespace, used for looking up translated strings
+const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
 
 const NumberSuiteCommonConstants = {
 
@@ -65,22 +88,32 @@ const NumberSuiteCommonConstants = {
   // options for all AccordionBox instances
   ACCORDION_BOX_TITLE_FONT: new PhetFont( 16 ),
 
-  // map number values to their corresponding string
-  // TODO: type string map
-  numberToString: ( numberPlaySecondaryStrings: IntentionalAny, number: number, isPrimaryLocale: boolean ): string => {
-    const stringKey = NUMBER_TO_STRING_VALUE[ number ] as keyof typeof NumberSuiteCommonStrings;
-    assert && assert( stringKey, `no stringKey found for number=${number}` );
+  /**
+   * Maps an integer to the translated word for that integer.
+   */
+  numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
 
-    // TODO: This is relying on NumberSuiteCommonStrings having non-dynamic string keys at runtime. Is that okay?
-    return isPrimaryLocale ? NumberSuiteCommonStrings[ stringKey ] :
-           numberPlaySecondaryStrings[ `${NUMBER_PLAY_STRING_KEY_PREFIX}${stringKey}` ];
+    // The word for number in the primary language
+    const primaryWord = NUMBER_TO_STRING_KEY_PRIMARY[ number ].value;
+
+    // The word for number in the secondary language
+    const secondaryWord = numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+
+    // Fallback to primaryWord if there is no secondary translation.
+    const word = ( !isPrimaryLocale && secondaryWord ) ? secondaryWord : primaryWord;
+    assert && assert( word, `no word found for number=${number}` );
+
+    return word;
   },
-
-  NUMBER_PLAY_STRING_KEY_PREFIX: NUMBER_PLAY_STRING_KEY_PREFIX,
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,
-  COUNTING_OBJECT_SCALE: 1
+  COUNTING_OBJECT_SCALE: 1,
+
+  // Preferences dialog controls
+  PREFERENCES_FONT_SIZE: 16,
+  PREFERENCES_VBOX_SPACING: 15,
+  PREFERENCES_DESCRIPTION_Y_SPACING: 5
 };
 
 numberSuiteCommon.register( 'NumberSuiteCommonConstants', NumberSuiteCommonConstants );

@@ -39,40 +39,50 @@ type CountingPlayAreaNodeOptions = SelfOptions;
 
 // constants
 const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5; // empirically determined to be an appropriate length for just 10s and 1s, in screen coords
-const COUNTING_OBJECT_REPEL_DISTANCE = 10; // empirically determined to look nice, in screen coords
+
+const COUNTING_OBJECT_REPEL_DISTANCE = 10; // empirically determined to look nice, in screen coords, repel this much
+const COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN = 7; // If object are closer than this, than commence repel
 
 class CountingPlayAreaNode extends Node {
 
-  // Called with function( countingObjectNode ) on number splits
-  private readonly numberSplitListener: ( countingObjectNode: CountingObjectNode ) => void;
+  // called when a countingObjectNode is split, see onCountingObjectNodeSplit
+  private readonly splitListener: ( countingObjectNode: CountingObjectNode ) => void;
 
-  // Called with function( countingObjectNode ) when a number begins to be interacted with.
-  private readonly numberInteractionListener: ( countingObjectNode: CountingObjectNode ) => void;
+  // called when a countingObjectNode begins to be interacted with, see onNumberInteractionStarted
+  private readonly interactionListener: ( countingObjectNode: CountingObjectNode ) => void;
 
-  // Called with function( countingObject ) when a number finishes animation
-  private readonly numberAnimationFinishedListener: ( countingObject: CountingObject ) => void;
+  // called when a countingObject finishes animating, see onNumberAnimationFinished
+  private readonly animationFinishedListener: ( countingObject: CountingObject ) => void;
 
-  // Called with function( countingObject ) when a number finishes being dragged
-  private readonly numberDragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
+  // called when a countingObjectNode finishes being dragged, see onNumberDragFinished
+  private readonly dragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
+
+  // called when a countingObject's position was constrained, see preventOcclusion
   private readonly positionConstrainedListener: ( countingObject: CountingObject ) => void;
+
+  // see addAndDragCountingObject
+  private readonly addAndDragCountingObjectCallback: ( event: PressListenerEvent, countingObject: CountingObject ) => void;
+
+  // see tryToCombineCountingObjects
+  private readonly tryToCombineCountingObjectsCallback: ( draggedCountingObject: CountingObject ) => void;
+
+  // our model
   public readonly playArea: CountingPlayArea;
-  private readonly tryToCombineNumbersCallback: ( draggedCountingObject: CountingObject ) => void;
-  private readonly addAndDragNumberCallback: ( event: PressListenerEvent, countingObject: CountingObject ) => void;
 
   // CountingObject.id => {CountingObjectNode} - lookup map for efficiency
   private readonly countingObjectNodeMap: CountingObjectNodeMap;
 
-  // the bounds of the play area where counting objects can be dragged
+  // the bounds of the play area where countingObjects can be dragged
   public readonly playAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly countingObjectTypeProperty: TReadOnlyProperty<CountingObjectType>;
 
   // see options.viewHasIndependentModel for doc
   private readonly viewHasIndependentModel: boolean;
 
-  // Handle touches nearby to the numbers, and interpret those as the proper drag.
+  // handle touches nearby to the countingObjects, and interpret those as the proper drag.
   private readonly closestDragListener: ClosestDragListener;
 
-  // Parent for all CountingObjectNode instances, created if not provided.
+  // Node parent for all CountingObjectNode instances, created if not provided.
   private readonly countingObjectLayerNode: Node;
 
   public readonly countingObjectCreatorPanel: CountingObjectCreatorPanel;
@@ -96,24 +106,25 @@ class CountingPlayAreaNode extends Node {
 
     super( options );
 
-    // TODO-TS: Get rid of this binding pattern. Update function signatures in the attributes.
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 TODO-TS Get rid of this binding pattern. Update function signatures in the attributes.
 
-    this.numberSplitListener = this.onNumberSplit.bind( this );
+    this.splitListener = this.onCountingObjectNodeSplit.bind( this );
 
-    this.numberInteractionListener = CountingPlayAreaNode.onNumberInteractionStarted.bind( this );
+    this.interactionListener = CountingPlayAreaNode.onNumberInteractionStarted.bind( this );
 
-    this.numberAnimationFinishedListener = this.onNumberAnimationFinished.bind( this );
+    this.animationFinishedListener = this.onNumberAnimationFinished.bind( this );
 
-    this.numberDragFinishedListener = ( countingObjectNode: CountingObjectNode ) => {
+    this.dragFinishedListener = ( countingObjectNode: CountingObjectNode ) => {
       this.onNumberDragFinished( countingObjectNode.countingObject );
     };
 
     this.positionConstrainedListener = ( countingObject: CountingObject ) => this.preventOcclusion( countingObject );
 
-    this.playArea = playArea;
+    this.addAndDragCountingObjectCallback = this.addAndDragCountingObject.bind( this );
 
-    this.tryToCombineNumbersCallback = this.tryToCombineNumbers.bind( this );
-    this.addAndDragNumberCallback = this.addAndDragNumber.bind( this );
+    this.tryToCombineCountingObjectsCallback = this.tryToCombineCountingObjects.bind( this );
+
+    this.playArea = playArea;
 
     this.countingObjectNodeMap = {};
 
@@ -192,12 +203,12 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Add a counting Object to the playArea and immediately start dragging it with the provided event.
+   * Add a countingObject to the playArea and immediately start dragging it with the provided event.
    *
    * @param event - The Scenery event that triggered this.
-   * @param countingObject - The counting Object to add and then drag
+   * @param countingObject - The countingObject to add and then drag
    */
-  public addAndDragNumber( event: PressListenerEvent, countingObject: CountingObject ): void {
+  public addAndDragCountingObject( event: PressListenerEvent, countingObject: CountingObject ): void {
 
     // Add it and lookup the related node.
     this.playArea.addCountingObject( countingObject );
@@ -215,8 +226,8 @@ class CountingPlayAreaNode extends Node {
     const countingObjectNode = new CountingObjectNode(
       countingObject,
       this.playAreaBoundsProperty,
-      this.addAndDragNumberCallback,
-      this.tryToCombineNumbersCallback, {
+      this.addAndDragCountingObjectCallback,
+      this.tryToCombineCountingObjectsCallback, {
         countingObjectTypeProperty: this.countingObjectTypeProperty,
         baseNumberNodeOptions: {
           handleOffsetY: COUNTING_OBJECT_HANDLE_OFFSET_Y
@@ -230,10 +241,10 @@ class CountingPlayAreaNode extends Node {
     this.closestDragListener.addDraggableItem( countingObjectNode );
 
     // add listeners
-    countingObjectNode.splitEmitter.addListener( this.numberSplitListener );
-    countingObjectNode.interactionStartedEmitter.addListener( this.numberInteractionListener );
-    countingObject.endAnimationEmitter.addListener( this.numberAnimationFinishedListener );
-    countingObjectNode.endDragEmitter.addListener( this.numberDragFinishedListener );
+    countingObjectNode.splitEmitter.addListener( this.splitListener );
+    countingObjectNode.interactionStartedEmitter.addListener( this.interactionListener );
+    countingObject.endAnimationEmitter.addListener( this.animationFinishedListener );
+    countingObjectNode.endDragEmitter.addListener( this.dragFinishedListener );
     countingObjectNode.positionConstrainedEmitter.addListener( this.positionConstrainedListener );
   }
 
@@ -244,10 +255,10 @@ class CountingPlayAreaNode extends Node {
     const countingObjectNode = this.getCountingObjectNode( countingObject );
 
     // Remove listeners
-    countingObjectNode.endDragEmitter.removeListener( this.numberDragFinishedListener );
-    countingObject.endAnimationEmitter.removeListener( this.numberAnimationFinishedListener );
-    countingObjectNode.interactionStartedEmitter.removeListener( this.numberInteractionListener );
-    countingObjectNode.splitEmitter.removeListener( this.numberSplitListener );
+    countingObjectNode.endDragEmitter.removeListener( this.dragFinishedListener );
+    countingObject.endAnimationEmitter.removeListener( this.animationFinishedListener );
+    countingObjectNode.interactionStartedEmitter.removeListener( this.interactionListener );
+    countingObjectNode.splitEmitter.removeListener( this.splitListener );
     countingObjectNode.positionConstrainedEmitter.removeListener( this.positionConstrainedListener );
 
     delete this.countingObjectNodeMap[ countingObjectNode.countingObject.id ];
@@ -267,8 +278,8 @@ class CountingPlayAreaNode extends Node {
   /**
    * When the user drops a counting Object they were dragging, see if it can combine with any other nearby counting Objects.
    */
-  public tryToCombineNumbers( draggedCountingObject: CountingObject ): void {
-    // TODO: This seems like a weird sidestep to try tenframes first and maybe be moved
+  public tryToCombineCountingObjects( draggedCountingObject: CountingObject ): void {
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 This seems like a weird sidestep to try tenframes first and maybe be moved
     if ( this.tryToAddToTenFrame( draggedCountingObject ) ) {
       return;
     }
@@ -299,7 +310,7 @@ class CountingPlayAreaNode extends Node {
 
       // if grouping is turned off, repel away
       if ( !this.playArea.groupingEnabledProperty.value || !droppedCountingObject.groupingEnabledProperty.value ) {
-        if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < 7 ) {
+        if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN ) {
           this.playArea.repelAway( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject, () => {
             return {
               left: -COUNTING_OBJECT_REPEL_DISTANCE,
@@ -334,7 +345,7 @@ class CountingPlayAreaNode extends Node {
 
     const attachableDroppedTenFrameNodes = this.findAttachableTenFrameNodes( droppedNode, allDraggableTenFrameNodes );
 
-    // TODO: Docs and cleanup
+    //TODO https://github.com/phetsims/number-suite-common/issues/29 Docs and cleanup
     if ( attachableDroppedTenFrameNodes.length ) {
       attachableDroppedTenFrameNodes.forEach( droppedTenFrameNode => {
         if ( !this.isCountingObjectContainedByTenFrame( droppedCountingObject ) ) {
@@ -364,7 +375,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * TODO
+   * TODO https://github.com/phetsims/number-suite-common/issues/29 document
    */
   private isCountingObjectContainedByTenFrame( countingObject: CountingObject ): boolean {
     let isContained = false;
@@ -378,7 +389,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * TODO
+   * TODO https://github.com/phetsims/number-suite-common/issues/29 document
    */
   private findAttachableTenFrameNodes( countingObjectNode: CountingObjectNode,
                                        allDraggableTenFrameNodes: DraggableTenFrameNode[] ): DraggableTenFrameNode[] {
@@ -416,9 +427,9 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Called when a counting Object node is split.
+   * Called when a countingObjectNode is split.
    */
-  private onNumberSplit( countingObjectNode: CountingObjectNode ): void {
+  private onCountingObjectNodeSplit( countingObjectNode: CountingObjectNode ): void {
     // this.playArea.splitCue.triggerFade();
   }
 

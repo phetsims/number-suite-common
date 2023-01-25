@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * An Announcer for speech synthesis that can be used with an UtteranceQueue. Used in number-play
@@ -15,7 +15,7 @@ import SpeechSynthesisAnnouncer from '../../../../utterance-queue/js/SpeechSynth
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
@@ -30,15 +30,20 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     this.updateVoiceListener = () => this.updateVoice();
     this.secondLocaleProperty = secondLocaleProperty;
 
-    this.primaryLocaleVoiceEnabledProperty = new DerivedProperty( [ phet.joist.localeProperty, this.voiceProperty ],
+    this.primaryLocaleVoiceEnabledProperty = new DerivedProperty( [ localeProperty, this.voiceProperty ],
       ( locale: Locale ) => this.testVoiceForLocale( locale ) );
 
     this.secondaryLocaleVoiceEnabledProperty = new DerivedProperty( [ secondLocaleProperty, this.voiceProperty ],
       locale => this.testVoiceForLocale( locale ) );
 
-    // Voices may not be available on load or the list of voices may change - update if we get an indication that
-    // the list of available voices has changed.
+    // When the SpeechSynthesisAnnouncer becomes initialized or when voices change, update the voice
+    // currently being used by this Announcer.
     this.voicesProperty.lazyLink( this.updateVoiceListener );
+    this.isInitializedProperty.link( initialized => {
+      if ( initialized ) {
+        this.updateVoice();
+      }
+    } );
   }
 
   /**
@@ -46,11 +51,11 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
    */
   public updateVoice( isPrimaryLocale = true ): void {
 
-    const locale = isPrimaryLocale ? phet.joist.localeProperty.value : this.secondLocaleProperty.value;
+    const locale = isPrimaryLocale ? localeProperty.value : this.secondLocaleProperty.value;
     assert && assert( locale, `locale does not exist: ${locale}` );
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
-    if ( this.voicesProperty.value.length > 0 ) {
+    if ( this.initialized && this.voicesProperty.value.length > 0 ) {
 
       const translatedVoices = _.filter( this.getPrioritizedVoices(), voice => {
         return voice.lang.includes( locale );
@@ -68,7 +73,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   public testVoiceForLocale( locale: Locale ): boolean {
     let isVoiceFound = false;
 
-    if ( this.voicesProperty.value.length > 0 ) {
+    if ( this.initialized ) {
 
       const translatedVoices = _.filter( this.getPrioritizedVoices(), voice => {
         return voice.lang.includes( locale );

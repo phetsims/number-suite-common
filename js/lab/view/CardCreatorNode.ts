@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * A node that looks like a CardNode that creates a CardNode when pressed.
@@ -23,7 +23,7 @@ type SelfOptions = {
 };
 export type CardNodeOptions = SelfOptions;
 
-// TODO: add comments
+//TODO https://github.com/phetsims/number-suite-common/issues/29 add comments
 class CardCreatorNode extends Node {
 
   public constructor( screenView: LabScreenView<NumberSuiteCommonPreferences>, contentToCountPropertyMap: Map<SymbolType | number, TProperty<number>>,
