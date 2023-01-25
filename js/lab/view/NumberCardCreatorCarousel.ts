@@ -57,7 +57,9 @@ class NumberCardCreatorCarousel extends Carousel {
       itemsPerPage: 10,
       margin: 10,
       spacing: 10,
-      animationDuration: 0.4
+      animationOptions: {
+        duration: 0.4
+      }
     } );
 
     this.screenView = screenView;
