@@ -540,8 +540,6 @@ class CountingPlayArea extends CountingCommonModel {
    */
   public breakApartCountingObjects( stack = false, objectsToBreakDown = this.getCountingObjectsIncludedInSum(), assumeFullModel = true ): void {
 
-    console.log( 'breaking apart into stacks' );
-
     //TODO https://github.com/phetsims/number-suite-common/issues/29 cleanup and doc
 
     const startingCount = _.sum( objectsToBreakDown.map( x => x.numberValueProperty.value ) );
