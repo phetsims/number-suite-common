@@ -12,6 +12,31 @@ import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 
+// Maps a number to the stringProperty of the translated word that corresponds to the number.
+const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LinkableProperty<string>> = {
+  0: NumberSuiteCommonStrings.zeroStringProperty,
+  1: NumberSuiteCommonStrings.oneStringProperty,
+  2: NumberSuiteCommonStrings.twoStringProperty,
+  3: NumberSuiteCommonStrings.threeStringProperty,
+  4: NumberSuiteCommonStrings.fourStringProperty,
+  5: NumberSuiteCommonStrings.fiveStringProperty,
+  6: NumberSuiteCommonStrings.sixStringProperty,
+  7: NumberSuiteCommonStrings.sevenStringProperty,
+  8: NumberSuiteCommonStrings.eightStringProperty,
+  9: NumberSuiteCommonStrings.nineStringProperty,
+  10: NumberSuiteCommonStrings.tenStringProperty,
+  11: NumberSuiteCommonStrings.elevenStringProperty,
+  12: NumberSuiteCommonStrings.twelveStringProperty,
+  13: NumberSuiteCommonStrings.thirteenStringProperty,
+  14: NumberSuiteCommonStrings.fourteenStringProperty,
+  15: NumberSuiteCommonStrings.fifteenStringProperty,
+  16: NumberSuiteCommonStrings.sixteenStringProperty,
+  17: NumberSuiteCommonStrings.seventeenStringProperty,
+  18: NumberSuiteCommonStrings.eighteenStringProperty,
+  19: NumberSuiteCommonStrings.nineteenStringProperty,
+  20: NumberSuiteCommonStrings.twentyStringProperty
+};
+
 // Maps a number to the key used to look up the translated word that corresponds to the number.
 const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   0: 'zero',
@@ -36,30 +61,6 @@ const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   19: 'nineteen',
   20: 'twenty'
 } as Record<number, string>;
-
-const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
-  0: NumberSuiteCommonStrings.zeroStringProperty,
-  1: NumberSuiteCommonStrings.oneStringProperty,
-  2: NumberSuiteCommonStrings.twoStringProperty,
-  3: NumberSuiteCommonStrings.threeStringProperty,
-  4: NumberSuiteCommonStrings.fourStringProperty,
-  5: NumberSuiteCommonStrings.fiveStringProperty,
-  6: NumberSuiteCommonStrings.sixStringProperty,
-  7: NumberSuiteCommonStrings.sevenStringProperty,
-  8: NumberSuiteCommonStrings.eightStringProperty,
-  9: NumberSuiteCommonStrings.nineStringProperty,
-  10: NumberSuiteCommonStrings.tenStringProperty,
-  11: NumberSuiteCommonStrings.elevenStringProperty,
-  12: NumberSuiteCommonStrings.twelveStringProperty,
-  13: NumberSuiteCommonStrings.thirteenStringProperty,
-  14: NumberSuiteCommonStrings.fourteenStringProperty,
-  15: NumberSuiteCommonStrings.fifteenStringProperty,
-  16: NumberSuiteCommonStrings.sixteenStringProperty,
-  17: NumberSuiteCommonStrings.seventeenStringProperty,
-  18: NumberSuiteCommonStrings.eighteenStringProperty,
-  19: NumberSuiteCommonStrings.nineteenStringProperty,
-  20: NumberSuiteCommonStrings.twentyStringProperty
-};
 
 // RequireJS namespace, used for looking up translated strings
 const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
@@ -104,7 +105,7 @@ const NumberSuiteCommonConstants = {
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
 
     // The word for number in the primary language
-    const primaryString = NUMBER_TO_STRING_KEY_PRIMARY[ number ].value;
+    const primaryString = NUMBER_TO_STRING_PROPERTY_PRIMARY[ number ].value;
 
     // The word for number in the secondary language
     const stringKey = `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}`;
