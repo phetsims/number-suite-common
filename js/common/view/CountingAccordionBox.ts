@@ -20,18 +20,18 @@ import CountingPlayAreaNode from './CountingPlayAreaNode.js';
 import CountingPlayArea from '../model/CountingPlayArea.js';
 import BaseNumberNode from '../../../../counting-common/js/common/view/BaseNumberNode.js';
 import BaseNumber from '../../../../counting-common/js/common/model/BaseNumber.js';
-import GroupAndLinkType from '../model/GroupAndLinkType.js';
 import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
+import TEmitter from '../../../../axon/js/TEmitter.js';
 
 // types
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
   linkedPlayArea?: CountingPlayArea | null;
-  objectsGroupAndLinkTypeProperty?: EnumerationProperty<GroupAndLinkType>;
+  objectsLinkedEmitter?: TEmitter<[ boolean ]> | null;
 };
 export type CountingAccordionBoxOptions = SelfOptions &
   StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'> &
@@ -55,7 +55,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
       },
       countingObjectTypes: null,
       linkedPlayArea: null,
-      objectsGroupAndLinkTypeProperty: new EnumerationProperty( GroupAndLinkType.GROUPED )
+      objectsLinkedEmitter: null
     }, providedOptions );
 
     super( width, new Property<number>( height ), options );
@@ -101,7 +101,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
     }
 
     // add the linked play area
-    if ( options.linkedPlayArea && options.objectsGroupAndLinkTypeProperty ) {
+    if ( options.linkedPlayArea && options.objectsLinkedEmitter ) {
       const linkedObjectsPlayAreaNode = new CountingPlayAreaNode(
         options.linkedPlayArea,
         countingObjectTypeProperty,
@@ -109,11 +109,12 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
           viewHasIndependentModel: false
         }
       );
+      linkedObjectsPlayAreaNode.visible = false;
       this.contentNode.addChild( linkedObjectsPlayAreaNode );
 
-      options.objectsGroupAndLinkTypeProperty.link( groupAndLinkType => {
-        objectsPlayAreaNode.visible = groupAndLinkType !== GroupAndLinkType.GROUPED_AND_LINKED;
-        linkedObjectsPlayAreaNode.visible = groupAndLinkType === GroupAndLinkType.GROUPED_AND_LINKED;
+      options.objectsLinkedEmitter.addListener( objectsLinked => {
+        linkedObjectsPlayAreaNode.visible = objectsLinked;
+        objectsPlayAreaNode.visible = !objectsLinked;
         radioButtonGroup && radioButtonGroup.moveToFront();
       } );
     }
