@@ -65,21 +65,18 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
 
     const countingCreatorNode = new CountingCreatorNode( 0, countingPlayAreaNode, playArea.sumProperty,
       playArea.resetEmitter, countingPlayAreaNode.addAndDragCountingObject.bind( countingPlayAreaNode ), {
-      updateCurrentNumber: true,
-      countingObjectTypeProperty: countingPlayAreaNode.countingObjectTypeProperty,
-      groupingEnabledProperty: countingPlayAreaNode.playArea.groupingEnabledProperty,
-      backTargetOffset: new Vector2( -5, -5 ),
-      ungroupedTargetScale: NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
-      groupedTargetScale: NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
-      touchAreaXDilation: 6.5,
-      touchAreaYDilation: 5,
-      touchAreaXShift: 3
-    } );
+        updateCurrentNumber: true,
+        countingObjectTypeProperty: countingPlayAreaNode.countingObjectTypeProperty,
+        groupingEnabledProperty: countingPlayAreaNode.playArea.groupingEnabledProperty,
+        backTargetOffset: new Vector2( -5, -5 ),
+        ungroupedTargetScale: NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
+        groupedTargetScale: NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
+        touchAreaXDilation: 6.5,
+        touchAreaYDilation: 5,
+        touchAreaXShift: 3,
+        creatorNodeBackground: creatorNodeBackground
+      } );
     creatorNodeBackground.addChild( countingCreatorNode );
-
-    countingPlayAreaNode.playArea.groupingEnabledProperty.link( groupingEnabled => {
-      countingCreatorNode.center = creatorNodeBackground.selfBounds.center;
-    } );
 
     const hBox = new HBox( {
       children: [ arrowButtons, creatorNodeBackground ],
