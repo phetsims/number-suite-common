@@ -37,7 +37,6 @@ const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   20: 'twenty'
 } as Record<number, string>;
 
-
 const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
   0: NumberSuiteCommonStrings.zeroStringProperty,
   1: NumberSuiteCommonStrings.oneStringProperty,
@@ -64,6 +63,17 @@ const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
 
 // RequireJS namespace, used for looking up translated strings
 const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
+
+// Returns either the primaryString or the secondaryString based on isPrimaryLocale. If the secondaryString doesn't
+// exist but is desired, return the primaryString instead as a fallback. We know the primaryString will always exist
+// because if there is a missing string in that locale, the String library will fall back to the English string instead.
+// This function should be used whenever the sim needs a secondaryLocale string so that it is guarded with a fallback.
+const getString = ( primaryString: string, secondaryString: string | undefined, stringKey: string,
+                    isPrimaryLocale: boolean ): string => {
+  const string = ( !isPrimaryLocale && secondaryString ) ? secondaryString : primaryString;
+  assert && assert( string, `no string found for stringKey=${stringKey}` );
+  return string;
+};
 
 const NumberSuiteCommonConstants = {
 
@@ -94,17 +104,17 @@ const NumberSuiteCommonConstants = {
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
 
     // The word for number in the primary language
-    const primaryWord = NUMBER_TO_STRING_KEY_PRIMARY[ number ].value;
+    const primaryString = NUMBER_TO_STRING_KEY_PRIMARY[ number ].value;
 
     // The word for number in the secondary language
-    const secondaryWord = numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+    const stringKey = `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}`;
+    const secondaryString = numberPlaySecondaryStrings[ stringKey ];
 
-    // Fallback to primaryWord if there is no secondary translation.
-    const word = ( !isPrimaryLocale && secondaryWord ) ? secondaryWord : primaryWord;
-    assert && assert( word, `no word found for number=${number}` );
-
-    return word;
+    // Fallback to primaryString if there is no secondary translation.
+    return getString( primaryString, secondaryString, stringKey, isPrimaryLocale );
   },
+
+  getString: getString,
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,
