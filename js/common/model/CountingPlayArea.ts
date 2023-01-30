@@ -24,6 +24,7 @@ import TenFrame from '../../lab/model/TenFrame.js';
 import Property from '../../../../axon/js/Property.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import GroupAndLinkType from './GroupAndLinkType.js';
 
 type SelfOptions = {
   tenFrames?: null | ObservableArray<TenFrame>;
@@ -405,7 +406,8 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   public matchCountingObjectsToLinkedPlayArea( countingObjectSerializations: CountingObjectSerialization[],
-                                               objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean ): void {
+                                               objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean,
+                                               groupAndLinkType: GroupAndLinkType ): void {
 
     const callback = () => {
 
@@ -435,6 +437,11 @@ class CountingPlayArea extends CountingCommonModel {
         } );
         this.addCountingObject( newCountingObject );
       } );
+
+      // If the groupAndLinkType was set to ungrouped, break apart the counting objects. This is needed to avoid an order
+      // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
+      // we clear them out and re-add them above.
+      groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
     }
     else {
 
@@ -532,6 +539,8 @@ class CountingPlayArea extends CountingCommonModel {
    * background shape of the original counting object.
    */
   public breakApartCountingObjects( stack = false, objectsToBreakDown = this.getCountingObjectsIncludedInSum(), assumeFullModel = true ): void {
+
+    console.log( 'breaking apart into stacks' );
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 cleanup and doc
 
