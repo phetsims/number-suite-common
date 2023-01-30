@@ -39,7 +39,8 @@ export default class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommo
       align: 'top'
     }, providedOptions );
 
-    const secondLanguageControl = new SecondLanguageControl( preferences.showSecondLocaleProperty, preferences.secondLocaleProperty, {
+    const secondLanguageControl = new SecondLanguageControl( preferences.showSecondLocaleProperty,
+      preferences.secondLocaleProperty, preferences.allUrl, {
       enabled: options.secondLanguageControlEnabled
     } );
 

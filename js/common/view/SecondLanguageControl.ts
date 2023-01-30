@@ -23,15 +23,13 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import LanguageSelectionNode from '../../../../joist/js/preferences/LanguageSelectionNode.js';
 
-const ALL_URL = 'https://phet.colorado.edu/sims/html/number-play/latest/number-play_all.html';
-
 type SelfOptions = EmptySelfOptions;
 
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
 
 export default class SecondLanguageControl extends VBox {
 
-  public constructor( showSecondLocaleProperty: Property<boolean>, secondLocaleProperty: Property<Locale>,
+  public constructor( showSecondLocaleProperty: Property<boolean>, secondLocaleProperty: Property<Locale>, allUrl: string,
                       providedOptions?: SecondLanguageControlOptions ) {
 
     const options = optionize<SecondLanguageControlOptions, SelfOptions, VBoxOptions>()( {
@@ -63,7 +61,7 @@ export default class SecondLanguageControl extends VBox {
     } );
 
     // Additional description that is visible when the Second Language control is disabled.
-    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled );
+    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, allUrl );
 
     // Carousel for choosing the second language.
     const carouselItems: LanguageSelectionNode[] = localeProperty.validValues!.map(
@@ -106,7 +104,7 @@ export default class SecondLanguageControl extends VBox {
  */
 class AdditionalDescriptionNode extends VBox {
 
-  public constructor( visible: boolean ) {
+  public constructor( visible: boolean, allUrl: string ) {
 
     const toDisplayASecondLanguageText = new RichText( NumberSuiteCommonStrings.toDisplayASecondLanguageDescriptionStringProperty, {
       font: new PhetFont( 12 )
@@ -114,10 +112,10 @@ class AdditionalDescriptionNode extends VBox {
 
     // If links are not allowed, show the URL as plain text.
     const urlStringProperty = new DerivedProperty( [ allowLinksProperty ],
-      allowLinks => allowLinks ? `<a href="{{url}}">${ALL_URL}</a>` : ALL_URL
+      allowLinks => allowLinks ? `<a href="{{url}}">${allUrl}</a>` : allUrl
     );
     const urlText = new RichText( urlStringProperty, {
-      links: { url: ALL_URL },
+      links: { url: allUrl },
       font: new PhetFont( 12 )
     } );
 
