@@ -11,7 +11,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import { Circle, HBox, Node, PaintableOptions, Path } from '../../../../scenery/js/imports.js';
+import { Circle, Node, PaintableOptions, Path, VBox } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -32,7 +32,7 @@ type GetTenFramePathOptions = {
 const NUMBER_OF_X_SQUARES = 5; // a ten frame is this many squares wide
 const NUMBER_OF_Y_SQUARES = 2; // a ten frame is this many squares tall
 const SIDE_LENGTH = 20; // the side length of one square in a ten frame
-const DISTANCE_BETWEEN_TEN_FRAMES = SIDE_LENGTH / 2; // horizontal spacing between ten frames, if there's more than one
+const DISTANCE_BETWEEN_TEN_FRAMES = 5; // horizontal spacing between ten frames, if there's more than one
 const LINE_WIDTH = 0.8; // the line width of the lines in a ten frame. used in this class, not necessarily in getTenFramePath
 
 class TenFrameNode extends Node {
@@ -60,7 +60,7 @@ class TenFrameNode extends Node {
     } );
 
     // add all ten frames, aligned in a horizontal line
-    const alignedTenFrames = new HBox( {
+    const alignedTenFrames = new VBox( {
       children: tenFramePaths,
       spacing: DISTANCE_BETWEEN_TEN_FRAMES
     } );

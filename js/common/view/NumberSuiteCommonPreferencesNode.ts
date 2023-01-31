@@ -41,11 +41,11 @@ export default class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommo
 
     const secondLanguageControl = new SecondLanguageControl( preferences.showSecondLocaleProperty,
       preferences.secondLocaleProperty, preferences.allUrl, {
-      enabled: options.secondLanguageControlEnabled
+      visible: options.secondLanguageControlEnabled
     } );
 
     const showOnesControl = new ShowOnesControl( preferences.showLabOnesProperty, {
-      enabled: NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen )
+      visible: NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen )
     } );
 
     const rightControls = new VBox( {
@@ -62,7 +62,7 @@ export default class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommo
   /**
    * Determines whether the sim is running with a screen of the specified type.
    */
-  protected static hasScreenType( constructor: new ( ...args: IntentionalAny[] ) => Screen ): boolean {
+  public static hasScreenType( constructor: new ( ...args: IntentionalAny[] ) => Screen ): boolean {
     return ( _.find( phet.joist.sim.screens, screen => screen instanceof constructor ) !== undefined );
   }
 }
