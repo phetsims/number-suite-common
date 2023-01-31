@@ -40,6 +40,9 @@ class LocaleSwitch extends ABSwitch<boolean> {
     const firstLanguageText = new Text( localeInfoModule[ localeProperty.value ].localizedName, switchTextOptions );
     const secondLanguageText = new Text( '', switchTextOptions );
 
+    localeProperty.link( locale => {
+      firstLanguageText.setText( localeInfoModule[ locale ].localizedName );
+    } );
     secondLocaleProperty.link( locale => {
       secondLanguageText.setText( localeInfoModule[ locale ].localizedName );
     } );
