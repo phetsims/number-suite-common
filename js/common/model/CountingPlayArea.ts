@@ -545,10 +545,11 @@ class CountingPlayArea extends CountingCommonModel {
    * objects in the position of the original counting object. If stack=true, it arranges them according to the
    * background shape of the original counting object.
    */
-  public breakApartCountingObjects( stack = false, objectsToBreakDown = this.getCountingObjectsIncludedInSum(), assumeFullModel = true ): void {
+  public breakApartCountingObjects( stack = false ): void {
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 cleanup and doc
 
+    const objectsToBreakDown = this.getCountingObjectsIncludedInSum();
     const startingCount = _.sum( objectsToBreakDown.map( x => x.numberValueProperty.value ) );
 
     objectsToBreakDown.forEach( countingObject => {
@@ -588,8 +589,7 @@ class CountingPlayArea extends CountingCommonModel {
     // total the value of all counting objects after they have been broken up and re-created
     const newCount = _.sum( this.getCountingObjectsIncludedInSum().map( x => x.numberValueProperty.value ) );
 
-    // Don't assert if just breaking apart a subsection of the countingObjects
-    assert && assumeFullModel && assert( startingCount === newCount,
+    assert && assert( startingCount === newCount,
       'The value of all counting objects does not match their original value after breaking them apart' );
   }
 }
