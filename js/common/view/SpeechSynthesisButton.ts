@@ -42,12 +42,13 @@ export type SpeechSynthesisButtonOptions = SelfOptions;
 // constants
 const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the size of the ResetAllButton, in screen coords
 
-class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
-  A extends NumberSuiteCommonSpeechSynthesisAnnouncer,
-  U extends UtteranceQueue> extends RectangularPushButton {
+class SpeechSynthesisButton extends RectangularPushButton {
 
-  public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>, preferences: P, speechSynthesisAnnouncer: A,
-                      utteranceQueue: U, providedOptions?: SpeechSynthesisButtonOptions ) {
+  public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
+                      preferences: NumberSuiteCommonPreferences,
+                      speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                      utteranceQueue: UtteranceQueue,
+                      providedOptions?: SpeechSynthesisButtonOptions ) {
 
     const options = optionize<SpeechSynthesisButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
       stringProperty: null,
