@@ -74,7 +74,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
         touchAreaXDilation: 6.5,
         touchAreaYDilation: 5,
         touchAreaXShift: 3,
-        creatorNodeBackground: creatorNodeBackground
+        center: creatorNodeBackground.selfBounds.center
       } );
     creatorNodeBackground.addChild( countingCreatorNode );
 
