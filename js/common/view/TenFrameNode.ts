@@ -11,7 +11,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import { Circle, Node, PaintableOptions, Path, VBox } from '../../../../scenery/js/imports.js';
+import { Circle, HBox, Node, PaintableOptions, Path } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -60,7 +60,7 @@ class TenFrameNode extends Node {
     } );
 
     // add all ten frames, aligned in a horizontal line
-    const alignedTenFrames = new VBox( {
+    const alignedTenFrames = new HBox( {
       children: tenFramePaths,
       spacing: DISTANCE_BETWEEN_TEN_FRAMES
     } );
