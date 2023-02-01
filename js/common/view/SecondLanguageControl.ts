@@ -68,7 +68,7 @@ export default class SecondLanguageControl extends VBox {
       locale => new LanguageSelectionNode( secondLocaleProperty, locale ) );
     const secondLanguageCarousel = new Carousel( carouselItems, {
       visibleProperty: showSecondLocaleProperty,
-      itemsPerPage: 10,
+      itemsPerPage: Math.min( 10, carouselItems.length ),
       spacing: 6,
       margin: 5,
       orientation: 'vertical'
