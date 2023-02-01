@@ -80,9 +80,12 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
     missingVoiceWarning.top = control.bottom + 24;
     missingVoiceWarningMessage.top = warningIcon.bottom + 14;
 
-    Multilink.multilink( [ preferences.readAloudProperty, preferences.showSecondLocaleProperty,
+    Multilink.multilink( [
+        preferences.readAloudProperty,
+        preferences.showSecondLocaleProperty,
         speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
-        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty ],
+        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty
+      ],
       ( readAloud, showSecondLocale, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled ) => {
         missingVoiceWarning.visible = showSecondLocale ?
                                       readAloud && ( !primaryLocaleVoiceEnabled || !secondaryLocaleVoiceEnabled ) :
