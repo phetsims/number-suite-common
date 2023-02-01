@@ -25,6 +25,7 @@ import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeech
 import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
+import audioManager from '../../../../joist/js/audioManager.js';
 
 type SelfOptions = {
   stringProperty?: TReadOnlyProperty<string> | null;
@@ -89,13 +90,14 @@ class SpeechSynthesisButton<P extends NumberSuiteCommonPreferences,
     } );
 
     Multilink.multilink( [
+        audioManager.audioEnabledProperty,
         options.comparisonSignsAndTextVisibleProperty,
         speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
         speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty,
         isPrimaryLocaleProperty
       ],
-      ( comparisonSignsAndTextVisible, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled, isPrimaryLocale ) => {
-        this.enabled = comparisonSignsAndTextVisible &&
+      ( audioEnabled, comparisonSignsAndTextVisible, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled, isPrimaryLocale ) => {
+        this.enabled = audioEnabled && comparisonSignsAndTextVisible &&
                        ( isPrimaryLocale ? primaryLocaleVoiceEnabled : secondaryLocaleVoiceEnabled );
       } );
   }
