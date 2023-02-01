@@ -24,6 +24,7 @@ import TenFrame from '../../lab/model/TenFrame.js';
 import Property from '../../../../axon/js/Property.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import GroupAndLinkType from './GroupAndLinkType.js';
 
 type SelfOptions = {
   tenFrames?: null | ObservableArray<TenFrame>;
@@ -405,27 +406,21 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   public matchCountingObjectsToLinkedPlayArea( countingObjectSerializations: CountingObjectSerialization[],
-                                               objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean ): void {
+                                               objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean,
+                                               groupAndLinkType: GroupAndLinkType ): void {
 
     const callback = () => {
-
       objectsLinkedEmitter.emit( objectsLinkedToOnes );
     };
     const animate = objectsLinkedToOnes;
 
-    // copy the current playObjectsInPlayArea so we can mutate it
     const objectsToOrganize = this.getCountingObjectsIncludedInSum();
     let numberOfObjectsToOrganize = objectsToOrganize.length;
-
-    // TODO: better way to track these? https://github.com/phetsims/number-suite-common/issues/12
     const numberOfAnimationsFinishedProperty = new NumberProperty( 0 );
 
-
-    /*
-    * If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
-    * the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
-    * matching).
-     */
+    // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
+    // the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
+    // matching).
     if ( !objectsLinkedToOnes ) {
       objectsToOrganize.forEach( countingObject => this.removeCountingObject( countingObject ) );
 
@@ -435,24 +430,25 @@ class CountingPlayArea extends CountingCommonModel {
         } );
         this.addCountingObject( newCountingObject );
       } );
+
+      // If the groupAndLinkType was set to ungrouped, break apart the counting objects. This is needed to avoid an order
+      // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
+      // we clear them out and re-add them above.
+      groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
     }
     else {
 
-      /**
-       * If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
-       * to one spot and the other half another. Don't use breakApartObjects because that is
-       * overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then Animate
-       * to the right spots. Never combine because we don't need to do that right now (maybe it would be easier for the
-       * code though
-       */
+      // If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
+      // to one spot and the other half another. Don't use breakApartObjects because that is
+      // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
+      // animate to the right spots.
 
       const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
-          countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
+        countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
 
       const sendObjectTo = ( countingObject: CountingObject, position: Vector2 ) => {
 
-        // TODO: do we need the copy, it used to be plusXY(0,0)? https://github.com/phetsims/number-suite-common/issues/12
-        countingObject.setDestination( position.copy(), animate, {
+        countingObject.setDestination( position, animate, {
           targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE,
           useStandardAnimationSpeed: false
         } );
@@ -461,48 +457,42 @@ class CountingPlayArea extends CountingCommonModel {
         } );
       };
 
-      // TODO: sort by position after value inside for loop, based on target https://github.com/phetsims/number-suite-common/issues/12
       let countingObjectsSortedByValue: CountingObject[] = _.sortBy( this.getCountingObjectsIncludedInSum(),
         countingObject => countingObject.numberValueProperty.value ).reverse();
       const handledCountingObjects: CountingObject[] = [];
 
       for ( let i = 0; i < inputSortedByValue.length; i++ ) {
-        console.log( 'for here' );
 
         const target = inputSortedByValue[ i ];
         const desiredValue = target.numberValue;
-
         let currentNumberValueCount = 0;
 
         while ( countingObjectsSortedByValue.length ) {
 
-          console.log( 'while here' );
-
           const currentCountingObject = countingObjectsSortedByValue[ 0 ];
-          assert && assert( this.countingObjects.includes( currentCountingObject ), 'old, removed countingObject still at play here' );
-          assert && assert( !handledCountingObjects.includes( currentCountingObject ), 'already handled bro' );
+          assert && assert( this.countingObjects.includes( currentCountingObject ),
+            'old, removed countingObject still at play here' );
+          assert && assert( !handledCountingObjects.includes( currentCountingObject ),
+            'currentCountingObject is already animating' );
 
           const nextNeededValue = desiredValue - currentNumberValueCount;
 
           if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
-            // debugger;
-            console.log( 'animating: ' + currentCountingObject.positionProperty.value );
             sendObjectTo( currentCountingObject, target.position );
             handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
             currentNumberValueCount += currentCountingObject.numberValueProperty.value;
           }
           else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
 
-            // TODO: recalculate numberOfObjectsToOrganize https://github.com/phetsims/number-suite-common/issues/12
-            // TODO: instead of totally breaking down, only break off what you need to use https://github.com/phetsims/number-suite-common/issues/12
-            this.breakApartCountingObjects( true, [ currentCountingObject ], false );
-            // assert && assert( this.countingObjects[ this.countingObjects.length - 1 ].positionProperty.value.equals( currentCountingObject.positionProperty.value ), 'help me please' );
+            // split off the value we need to be used in the next iteration
+            this.splitCountingObject( currentCountingObject, nextNeededValue );
 
-            // Recompute
-            // TODO: reorder calculation https://github.com/phetsims/number-suite-common/issues/12
-            countingObjectsSortedByValue = _.sortBy( this.getCountingObjectsIncludedInSum(), countingObject => countingObject.numberValueProperty.value ).reverse()
-              .filter( countingObject => !handledCountingObjects.includes( countingObject ) );
-            numberOfObjectsToOrganize = countingObjectsSortedByValue.length + handledCountingObjects.length;
+            // recompute after splitting
+            const allCountingObjectsSortedByValue = _.sortBy( this.getCountingObjectsIncludedInSum(),
+              countingObject => countingObject.numberValueProperty.value ).reverse();
+            numberOfObjectsToOrganize = allCountingObjectsSortedByValue.length;
+            countingObjectsSortedByValue = allCountingObjectsSortedByValue.filter(
+              countingObject => !handledCountingObjects.includes( countingObject ) );
           }
 
           if ( currentNumberValueCount === desiredValue ) {
@@ -527,14 +517,39 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
+   * Splits the provided countingObject into two countingObjects. This is a function for the model to use for automated
+   * actions, and does not relate to the USER splitting a countingObject when grabbing the handle of countingObject.
+   */
+  private splitCountingObject( countingObject: CountingObject, valueToSplit: number ): void {
+    assert && assert( countingObject.includeInSumProperty.value,
+      'attempted to split countingObject that has already been removed from the total' );
+    const startingCount = _.sum( this.getCountingObjectsIncludedInSum().map( x => x.numberValueProperty.value ) );
+
+    const totalValue = countingObject.numberValueProperty.value;
+    assert && assert( valueToSplit < totalValue,
+      `desired split value (${valueToSplit}) is the same or greater than the countingObject to split's value (${totalValue})` );
+
+    const newCountingObject = new CountingObject( valueToSplit, countingObject.positionProperty.value, {
+      groupingEnabledProperty: this.groupingEnabledProperty
+    } );
+    this.addCountingObject( newCountingObject );
+
+    countingObject.changeNumber( totalValue - valueToSplit );
+
+    const endingCount = _.sum( this.getCountingObjectsIncludedInSum().map( x => x.numberValueProperty.value ) );
+    assert && assert( startingCount === endingCount, 'total doesn\'t match after splitting counting object' );
+  }
+
+  /**
    * Breaks apart all counting objects into counting objects with a value of 1. By default, it creates all new counting
    * objects in the position of the original counting object. If stack=true, it arranges them according to the
    * background shape of the original counting object.
    */
-  public breakApartCountingObjects( stack = false, objectsToBreakDown = this.getCountingObjectsIncludedInSum(), assumeFullModel = true ): void {
+  public breakApartCountingObjects( stack = false ): void {
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 cleanup and doc
 
+    const objectsToBreakDown = this.getCountingObjectsIncludedInSum();
     const startingCount = _.sum( objectsToBreakDown.map( x => x.numberValueProperty.value ) );
 
     objectsToBreakDown.forEach( countingObject => {
@@ -574,8 +589,7 @@ class CountingPlayArea extends CountingCommonModel {
     // total the value of all counting objects after they have been broken up and re-created
     const newCount = _.sum( this.getCountingObjectsIncludedInSum().map( x => x.numberValueProperty.value ) );
 
-    // Don't assert if just breaking apart a subsection of the countingObjects
-    assert && assumeFullModel && assert( startingCount === newCount,
+    assert && assert( startingCount === newCount,
       'The value of all counting objects does not match their original value after breaking them apart' );
   }
 }

@@ -32,7 +32,7 @@ type GetTenFramePathOptions = {
 const NUMBER_OF_X_SQUARES = 5; // a ten frame is this many squares wide
 const NUMBER_OF_Y_SQUARES = 2; // a ten frame is this many squares tall
 const SIDE_LENGTH = 20; // the side length of one square in a ten frame
-const DISTANCE_BETWEEN_TEN_FRAMES = SIDE_LENGTH / 2; // horizontal spacing between ten frames, if there's more than one
+const DISTANCE_BETWEEN_TEN_FRAMES = 5; // horizontal spacing between ten frames, if there's more than one
 const LINE_WIDTH = 0.8; // the line width of the lines in a ten frame. used in this class, not necessarily in getTenFramePath
 
 class TenFrameNode extends Node {

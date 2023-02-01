@@ -32,7 +32,10 @@ class NumberSuiteCommonPreferences {
   // helper Properties derived from preference Properties
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
 
-  public constructor() {
+  // the 'all' link of this simulation
+  public readonly allUrl: string;
+
+  public constructor( allUrl: string ) {
     this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
 
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
@@ -46,6 +49,8 @@ class NumberSuiteCommonPreferences {
     this.secondLocaleStringsProperty = new DerivedProperty( [ this.secondLocaleProperty ], secondLocale => {
       return phet.chipper.strings[ secondLocale ];
     } );
+
+    this.allUrl = allUrl;
   }
 
   public dispose(): void {

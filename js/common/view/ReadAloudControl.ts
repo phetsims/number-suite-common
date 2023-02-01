@@ -26,10 +26,15 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
   A extends NumberSuiteCommonSpeechSynthesisAnnouncer> extends Node {
 
-  public constructor( preferences: T, speechSynthesisAnnouncer: A, screens: number[],
-                      labelStringProperty: TReadOnlyProperty<string>, descriptionStringProperty: TReadOnlyProperty<string> ) {
+  public constructor( preferences: T,
+                      speechSynthesisAnnouncer: A,
+                      labelStringProperty: TReadOnlyProperty<string>,
+                      descriptionStringProperty: TReadOnlyProperty<string>,
+                      visible: boolean ) {
 
-    super();
+    super( {
+      visible: visible
+    } );
 
     const toggleSwitch = new ToggleSwitch( preferences.readAloudProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
@@ -46,11 +51,6 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
       ySpacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING
     } );
     this.addChild( control );
-
-    if ( QueryStringMachine.containsKey( 'screens' ) ) {
-      const includedScreens = phet.chipper.queryParameters.screens;
-      control.enabled = _.some( includedScreens, includedScreen => screens.includes( includedScreen ) );
-    }
 
     const missingVoiceWarningTextOptions = {
       font: new PhetFont( 14 )
@@ -80,9 +80,12 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
     missingVoiceWarning.top = control.bottom + 24;
     missingVoiceWarningMessage.top = warningIcon.bottom + 14;
 
-    Multilink.multilink( [ preferences.readAloudProperty, preferences.showSecondLocaleProperty,
+    Multilink.multilink( [
+        preferences.readAloudProperty,
+        preferences.showSecondLocaleProperty,
         speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
-        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty ],
+        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty
+      ],
       ( readAloud, showSecondLocale, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled ) => {
         missingVoiceWarning.visible = showSecondLocale ?
                                       readAloud && ( !primaryLocaleVoiceEnabled || !secondaryLocaleVoiceEnabled ) :

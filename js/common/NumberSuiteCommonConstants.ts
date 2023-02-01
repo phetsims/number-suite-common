@@ -12,6 +12,31 @@ import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 
+// Maps a number to the stringProperty of the translated word that corresponds to the number.
+const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LinkableProperty<string>> = {
+  0: NumberSuiteCommonStrings.zeroStringProperty,
+  1: NumberSuiteCommonStrings.oneStringProperty,
+  2: NumberSuiteCommonStrings.twoStringProperty,
+  3: NumberSuiteCommonStrings.threeStringProperty,
+  4: NumberSuiteCommonStrings.fourStringProperty,
+  5: NumberSuiteCommonStrings.fiveStringProperty,
+  6: NumberSuiteCommonStrings.sixStringProperty,
+  7: NumberSuiteCommonStrings.sevenStringProperty,
+  8: NumberSuiteCommonStrings.eightStringProperty,
+  9: NumberSuiteCommonStrings.nineStringProperty,
+  10: NumberSuiteCommonStrings.tenStringProperty,
+  11: NumberSuiteCommonStrings.elevenStringProperty,
+  12: NumberSuiteCommonStrings.twelveStringProperty,
+  13: NumberSuiteCommonStrings.thirteenStringProperty,
+  14: NumberSuiteCommonStrings.fourteenStringProperty,
+  15: NumberSuiteCommonStrings.fifteenStringProperty,
+  16: NumberSuiteCommonStrings.sixteenStringProperty,
+  17: NumberSuiteCommonStrings.seventeenStringProperty,
+  18: NumberSuiteCommonStrings.eighteenStringProperty,
+  19: NumberSuiteCommonStrings.nineteenStringProperty,
+  20: NumberSuiteCommonStrings.twentyStringProperty
+};
+
 // Maps a number to the key used to look up the translated word that corresponds to the number.
 const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   0: 'zero',
@@ -37,33 +62,19 @@ const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
   20: 'twenty'
 } as Record<number, string>;
 
-
-const NUMBER_TO_STRING_KEY_PRIMARY: Record<number, LinkableProperty<string>> = {
-  0: NumberSuiteCommonStrings.zeroStringProperty,
-  1: NumberSuiteCommonStrings.oneStringProperty,
-  2: NumberSuiteCommonStrings.twoStringProperty,
-  3: NumberSuiteCommonStrings.threeStringProperty,
-  4: NumberSuiteCommonStrings.fourStringProperty,
-  5: NumberSuiteCommonStrings.fiveStringProperty,
-  6: NumberSuiteCommonStrings.sixStringProperty,
-  7: NumberSuiteCommonStrings.sevenStringProperty,
-  8: NumberSuiteCommonStrings.eightStringProperty,
-  9: NumberSuiteCommonStrings.nineStringProperty,
-  10: NumberSuiteCommonStrings.tenStringProperty,
-  11: NumberSuiteCommonStrings.elevenStringProperty,
-  12: NumberSuiteCommonStrings.twelveStringProperty,
-  13: NumberSuiteCommonStrings.thirteenStringProperty,
-  14: NumberSuiteCommonStrings.fourteenStringProperty,
-  15: NumberSuiteCommonStrings.fifteenStringProperty,
-  16: NumberSuiteCommonStrings.sixteenStringProperty,
-  17: NumberSuiteCommonStrings.seventeenStringProperty,
-  18: NumberSuiteCommonStrings.eighteenStringProperty,
-  19: NumberSuiteCommonStrings.nineteenStringProperty,
-  20: NumberSuiteCommonStrings.twentyStringProperty
-};
-
 // RequireJS namespace, used for looking up translated strings
 const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
+
+// Returns either the primaryString or the secondaryString based on isPrimaryLocale. If the secondaryString doesn't
+// exist but is desired, return the primaryString instead as a fallback. We know the primaryString will always exist
+// because if there is a missing string in that locale, the String library will fall back to the English string instead.
+// This function should be used whenever the sim needs a secondaryLocale string so that it is guarded with a fallback.
+const getString = ( primaryString: string, secondaryString: string | undefined, stringKey: string,
+                    isPrimaryLocale: boolean ): string => {
+  const string = ( !isPrimaryLocale && secondaryString ) ? secondaryString : primaryString;
+  assert && assert( string, `no string found for stringKey=${stringKey}` );
+  return string;
+};
 
 const NumberSuiteCommonConstants = {
 
@@ -94,17 +105,17 @@ const NumberSuiteCommonConstants = {
   numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
 
     // The word for number in the primary language
-    const primaryWord = NUMBER_TO_STRING_KEY_PRIMARY[ number ].value;
+    const primaryString = NUMBER_TO_STRING_PROPERTY_PRIMARY[ number ].value;
 
     // The word for number in the secondary language
-    const secondaryWord = numberPlaySecondaryStrings[ `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}` ];
+    const stringKey = `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}`;
+    const secondaryString = numberPlaySecondaryStrings[ stringKey ];
 
-    // Fallback to primaryWord if there is no secondary translation.
-    const word = ( !isPrimaryLocale && secondaryWord ) ? secondaryWord : primaryWord;
-    assert && assert( word, `no word found for number=${number}` );
-
-    return word;
+    // Fallback to primaryString if there is no secondary translation.
+    return getString( primaryString, secondaryString, stringKey, isPrimaryLocale );
   },
+
+  getString: getString,
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,

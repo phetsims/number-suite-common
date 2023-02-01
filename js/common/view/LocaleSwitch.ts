@@ -37,9 +37,12 @@ class LocaleSwitch extends ABSwitch<boolean> {
       maxWidth: ( maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2 ) * 0.5
     };
 
-    const firstLanguageText = new Text( localeInfoModule[ localeProperty.value ].localizedName, switchTextOptions );
+    const firstLanguageText = new Text( '', switchTextOptions );
     const secondLanguageText = new Text( '', switchTextOptions );
 
+    localeProperty.link( locale => {
+      firstLanguageText.setText( localeInfoModule[ locale ].localizedName );
+    } );
     secondLocaleProperty.link( locale => {
       secondLanguageText.setText( localeInfoModule[ locale ].localizedName );
     } );
