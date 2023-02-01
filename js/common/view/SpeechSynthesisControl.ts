@@ -1,9 +1,8 @@
 // Copyright 2023, University of Colorado Boulder
 
 /**
- * SpeechSynthesisControl is the control for speech synthesis. It consists of 2 buttons. The top button trigger
- * reading of a number. The bottom button is made visible when the locale does not support reading, and pressing
- * it opens a dialog that explains the problem.
+ * SpeechSynthesisControl is the control for speech synthesis. It groups SpeechSynthesisButton and
+ * MissingVoiceWarningButton, which should always appear together.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  * @author Chris Malley (PixelZoom, Inc.)
