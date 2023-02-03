@@ -334,6 +334,11 @@ class CountingPlayAreaNode extends Node {
         }
       }
       else {
+
+        // Whenever a countingObject is combined we want to ensure the object moves to the top of the z-order.
+        // TODO: CK, why do I need this moveToFront if I have the one in CountingObjectNode as well? https://github.com/phetsims/number-suite-common/issues/44
+        this.moveToFront();
+
         // TODO: duplication https://github.com/phetsims/number-play/issues/119
         // allow any two numbers to be combined
         this.playArea.collapseNumberModels( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject );
