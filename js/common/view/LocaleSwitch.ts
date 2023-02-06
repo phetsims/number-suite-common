@@ -16,6 +16,7 @@ import Property from '../../../../axon/js/Property.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -23,6 +24,9 @@ const AB_SWITCH_OPTIONS = {
   toggleSwitchOptions: {
     size: new Dimension2( 40, 20 )
   }
+};
+const TEXT_OPTIONS = {
+  font: new PhetFont( 14 )
 };
 
 export default class LocaleSwitch extends ABSwitch<boolean> {
@@ -36,15 +40,8 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
     const secondLanguageStringProperty = new DerivedProperty( [ secondLocaleProperty ],
       locale => localeInfoModule[ locale ].localizedName );
 
-    const textOptions = {
-      font: new PhetFont( 14 ),
-
-      // half of the available horizontal space without the ToggleSwitch or spacing.
-      maxWidth: ( maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2 ) * 0.5
-    };
-    
-    const firstLanguageText = new Text( firstLanguageStringProperty, textOptions );
-    const secondLanguageText = new Text( secondLanguageStringProperty, textOptions );
+    const firstLanguageText = new Text( firstLanguageStringProperty, TEXT_OPTIONS );
+    const secondLanguageText = new Text( secondLanguageStringProperty, TEXT_OPTIONS );
 
     super( isPrimaryLocaleProperty,
       true, firstLanguageText,
@@ -56,6 +53,22 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
       this.visible = showSecondLocale;
       if ( !showSecondLocale ) {
         isPrimaryLocaleProperty.value = true;
+      }
+    } );
+
+    const availableTextSpace = maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2;
+    Multilink.multilink( [ firstLanguageText.boundsProperty, secondLanguageText.boundsProperty ], () => {
+      if ( firstLanguageText.width + secondLanguageText.width < availableTextSpace ) {
+
+        // If there's enough space, do not scale either Text label.
+        firstLanguageText.maxWidth = firstLanguageText.width;
+        secondLanguageText.maxWidth = secondLanguageText.width;
+      }
+      else {
+
+        // If there's not enough space, give each Text label half of the available space.
+        firstLanguageText.maxWidth = availableTextSpace / 2;
+        secondLanguageText.maxWidth = availableTextSpace / 2;
       }
     } );
   }
