@@ -20,7 +20,7 @@ import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
   private readonly updateVoiceListener: ( () => void ) | null;
-  private readonly secondLocaleProperty: TReadOnlyProperty<string>;
+  private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
   public readonly primaryLocaleVoiceEnabledProperty: TReadOnlyProperty<boolean>;
   public readonly secondaryLocaleVoiceEnabledProperty: TReadOnlyProperty<boolean>;
 
@@ -57,9 +57,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     // in case we don't have any voices yet, wait until the voicesProperty is populated
     if ( this.initialized && this.voicesProperty.value.length > 0 ) {
 
-      const translatedVoices = _.filter( this.getPrioritizedVoices(), voice => {
-        return voice.lang.includes( locale );
-      } );
+      const translatedVoices = this.getPrioritizedVoicesForLocale( locale );
       if ( translatedVoices.length ) {
         const translatedVoice = translatedVoices[ 0 ];
         this.voiceProperty.set( translatedVoice );
@@ -75,9 +73,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
     if ( this.initialized ) {
 
-      const translatedVoices = _.filter( this.getPrioritizedVoices(), voice => {
-        return voice.lang.includes( locale );
-      } );
+      const translatedVoices = this.getPrioritizedVoicesForLocale( locale );
       if ( translatedVoices.length ) {
         isVoiceFound = true;
       }
