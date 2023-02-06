@@ -8,59 +8,47 @@
 
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { AlignBox, AlignGroup, Text } from '../../../../scenery/js/imports.js';
+import { Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
-  centerOnSwitch: true,
   spacing: 8,
   toggleSwitchOptions: {
     size: new Dimension2( 40, 20 )
   }
 };
 
-class LocaleSwitch extends ABSwitch<boolean> {
+export default class LocaleSwitch extends ABSwitch<boolean> {
 
   public constructor( isPrimaryLocaleProperty: Property<boolean>, showSecondLocaleProperty: TReadOnlyProperty<boolean>,
                       secondLocaleProperty: TReadOnlyProperty<Locale>, maxWidth: number ) {
 
-    // options for the switch text. calculate the maxWidth for each string as half of the available horizontal space
-    // without the ToggleSwitch or spacing.
-    const switchTextOptions = {
+    const firstLanguageStringProperty = new DerivedProperty( [ localeProperty ],
+      locale => localeInfoModule[ locale ].localizedName );
+
+    const secondLanguageStringProperty = new DerivedProperty( [ secondLocaleProperty ],
+      locale => localeInfoModule[ locale ].localizedName );
+
+    const textOptions = {
       font: new PhetFont( 14 ),
+
+      // half of the available horizontal space without the ToggleSwitch or spacing.
       maxWidth: ( maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2 ) * 0.5
     };
-
-    const firstLanguageText = new Text( '', switchTextOptions );
-    const secondLanguageText = new Text( '', switchTextOptions );
-
-    localeProperty.link( locale => {
-      firstLanguageText.setText( localeInfoModule[ locale ].localizedName );
-    } );
-    secondLocaleProperty.link( locale => {
-      secondLanguageText.setText( localeInfoModule[ locale ].localizedName );
-    } );
-
-    // To give the labels the same effective width
-    const alignGroup = new AlignGroup();
+    
+    const firstLanguageText = new Text( firstLanguageStringProperty, textOptions );
+    const secondLanguageText = new Text( secondLanguageStringProperty, textOptions );
 
     super( isPrimaryLocaleProperty,
-      true,
-      new AlignBox( firstLanguageText, {
-        group: alignGroup,
-        xAlign: 'right'
-      } ),
-      false,
-      new AlignBox( secondLanguageText, {
-        group: alignGroup,
-        xAlign: 'left'
-      } ),
+      true, firstLanguageText,
+      false, secondLanguageText,
       AB_SWITCH_OPTIONS
     );
 
@@ -74,4 +62,3 @@ class LocaleSwitch extends ABSwitch<boolean> {
 }
 
 numberSuiteCommon.register( 'LocaleSwitch', LocaleSwitch );
-export default LocaleSwitch;
