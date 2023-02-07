@@ -56,11 +56,13 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
     if ( this.initialized && this.voicesProperty.value.length > 0 ) {
-
       const translatedVoices = this.getPrioritizedVoicesForLocale( locale );
-      if ( translatedVoices.length ) {
-        const translatedVoice = translatedVoices[ 0 ];
-        this.voiceProperty.set( translatedVoice );
+      console.log( `translatedVoices=${translatedVoices.map( voice => voice.lang )}` );//XXX
+      if ( translatedVoices.length > 0 ) {
+        this.voiceProperty.value = translatedVoices[ 0 ];
+      }
+      else {
+        this.voiceProperty.value = null;
       }
     }
   }

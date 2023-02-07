@@ -75,11 +75,13 @@ class SpeechSynthesisButton extends RectangularPushButton {
     };
 
     // read numeric numbers aloud if the current number changes (or the second number, on the 'Compare' screen)
-    Multilink.lazyMultilink( [ options.numberProperty, options.secondNumberProperty ], () => {
-      if ( preferences.readAloudProperty.value ) {
-        listener();
-      }
-    } );
+    Multilink.lazyMultilink(
+      [ options.numberProperty, options.secondNumberProperty, options.comparisonSignsAndTextVisibleProperty, speechSynthesisAnnouncer.voiceProperty ],
+      ( number, secondNumber, comparisonSignsAndTextVisible, voice ) => {
+        if ( preferences.readAloudProperty.value && comparisonSignsAndTextVisible && voice ) {
+          listener();
+        }
+      } );
 
     super( {
       content: new Path( bullhornSolidShape, {
