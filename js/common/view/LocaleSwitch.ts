@@ -57,7 +57,6 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
     } );
 
     const availableTextSpace = maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2;
-    console.log( `availableTextSpace=${availableTextSpace}` );
     Multilink.multilink( [ firstLanguageText.boundsProperty, secondLanguageText.boundsProperty ], () => {
       if ( firstLanguageText.width + secondLanguageText.width < availableTextSpace ) {
 
@@ -73,8 +72,6 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
         firstLanguageText.maxWidth = availableTextSpace / 2;
         secondLanguageText.maxWidth = availableTextSpace / 2;
       }
-      console.log( `firstLanguageText.maxWidth=${firstLanguageText.maxWidth}` );
-      console.log( `secondLanguageText.maxWidth=${secondLanguageText.maxWidth}` );
     } );
   }
 }
