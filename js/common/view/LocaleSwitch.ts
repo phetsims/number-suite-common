@@ -16,7 +16,6 @@ import Property from '../../../../axon/js/Property.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -57,18 +56,21 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
     } );
 
     const availableTextSpace = maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2;
-    Multilink.multilink( [ firstLanguageText.boundsProperty, secondLanguageText.boundsProperty ], () => {
-      if ( firstLanguageText.width + secondLanguageText.width < availableTextSpace ) {
+    let isAdjusting = false; // to prevent recursion that will exceed maximum call stack size
+    this.boundsProperty.link( () => {
+      if ( !isAdjusting ) {
+        isAdjusting = true;
 
-        // If there's enough space, do not scale either Text label.
-        firstLanguageText.maxWidth = firstLanguageText.width;
-        secondLanguageText.maxWidth = secondLanguageText.width;
-      }
-      else {
+        // Assume that neither label needs to be scaled.
+        firstLanguageText.maxWidth = null;
+        secondLanguageText.maxWidth = null;
 
-        // If there's not enough space, give each Text label half of the available space.
-        firstLanguageText.maxWidth = availableTextSpace / 2;
-        secondLanguageText.maxWidth = availableTextSpace / 2;
+        // If there's not enough space for both full-size labels, give each Text label half of the available space.
+        if ( firstLanguageText.width + secondLanguageText.width > availableTextSpace ) {
+          firstLanguageText.maxWidth = availableTextSpace / 2;
+          secondLanguageText.maxWidth = availableTextSpace / 2;
+        }
+        isAdjusting = false;
       }
     } );
   }
