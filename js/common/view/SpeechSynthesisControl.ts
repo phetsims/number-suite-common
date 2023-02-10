@@ -12,7 +12,6 @@ import { NodeTranslationOptions, VBox, VBoxOptions } from '../../../../scenery/j
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import SpeechSynthesisButton, { SpeechSynthesisButtonOptions } from './SpeechSynthesisButton.js';
 import MissingVoiceWarningButton from './MissingVoiceWarningButton.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
