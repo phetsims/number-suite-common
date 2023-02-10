@@ -28,8 +28,7 @@ type SpeechSynthesisControlOptions = SelfOptions & NodeTranslationOptions;
 
 export default class SpeechSynthesisControl extends VBox {
 
-  public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
-                      preferences: NumberSuiteCommonPreferences,
+  public constructor( preferences: NumberSuiteCommonPreferences,
                       speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
                       numberPlayUtteranceQueue: UtteranceQueue,
                       providedOptions: SpeechSynthesisControlOptions ) {
@@ -41,11 +40,11 @@ export default class SpeechSynthesisControl extends VBox {
       spacing: 12
     }, providedOptions );
 
-    const speechSynthesisButton = new SpeechSynthesisButton( isPrimaryLocaleProperty, preferences,
+    const speechSynthesisButton = new SpeechSynthesisButton( preferences.isPrimaryLocaleProperty, preferences,
       speechSynthesisAnnouncer, numberPlayUtteranceQueue, options.speechSynthesisButtonOptions );
 
     const missingVoiceWarningButton = new MissingVoiceWarningButton(
-      isPrimaryLocaleProperty,
+      preferences.isPrimaryLocaleProperty,
       speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
       speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty
     );

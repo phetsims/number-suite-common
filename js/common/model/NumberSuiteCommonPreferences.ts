@@ -29,6 +29,9 @@ class NumberSuiteCommonPreferences {
   public readonly showLabOnesProperty: Property<boolean>;
   public readonly readAloudProperty: Property<boolean>;
 
+  // whether the sim is using the locale it was loaded in or a second locale
+  public readonly isPrimaryLocaleProperty: Property<boolean>;
+
   // helper Properties derived from preference Properties
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
 
@@ -37,6 +40,8 @@ class NumberSuiteCommonPreferences {
 
   public constructor( allUrl: string ) {
     this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
+
+    this.isPrimaryLocaleProperty = new BooleanProperty( true );
 
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
 

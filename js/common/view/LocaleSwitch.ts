@@ -16,6 +16,7 @@ import Property from '../../../../axon/js/Property.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -30,28 +31,27 @@ const TEXT_OPTIONS = {
 
 export default class LocaleSwitch extends ABSwitch<boolean> {
 
-  public constructor( isPrimaryLocaleProperty: Property<boolean>, showSecondLocaleProperty: TReadOnlyProperty<boolean>,
-                      secondLocaleProperty: TReadOnlyProperty<Locale>, maxWidth: number ) {
+  public constructor( preferences: NumberSuiteCommonPreferences, maxWidth: number ) {
 
     const firstLanguageStringProperty = new DerivedProperty( [ localeProperty ],
       locale => localeInfoModule[ locale ].localizedName );
 
-    const secondLanguageStringProperty = new DerivedProperty( [ secondLocaleProperty ],
+    const secondLanguageStringProperty = new DerivedProperty( [ preferences.secondLocaleProperty ],
       locale => localeInfoModule[ locale ].localizedName );
 
     const firstLanguageText = new Text( firstLanguageStringProperty, TEXT_OPTIONS );
     const secondLanguageText = new Text( secondLanguageStringProperty, TEXT_OPTIONS );
 
-    super( isPrimaryLocaleProperty,
+    super( preferences.isPrimaryLocaleProperty,
       true, firstLanguageText,
       false, secondLanguageText,
       AB_SWITCH_OPTIONS
     );
 
-    showSecondLocaleProperty.link( showSecondLocale => {
+    preferences.showSecondLocaleProperty.link( showSecondLocale => {
       this.visible = showSecondLocale;
       if ( !showSecondLocale ) {
-        isPrimaryLocaleProperty.value = true;
+        preferences.isPrimaryLocaleProperty.value = true;
       }
     } );
 
