@@ -14,6 +14,7 @@ import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import localeProperty, { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 
 //TODO https://github.com/phetsims/number-suite-common/issues/18 type string map, perhaps getStringModule.TStringModule?
 //TODO https://github.com/phetsims/number-suite-common/issues/18 replace any
@@ -39,16 +40,21 @@ class NumberSuiteCommonPreferences {
   // whether the sim is using the locale it was loaded in or a second locale
   public readonly isPrimaryLocaleProperty: Property<boolean>;
 
+  // the voice of the primary locale
+  public readonly primaryVoiceProperty: Property<SpeechSynthesisVoice | null>;
+
+  // the voice of the secondary locale
+  public readonly secondVoiceProperty: Property<SpeechSynthesisVoice | null>;
+
   // helper Properties derived from preference Properties
+
+  // the set of sim strings for the current secondLocale
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
 
   // the 'all' link of this simulation
   public readonly allUrl: string;
 
   public constructor( allUrl: string ) {
-    this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
-
-    this.isPrimaryLocaleProperty = new BooleanProperty( true );
 
     // if a valid second locale was provided via a query parameter, display the second locale on sim startup
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
@@ -59,6 +65,14 @@ class NumberSuiteCommonPreferences {
     } );
 
     this.showLabOnesProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.showLabOnes );
+
+    this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
+
+    this.isPrimaryLocaleProperty = new BooleanProperty( true );
+
+    this.primaryVoiceProperty = new Property<SpeechSynthesisVoice | null>( null );
+
+    this.secondVoiceProperty = new Property<SpeechSynthesisVoice | null>( null );
 
     this.secondLocaleStringsProperty = new DerivedProperty( [ this.secondLocaleProperty ], secondLocale => {
       return phet.chipper.strings[ secondLocale ];
