@@ -16,25 +16,24 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
   private readonly updateVoiceListener: ( () => void ) | null;
   private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
-  public readonly primaryLocaleVoiceEnabledProperty: TReadOnlyProperty<boolean>;
-  public readonly secondaryLocaleVoiceEnabledProperty: TReadOnlyProperty<boolean>;
+  public readonly voiceEnabledProperty: TReadOnlyProperty<boolean>;
 
-  public constructor( secondLocaleProperty: TReadOnlyProperty<Locale> ) {
+  public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
+                      secondLocaleProperty: TReadOnlyProperty<Locale>
+  ) {
     super();
 
     this.updateVoiceListener = () => this.updateVoice();
     this.secondLocaleProperty = secondLocaleProperty;
 
-    this.primaryLocaleVoiceEnabledProperty = new DerivedProperty( [ localeProperty, this.voiceProperty ],
-      ( locale: Locale ) => this.testVoiceForLocale( locale ) );
-
-    this.secondaryLocaleVoiceEnabledProperty = new DerivedProperty( [ secondLocaleProperty, this.voiceProperty ],
-      locale => this.testVoiceForLocale( locale ) );
+    this.voiceEnabledProperty = new DerivedProperty( [ this.voiceProperty ],
+      ( voice: SpeechSynthesisVoice | null ) => !!voice );
 
     // When the SpeechSynthesisAnnouncer becomes initialized or when voices change, update the voice
     // currently being used by this Announcer.
@@ -43,6 +42,11 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
       if ( initialized ) {
         this.updateVoice();
       }
+    } );
+
+    // Update the voice when the primary locale, secondary locale, or which of the two we are choosing changes.
+    Multilink.multilink( [ isPrimaryLocaleProperty, localeProperty, secondLocaleProperty ], isPrimaryLocale => {
+      this.updateVoice( isPrimaryLocale );
     } );
   }
 
@@ -64,23 +68,6 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
         this.voiceProperty.value = null;
       }
     }
-  }
-
-  /**
-   * Given a locale, see if a voice is available for speech synthesis in the same locale.
-   */
-  public testVoiceForLocale( locale: Locale ): boolean {
-    let isVoiceFound = false;
-
-    if ( this.initialized ) {
-
-      const translatedVoices = this.getPrioritizedVoicesForLocale( locale );
-      if ( translatedVoices.length ) {
-        isVoiceFound = true;
-      }
-    }
-
-    return isVoiceFound;
   }
 }
 

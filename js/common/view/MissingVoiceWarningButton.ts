@@ -13,7 +13,6 @@ import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/e
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 import MissingVoiceWarningDialog from './MissingVoiceWarningDialog.js';
 
 // constants
@@ -22,9 +21,7 @@ const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the
 
 class MissingVoiceWarningButton extends RectangularPushButton {
 
-  public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
-                      primaryLocaleVoiceEnabledProperty: TReadOnlyProperty<boolean>,
-                      secondaryLocaleVoiceEnabledProperty: TReadOnlyProperty<boolean>
+  public constructor( voiceEnabledProperty: TReadOnlyProperty<boolean>
   ) {
 
     const warningDialog = new MissingVoiceWarningDialog();
@@ -38,10 +35,9 @@ class MissingVoiceWarningButton extends RectangularPushButton {
       listener: () => warningDialog.show()
     } );
 
-    Multilink.multilink( [ isPrimaryLocaleProperty, primaryLocaleVoiceEnabledProperty, secondaryLocaleVoiceEnabledProperty ],
-      ( isPrimaryLocale, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled ) => {
-        this.visible = isPrimaryLocale ? !primaryLocaleVoiceEnabled : !secondaryLocaleVoiceEnabled;
-      } );
+    voiceEnabledProperty.link( voiceEnabled => {
+      this.visible = !voiceEnabled;
+    } );
   }
 }
 

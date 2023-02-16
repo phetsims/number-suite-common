@@ -12,40 +12,40 @@ import { NodeTranslationOptions, VBox, VBoxOptions } from '../../../../scenery/j
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import SpeechSynthesisButton, { SpeechSynthesisButtonOptions } from './SpeechSynthesisButton.js';
 import MissingVoiceWarningButton from './MissingVoiceWarningButton.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
-import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
 import optionize from '../../../../phet-core/js/optionize.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 type SelfOptions = {
 
   // options propagated to (and required by) SpeechSynthesisButton
-  speechSynthesisButtonOptions: SpeechSynthesisButtonOptions;
+  speechSynthesisButtonOptions?: SpeechSynthesisButtonOptions;
 };
 
 type SpeechSynthesisControlOptions = SelfOptions & NodeTranslationOptions;
 
 export default class SpeechSynthesisControl extends VBox {
 
-  public constructor( preferences: NumberSuiteCommonPreferences,
-                      speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
-                      numberPlayUtteranceQueue: UtteranceQueue,
+  public constructor( speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                      utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions: SpeechSynthesisControlOptions ) {
 
     const options = optionize<SpeechSynthesisControlOptions, SelfOptions, VBoxOptions>()( {
+      speechSynthesisButtonOptions: {},
 
       // VBoxOptions
       align: 'center',
       spacing: 12
     }, providedOptions );
 
-    const speechSynthesisButton = new SpeechSynthesisButton( preferences.isPrimaryLocaleProperty, preferences,
-      speechSynthesisAnnouncer, numberPlayUtteranceQueue, options.speechSynthesisButtonOptions );
+    const speechSynthesisButton = new SpeechSynthesisButton(
+      speechSynthesisAnnouncer,
+      utteranceQueue,
+      options.speechSynthesisButtonOptions
+    );
 
     const missingVoiceWarningButton = new MissingVoiceWarningButton(
-      preferences.isPrimaryLocaleProperty,
-      speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
-      speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty
+      speechSynthesisAnnouncer.voiceEnabledProperty
     );
 
     options.children = [ speechSynthesisButton, missingVoiceWarningButton ];

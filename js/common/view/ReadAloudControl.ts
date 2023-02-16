@@ -83,13 +83,11 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
     Multilink.multilink( [
         preferences.readAloudProperty,
         preferences.showSecondLocaleProperty,
-        speechSynthesisAnnouncer.primaryLocaleVoiceEnabledProperty,
-        speechSynthesisAnnouncer.secondaryLocaleVoiceEnabledProperty
+        speechSynthesisAnnouncer.voiceEnabledProperty
       ],
-      ( readAloud, showSecondLocale, primaryLocaleVoiceEnabled, secondaryLocaleVoiceEnabled ) => {
-        missingVoiceWarning.visible = showSecondLocale ?
-                                      readAloud && ( !primaryLocaleVoiceEnabled || !secondaryLocaleVoiceEnabled ) :
-                                      readAloud && !primaryLocaleVoiceEnabled;
+      ( readAloud, showSecondLocale, voiceEnabled ) => {
+        // TODO: More logic is maybe needed here related to the state of isPrimaryLocaleProperty for https://github.com/phetsims/number-suite-common/issues/47
+        missingVoiceWarning.visible = readAloud && !voiceEnabled;
       } );
   }
 }
