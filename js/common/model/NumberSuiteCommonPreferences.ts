@@ -23,10 +23,17 @@ export type SecondLocaleStrings = any;
 class NumberSuiteCommonPreferences {
 
   // preference Properties directly controlled by UI
-  // if a valid second locale was provided via a query parameter, display the second locale on sim startup
+
+  // whether a second locale should be shown. A toggle switch is added on screens that use speech synthesis when true.
   public readonly showSecondLocaleProperty: Property<boolean>;
+
+  // the value of the second locale
   public readonly secondLocaleProperty: Property<Locale>;
+
+  // whether the Ones are included on the 'Lab' Screen
   public readonly showLabOnesProperty: Property<boolean>;
+
+  // whether the sim speaks the model value of screens that use speech synthesis when the data or voice changes
   public readonly readAloudProperty: Property<boolean>;
 
   // whether the sim is using the locale it was loaded in or a second locale
@@ -43,8 +50,10 @@ class NumberSuiteCommonPreferences {
 
     this.isPrimaryLocaleProperty = new BooleanProperty( true );
 
+    // if a valid second locale was provided via a query parameter, display the second locale on sim startup
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
 
+    // if a secondLocale was provided via a query parameter, use that, otherwise default to the primaryLocale
     this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale as Locale || localeProperty.value, {
       validValues: availableRuntimeLocales
     } );
