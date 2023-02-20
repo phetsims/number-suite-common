@@ -16,31 +16,33 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import localeProperty, { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import Carousel, { CarouselItem } from '../../../../sun/js/Carousel.js';
-import LanguageSelectionNode from '../../../../joist/js/preferences/LanguageSelectionNode.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
+import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
+import TProperty from '../../../../axon/js/TProperty.js';
+import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 
 type SelfOptions = EmptySelfOptions;
-
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
-
-type SecondLanguageCarouselItem = { locale: Locale } & CarouselItem;
 
 export default class SecondLanguageControl extends VBox {
 
-  public constructor( showSecondLocaleProperty: Property<boolean>, secondLocaleProperty: Property<Locale>, allUrl: string,
+  public constructor( showSecondLocaleProperty: Property<boolean>,
+                      secondLocaleProperty: Property<Locale>,
+                      secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>,
+                      allUrl: string,
+                      speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
                       providedOptions?: SecondLanguageControlOptions ) {
 
     const options = optionize<SecondLanguageControlOptions, SelfOptions, VBoxOptions>()( {
 
       // VBoxOptions
       excludeInvisibleChildrenFromBounds: false,
-      align: 'center',
-      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING
+      align: 'left',
+      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING,
+      resize: false
     }, providedOptions );
 
     const labelText = new Text( NumberSuiteCommonStrings.secondLanguageStringProperty, {
@@ -55,6 +57,7 @@ export default class SecondLanguageControl extends VBox {
     const toggleSwitch = new ToggleSwitch( showSecondLocaleProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
+    // Control for showing or hiding the languageAndVoiceControl
     const preferencesControl = new PreferencesControl( {
       labelNode: labelText,
       descriptionNode: descriptionText,
@@ -66,26 +69,14 @@ export default class SecondLanguageControl extends VBox {
     // Additional description that is visible when the Second Language control is disabled.
     const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, allUrl );
 
-    // Carousel for choosing the second language.
-    const carouselItems: SecondLanguageCarouselItem[] = localeProperty.validValues!.map(
-      locale => {
-        return {
-          locale: locale,
-          createNode: ( tandem: Tandem ) => new LanguageSelectionNode( secondLocaleProperty, locale )
-        };
-      } );
-    const secondLanguageCarousel = new Carousel( carouselItems, {
-      visibleProperty: showSecondLocaleProperty,
-      itemsPerPage: Math.min( 10, carouselItems.length ),
-      spacing: 6,
-      margin: 5,
-      orientation: 'vertical'
-    } );
-
-    // Scroll the carousel so that the initial selection is shown. See https://github.com/phetsims/number-suite-common/issues/38
-    const selectedNode = _.find( carouselItems, item => item.locale === secondLocaleProperty.value )!;
-    assert && assert( selectedNode );
-    secondLanguageCarousel.scrollToItem( selectedNode );
+    // Control for choosing a second language and associated voice
+    const languageAndVoiceControl = new LanguageAndVoiceControl(
+      secondLocaleProperty,
+      secondVoiceProperty,
+      speechSynthesisAnnouncer, {
+        visibleProperty: showSecondLocaleProperty
+      }
+    );
 
     options.children = [
       new VBox( {
@@ -93,7 +84,7 @@ export default class SecondLanguageControl extends VBox {
         spacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING,
         align: 'left'
       } ),
-      secondLanguageCarousel
+      languageAndVoiceControl
     ];
 
     super( options );

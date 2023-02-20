@@ -18,6 +18,7 @@ import SecondLanguageControl from './SecondLanguageControl.js';
 import ShowOnesControl from './ShowOnesControl.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LabScreen from '../../lab/LabScreen.js';
+import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 
 type SelfOptions = {
   secondLanguageControlEnabled?: boolean; // should the 'Second Language' control be enabled?
@@ -25,9 +26,12 @@ type SelfOptions = {
 
 export type NumberSuiteCommonPreferencesNodeOptions = SelfOptions & StrictOmit<HBoxOptions, 'children'>;
 
-export default class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommonPreferences> extends HBox {
+export default class NumberSuiteCommonPreferencesNode extends HBox {
 
-  protected constructor( preferences: T, additionalRightControls: Node[], providedOptions?: NumberSuiteCommonPreferencesNodeOptions ) {
+  protected constructor( preferences: NumberSuiteCommonPreferences,
+                         speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                         additionalRightControls: Node[],
+                         providedOptions?: NumberSuiteCommonPreferencesNodeOptions ) {
 
     const options = optionize<NumberSuiteCommonPreferencesNodeOptions, SelfOptions, HBoxOptions>()( {
 
@@ -39,10 +43,14 @@ export default class NumberSuiteCommonPreferencesNode<T extends NumberSuiteCommo
       align: 'top'
     }, providedOptions );
 
-    const secondLanguageControl = new SecondLanguageControl( preferences.showSecondLocaleProperty,
-      preferences.secondLocaleProperty, preferences.allUrl, {
-      visible: options.secondLanguageControlEnabled
-    } );
+    const secondLanguageControl = new SecondLanguageControl(
+      preferences.showSecondLocaleProperty,
+      preferences.secondLocaleProperty,
+      preferences.secondVoiceProperty,
+      preferences.allUrl,
+      speechSynthesisAnnouncer, {
+        visible: options.secondLanguageControlEnabled
+      } );
 
     const showOnesControl = new ShowOnesControl( preferences.showLabOnesProperty, {
       visible: NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen )
