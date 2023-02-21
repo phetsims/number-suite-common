@@ -9,7 +9,7 @@
 
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import { HBox, HBoxOptions, Node, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -33,10 +33,6 @@ const CAROUSEL_OPTIONS: CarouselOptions = {
   orientation: 'vertical'
 };
 const LABEL_Y_SPACING = 10;
-const RICH_TEXT_OPTIONS: RichTextOptions = {
-  lineWrap: LanguageAndVoiceSelectionNode.WIDTH,
-  font: new PhetFont( 16 )
-};
 
 type SelfOptions = EmptySelfOptions;
 type LanguageAndVoiceControlOptions = SelfOptions & StrictOmit<HBoxOptions, 'children'>;
@@ -76,17 +72,17 @@ export default class LanguageAndVoiceControl extends HBox {
             )
         };
       } );
-    const secondLanguageCarousel = new Carousel( languageCarouselItems, CAROUSEL_OPTIONS );
+    const languageCarousel = new Carousel( languageCarouselItems, CAROUSEL_OPTIONS );
 
     // Scroll the carousel so that the initial selection is shown. See https://github.com/phetsims/number-suite-common/issues/38
     const selectedNode = _.find( languageCarouselItems, item => item.locale === localeProperty.value )!;
     assert && assert( selectedNode );
-    secondLanguageCarousel.scrollToItem( selectedNode );
+    languageCarousel.scrollToItem( selectedNode );
 
     // Carousel for choosing a voice. Recreated when the language changes.
     let voiceCarousel: Node | Carousel = new Node();
     const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, LABEL_TEXT_OPTIONS );
-    const noVoiceDescriptionNode = new NoVoiceDescriptionNode();
+    const noVoiceDescriptionNode = new NoVoiceDescriptionNode( languageCarousel.width );
 
     const voiceControlVBox = new VBox( {
       children: [ voiceCarouselLabel, voiceCarousel ],
@@ -96,7 +92,7 @@ export default class LanguageAndVoiceControl extends HBox {
 
     options.children = [
       new VBox( {
-        children: [ languageCarouselLabel, secondLanguageCarousel ],
+        children: [ languageCarouselLabel, languageCarousel ],
         spacing: LABEL_Y_SPACING,
         align: 'left'
       } ),
@@ -143,13 +139,18 @@ export default class LanguageAndVoiceControl extends HBox {
 
 class NoVoiceDescriptionNode extends VBox {
 
-  public constructor() {
+  public constructor( width: number ) {
+
+    const richTextOptions: RichTextOptions = {
+      font: new PhetFont( 16 ),
+      lineWrap: width
+    };
 
     const noVoiceFoundDescriptionRichText = new RichText(
-      NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty, RICH_TEXT_OPTIONS );
+      NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty, richTextOptions );
 
     const yourDeviceMaySupportDescriptionRichText = new RichText(
-      NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty, RICH_TEXT_OPTIONS );
+      NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty, richTextOptions );
 
     super( {
       children: [ noVoiceFoundDescriptionRichText, yourDeviceMaySupportDescriptionRichText ],
@@ -157,7 +158,7 @@ class NoVoiceDescriptionNode extends VBox {
       align: 'left',
 
       // TODO: Why is this not working? https://github.com/phetsims/number-suite-common/issues/47
-      preferredWidth: LanguageAndVoiceSelectionNode.WIDTH
+      preferredWidth: width
     } );
   }
 

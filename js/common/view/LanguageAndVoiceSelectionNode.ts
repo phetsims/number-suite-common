@@ -25,7 +25,6 @@ const PADDING = 5;
 export default class LanguageAndVoiceSelectionNode extends Rectangle {
 
   private readonly disposeSelectionNode: () => void;
-  public static readonly WIDTH = WIDTH;
 
   public constructor( property: TProperty<null | SpeechSynthesisVoice | Locale>,
                       value: SpeechSynthesisVoice | Locale,
