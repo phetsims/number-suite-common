@@ -14,12 +14,12 @@ import RectangularPushButton, { RectangularPushButtonOptions } from '../../../..
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import audioManager from '../../../../joist/js/audioManager.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 type SelfOptions = {
   comparisonSignsAndTextVisibleProperty?: TReadOnlyProperty<boolean>;
@@ -45,19 +45,16 @@ class SpeechSynthesisButton extends RectangularPushButton {
       } ),
       size: new Dimension2( SIDE_LENGTH, SIDE_LENGTH ),
       baseColor: PhetColorScheme.BUTTON_YELLOW,
-      listener: () => utteranceQueue.speakSpeechData()
-    } );
-
-    Multilink.multilink( [
-      audioManager.audioEnabledProperty,
-      options.comparisonSignsAndTextVisibleProperty,
-      speechSynthesisAnnouncer.voiceEnabledProperty
-    ], (
-      audioEnabled,
-      comparisonSignsAndTextVisible,
-      voiceEnabled
-    ) => {
-      this.enabled = audioEnabled && comparisonSignsAndTextVisible && voiceEnabled;
+      listener: () => utteranceQueue.speakSpeechData(),
+      enabledProperty: new DerivedProperty( [
+        audioManager.audioEnabledProperty,
+        options.comparisonSignsAndTextVisibleProperty,
+        speechSynthesisAnnouncer.voiceEnabledProperty
+      ], (
+        audioEnabled,
+        comparisonSignsAndTextVisible,
+        voiceEnabled
+      ) => audioEnabled && comparisonSignsAndTextVisible && voiceEnabled )
     } );
   }
 }
