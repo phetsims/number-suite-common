@@ -92,8 +92,8 @@
   "showOnesDescription": {
     "value": "Include the paper numbers on the Lab screen."
   },
-  "noDeviceFoundDescription": {
-    "value": "There is no voice found on this device for the selected language(s)."
+  "noVoiceFoundDescription": {
+    "value": "There is no voice found on this device for the selected language."
   },
   "yourDeviceMaySupportDescription": {
     "value": "Your device may support downloading an additional voice for your language."

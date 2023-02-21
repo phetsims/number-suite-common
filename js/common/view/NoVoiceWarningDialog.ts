@@ -1,7 +1,8 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * Message dialog displayed when the MissingVoiceWarningButton is pressed.
+ * Message dialog displayed when the NoVoiceWarningButton is pressed that warns users that there are no voices for the
+ * selected language.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
@@ -14,14 +15,15 @@ import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/e
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 
-class MissingVoiceWarningDialog extends OopsDialog {
+class NoVoiceWarningDialog extends OopsDialog {
 
   public constructor() {
 
-    const messageProperty = new DerivedProperty( [ NumberSuiteCommonStrings.noDeviceFoundDescriptionStringProperty,
+    const messageProperty = new DerivedProperty( [
+        NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty,
         NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty ],
-      ( noDeviceFoundDescriptionString, yourDeviceMaySupportDescription ) => {
-      return `<br>${noDeviceFoundDescriptionString}<br><br>${yourDeviceMaySupportDescription}`;
+      ( noVoiceFoundDescriptionString, yourDeviceMaySupportDescription ) => {
+        return `<br>${noVoiceFoundDescriptionString}<br><br>${yourDeviceMaySupportDescription}`;
       } );
 
     super( messageProperty, {
@@ -37,5 +39,5 @@ class MissingVoiceWarningDialog extends OopsDialog {
   }
 }
 
-numberSuiteCommon.register( 'MissingVoiceWarningDialog', MissingVoiceWarningDialog );
-export default MissingVoiceWarningDialog;
+numberSuiteCommon.register( 'NoVoiceWarningDialog', NoVoiceWarningDialog );
+export default NoVoiceWarningDialog;

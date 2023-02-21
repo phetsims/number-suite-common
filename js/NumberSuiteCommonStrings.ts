@@ -42,7 +42,7 @@ type StringsType = {
   'toDisplayASecondLanguageDescriptionStringProperty': LinkableProperty<string>;
   'showOnesStringProperty': LinkableProperty<string>;
   'showOnesDescriptionStringProperty': LinkableProperty<string>;
-  'noDeviceFoundDescriptionStringProperty': LinkableProperty<string>;
+  'noVoiceFoundDescriptionStringProperty': LinkableProperty<string>;
   'yourDeviceMaySupportDescriptionStringProperty': LinkableProperty<string>;
 };
 

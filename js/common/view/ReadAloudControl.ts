@@ -55,14 +55,14 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
     const missingVoiceWarningTextOptions = {
       font: new PhetFont( 14 )
     };
-    const noDeviceFoundDescriptionText = new Text( NumberSuiteCommonStrings.noDeviceFoundDescriptionStringProperty,
+    const noVoiceFoundDescriptionText = new Text( NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty,
       missingVoiceWarningTextOptions );
     const yourDeviceMaySupportDescriptionText = new Text( NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty,
       missingVoiceWarningTextOptions );
 
     const missingVoiceWarning = new Node();
     const missingVoiceWarningMessage = new VBox( {
-      children: [ noDeviceFoundDescriptionText, yourDeviceMaySupportDescriptionText ],
+      children: [ noVoiceFoundDescriptionText, yourDeviceMaySupportDescriptionText ],
       spacing: 8,
       align: 'left'
     } );
