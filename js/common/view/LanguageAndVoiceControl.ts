@@ -8,7 +8,7 @@
  */
 
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import { HBox, HBoxOptions, Node, Text, VBox } from '../../../../scenery/js/imports.js';
+import { HBox, HBoxOptions, Node, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -20,8 +20,9 @@ import TProperty from '../../../../axon/js/TProperty.js';
 import LanguageAndVoiceSelectionNode from './LanguageAndVoiceSelectionNode.js';
 import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 
-const LABEL_OPTIONS = {
+const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',
   fontSize: 16
 };
@@ -32,6 +33,10 @@ const CAROUSEL_OPTIONS: CarouselOptions = {
   orientation: 'vertical'
 };
 const LABEL_Y_SPACING = 10;
+const RICH_TEXT_OPTIONS: RichTextOptions = {
+  lineWrap: LanguageAndVoiceSelectionNode.WIDTH,
+  font: new PhetFont( 16 )
+};
 
 type SelfOptions = EmptySelfOptions;
 type LanguageAndVoiceControlOptions = SelfOptions & StrictOmit<HBoxOptions, 'children'>;
@@ -55,7 +60,7 @@ export default class LanguageAndVoiceControl extends HBox {
       spacing: 10
     }, providedOptions );
 
-    const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageStringProperty, LABEL_OPTIONS );
+    const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageStringProperty, LABEL_TEXT_OPTIONS );
 
     // Carousel for choosing a language.
     const languageCarouselItems: LanguageCarouselItem[] = localeProperty.validValues!.map(
@@ -80,7 +85,8 @@ export default class LanguageAndVoiceControl extends HBox {
 
     // Carousel for choosing a voice. Recreated when the language changes.
     let voiceCarousel: Node | Carousel = new Node();
-    const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, LABEL_OPTIONS );
+    const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, LABEL_TEXT_OPTIONS );
+    const noVoiceDescriptionNode = new NoVoiceDescriptionNode();
 
     const voiceControlVBox = new VBox( {
       children: [ voiceCarouselLabel, voiceCarousel ],
@@ -104,21 +110,28 @@ export default class LanguageAndVoiceControl extends HBox {
 
       // TODO: consider way of remembering the users preference for this locale https://github.com/phetsims/number-suite-common/issues/47
       speechSynthesisAnnouncer.updateVoice( locale, voiceProperty );
-
       const availableVoicesForLocale = speechSynthesisAnnouncer.getPrioritizedVoicesForLocale( locale );
-      const voiceCarouselItems: VoiceCarouselItem[] = availableVoicesForLocale.map(
-        voice => {
-          return {
-            voice: voice,
-            createNode: ( tandem: Tandem ) => new LanguageAndVoiceSelectionNode( voiceProperty, voice, voice.name, voice.lang )
-          };
-        } );
 
-      voiceCarousel.dispose();
-      voiceCarousel = new Carousel( voiceCarouselItems, CAROUSEL_OPTIONS );
+      if ( availableVoicesForLocale.length ) {
+        const voiceCarouselItems: VoiceCarouselItem[] = availableVoicesForLocale.map(
+          voice => {
+            return {
+              voice: voice,
+              createNode: ( tandem: Tandem ) => new LanguageAndVoiceSelectionNode( voiceProperty, voice, voice.name, voice.lang )
+            };
+          } );
 
-      // Set the children so the new carousel is visible.
-      voiceControlVBox.children = [ voiceCarouselLabel, voiceCarousel ];
+        voiceCarousel.dispose();
+        voiceCarousel = new Carousel( voiceCarouselItems, CAROUSEL_OPTIONS );
+
+        // Set the children so the new carousel is visible.
+        voiceControlVBox.children = [ voiceCarouselLabel, voiceCarousel ];
+      }
+      else {
+
+        // No available voices, so set the children so the noVoicesFoundDescriptionNode is visible instead of the voices.
+        voiceControlVBox.children = [ voiceCarouselLabel, noVoiceDescriptionNode ];
+      }
     } );
   }
 
@@ -126,6 +139,28 @@ export default class LanguageAndVoiceControl extends HBox {
     assert && assert( false, 'dispose is not supported, exists for the lifetime of the sim' );
     super.dispose();
   }
+}
+
+class NoVoiceDescriptionNode extends VBox {
+
+  public constructor() {
+
+    const noVoiceFoundDescriptionRichText = new RichText(
+      NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty, RICH_TEXT_OPTIONS );
+
+    const yourDeviceMaySupportDescriptionRichText = new RichText(
+      NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty, RICH_TEXT_OPTIONS );
+
+    super( {
+      children: [ noVoiceFoundDescriptionRichText, yourDeviceMaySupportDescriptionRichText ],
+      spacing: 20,
+      align: 'left',
+
+      // TODO: Why is this not working? https://github.com/phetsims/number-suite-common/issues/47
+      preferredWidth: LanguageAndVoiceSelectionNode.WIDTH
+    } );
+  }
+
 }
 
 numberSuiteCommon.register( 'LanguageAndVoiceControl', LanguageAndVoiceControl );
