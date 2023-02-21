@@ -1,4 +1,4 @@
-// Copyright 2022, University of Colorado Boulder
+// Copyright 2022-2023, University of Colorado Boulder
 
 /**
  * Message dialog displayed when the NoVoiceWarningButton is pressed that warns users that there are no voices for the
