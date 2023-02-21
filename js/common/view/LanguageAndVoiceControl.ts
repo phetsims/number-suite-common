@@ -105,7 +105,7 @@ export default class LanguageAndVoiceControl extends HBox {
     localeProperty.link( locale => {
 
       // TODO: consider way of remembering the users preference for this locale https://github.com/phetsims/number-suite-common/issues/47
-      speechSynthesisAnnouncer.updateVoice( locale, voiceProperty );
+      speechSynthesisAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
       const availableVoicesForLocale = speechSynthesisAnnouncer.getPrioritizedVoicesForLocale( locale );
 
       if ( availableVoicesForLocale.length ) {

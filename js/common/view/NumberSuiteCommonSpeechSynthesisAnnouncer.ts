@@ -21,7 +21,6 @@ import TProperty from '../../../../axon/js/TProperty.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
-  private readonly updateVoiceListener: ( () => void ) | null;
   private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
   public readonly voiceEnabledProperty: TReadOnlyProperty<boolean>;
 
@@ -32,22 +31,17 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   ) {
     super();
 
-    this.updateVoiceListener = () => this.updateVoice( localeProperty.value, primaryVoiceProperty );
     this.secondLocaleProperty = secondLocaleProperty;
 
     this.voiceEnabledProperty = new DerivedProperty( [ this.voiceProperty ],
       ( voice: SpeechSynthesisVoice | null ) => !!voice );
 
-    // When the SpeechSynthesisAnnouncer becomes initialized or when voices change, update the voice
-    // currently being used by this Announcer.
-    this.voicesProperty.lazyLink( this.updateVoiceListener );
-    this.isInitializedProperty.link( initialized => {
-      if ( initialized ) {
-        this.updateVoice( localeProperty.value, primaryVoiceProperty );
-      }
-    } );
+    // When the SpeechSynthesisAnnouncer becomes initialized or when the available voices change, set the primaryVoice
+    // to the first available voice for the primary locale.
+    Multilink.multilink( [ this.isInitializedProperty, this.voicesProperty ],
+     () => this.setFirstAvailableVoiceForLocale( localeProperty.value, primaryVoiceProperty ) );
 
-    // Update the voice when the primary locale, secondary locale, or which of the two we are choosing changes.
+    // Update our voiceProperty when the primaryVoice, secondVoice, or isPrimaryLocale changes.
     Multilink.multilink( [ isPrimaryLocaleProperty, primaryVoiceProperty, secondVoiceProperty ],
       ( isPrimaryLocale, primaryVoice, secondVoice ) => {
       this.voiceProperty.value = isPrimaryLocale ? primaryVoice : secondVoice;
@@ -55,9 +49,9 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   }
 
   /**
-   * Given if we should use the primary or secondary locale, set the voice of that locale for the provided Property.
+   * Set the provided voiceProperty to the first available voice for the provided locale.
    */
-  public updateVoice( locale: Locale, voiceProperty: TProperty<SpeechSynthesisVoice | null> ): void {
+  public setFirstAvailableVoiceForLocale( locale: Locale, voiceProperty: TProperty<SpeechSynthesisVoice | null> ): void {
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
     if ( this.initialized && this.voicesProperty.value.length > 0 ) {
