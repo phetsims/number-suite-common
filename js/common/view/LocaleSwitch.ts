@@ -12,9 +12,9 @@ import { Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
-import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -31,11 +31,10 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
 
   public constructor( preferences: NumberSuiteCommonPreferences, maxWidth: number ) {
 
-    const firstLanguageStringProperty = new DerivedProperty( [ localeProperty ],
-      locale => localeInfoModule[ locale ].localizedName );
+    const firstLanguageStringProperty = new DerivedProperty( [ localeProperty ], StringUtils.localeToLocalizedName );
 
     const secondLanguageStringProperty = new DerivedProperty( [ preferences.secondLocaleProperty ],
-      locale => localeInfoModule[ locale ].localizedName );
+      StringUtils.localeToLocalizedName );
 
     const firstLanguageText = new Text( firstLanguageStringProperty, TEXT_OPTIONS );
     const secondLanguageText = new Text( secondLanguageStringProperty, TEXT_OPTIONS );
