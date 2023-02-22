@@ -79,15 +79,21 @@ export default class LanguageAndVoiceControl extends HBox {
     assert && assert( selectedNode );
     languageCarousel.scrollToItem( selectedNode );
 
+    // Record the width of the language carousel for use to ensure the voice column matches.
+    const languageCarouselWidth = languageCarousel.width;
+
     // Carousel for choosing a voice. Recreated when the language changes.
     let voiceCarousel: Node | Carousel = new Node();
     const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, LABEL_TEXT_OPTIONS );
-    const noVoiceDescriptionNode = new NoVoiceDescriptionNode( languageCarousel.width );
+    const noVoiceDescriptionNode = new NoVoiceDescriptionNode( languageCarouselWidth );
 
     const voiceControlVBox = new VBox( {
       children: [ voiceCarouselLabel, voiceCarousel ],
       spacing: LABEL_Y_SPACING,
-      align: 'left'
+      align: 'left',
+      layoutOptions: {
+        minContentWidth: languageCarouselWidth
+      }
     } );
 
     options.children = [
@@ -155,10 +161,7 @@ class NoVoiceDescriptionNode extends VBox {
     super( {
       children: [ noVoiceFoundDescriptionRichText, yourDeviceMaySupportDescriptionRichText ],
       spacing: 20,
-      align: 'left',
-
-      // TODO: Why is this not working? https://github.com/phetsims/number-suite-common/issues/47
-      preferredWidth: width
+      align: 'left'
     } );
   }
 
