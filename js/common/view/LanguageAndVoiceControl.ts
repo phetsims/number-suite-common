@@ -18,9 +18,9 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import LanguageAndVoiceSelectionNode from './LanguageAndVoiceSelectionNode.js';
-import localeInfoModule from '../../../../chipper/js/data/localeInfoModule.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 
 const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',
@@ -67,7 +67,7 @@ export default class LanguageAndVoiceControl extends HBox {
             new LanguageAndVoiceSelectionNode(
               localeProperty,
               locale,
-              localeInfoModule[ locale ].localizedName,
+              StringUtils.localeToLocalizedName( locale ),
               `${locale}`
             )
         };
