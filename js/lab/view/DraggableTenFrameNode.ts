@@ -56,7 +56,6 @@ class DraggableTenFrameNode extends Node {
     this.addChild( returnButton );
 
     this.dragListener = new DragListener( {
-      targetNode: this,
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
         this.moveToFront();
@@ -75,7 +74,7 @@ class DraggableTenFrameNode extends Node {
         options.dropListener( this );
       }
     } );
-    tenFrameNode.addInputListener( this.dragListener );
+    this.addInputListener( this.dragListener );
 
     this.cursor = 'pointer';
 
