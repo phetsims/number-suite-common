@@ -3,7 +3,7 @@
 /**
  * Class for named items of a Carousel. Text is wrapped in a Rectangle for highlighting and input listeners.
  *
- * TODO: Consider moving to joist and generalizing further, see https://github.com/phetsims/number-suite-common/issues/47.
+ * TODO: Consider moving to joist and generalizing further, see https://github.com/phetsims/joist/issues/908.
  *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Chris Klusendorf (PhET Interactive Simulations)
