@@ -97,5 +97,8 @@
   },
   "yourDeviceMaySupportDescription": {
     "value": "Your device may support downloading an additional voice for your language."
+  },
+  "oneTwoThree": {
+    "value": "One two three"
   }
 }

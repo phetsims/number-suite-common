@@ -4,15 +4,13 @@
  * Class for items of a language selection Carousel OR voice selection Carousel. Text is wrapped in a Rectangle for
  * highlighting and input listeners.
  *
- * TODO: This file was adapted from joist/js/LanguageSelectionNode.ts for prototyping a solution for
- *  https://github.com/phetsims/number-suite-common/issues/47.
+ * TODO: Consider moving to joist and generalizing further, see https://github.com/phetsims/number-suite-common/issues/47.
  *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
 import TProperty from '../../../../axon/js/TProperty.js';
-import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import { Color, FireListener, HighlightOverlay, Rectangle, Text } from '../../../../scenery/js/imports.js';
@@ -22,14 +20,15 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 const WIDTH = 200;
 const PADDING = 5;
 
-export default class LanguageAndVoiceSelectionNode extends Rectangle {
+export default class CarouselItemNode<T> extends Rectangle {
 
   private readonly disposeSelectionNode: () => void;
 
-  public constructor( property: TProperty<null | SpeechSynthesisVoice | Locale>,
-                      value: SpeechSynthesisVoice | Locale,
+  public constructor( property: TProperty<T | null>,
+                      value: T,
                       name: string,
-                      devName: string
+                      devName: string,
+                      callback: () => void
   ) {
 
     // Include the locale code when running with ?dev.
@@ -53,7 +52,7 @@ export default class LanguageAndVoiceSelectionNode extends Rectangle {
 
     const fireListener = new FireListener( {
       fire: () => {
-        property.value = value;
+        callback();
       },
 
       // Preferences components are not instrumented, see https://github.com/phetsims/joist/issues/744
@@ -68,7 +67,7 @@ export default class LanguageAndVoiceSelectionNode extends Rectangle {
       this.stroke = isOver ? HighlightOverlay.getInnerGroupHighlightColor() : Color.TRANSPARENT;
     } );
 
-    const listener = ( selection: SpeechSynthesisVoice | Locale | null ) => {
+    const listener = ( selection: T | null ) => {
 
       // identifies the selected locale
       this.fill = selection === value ? PhetColorScheme.PHET_LOGO_BLUE : null;
@@ -89,4 +88,4 @@ export default class LanguageAndVoiceSelectionNode extends Rectangle {
   }
 }
 
-numberSuiteCommon.register( 'LanguageAndVoiceSelectionNode', LanguageAndVoiceSelectionNode );
+numberSuiteCommon.register( 'CarouselItemNode', CarouselItemNode );

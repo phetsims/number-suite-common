@@ -21,6 +21,8 @@ import LanguageAndVoiceSelectionNode from './LanguageAndVoiceSelectionNode.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import preferencesSpeechSynthesisAnnouncer from './preferencesSpeechSynthesisAnnouncer.js';
+import PreferencesUtteranceQueue from './PreferencesUtteranceQueue.js';
 
 const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',
@@ -56,6 +58,9 @@ export default class LanguageAndVoiceControl extends HBox {
       spacing: 10
     }, providedOptions );
 
+    // An UtteranceQueue specifically for testing out voices when selecting a voice with this control.
+    const voiceSelectionUtteranceQueue = new PreferencesUtteranceQueue( preferencesSpeechSynthesisAnnouncer );
+
     const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageStringProperty, LABEL_TEXT_OPTIONS );
 
     // Carousel for choosing a language.
@@ -68,7 +73,9 @@ export default class LanguageAndVoiceControl extends HBox {
               localeProperty,
               locale,
               StringUtils.localeToLocalizedName( locale ),
-              `${locale}`
+              `${locale}`, () => {
+                localeProperty.value = locale;
+              }
             )
         };
       } );
@@ -119,7 +126,21 @@ export default class LanguageAndVoiceControl extends HBox {
           voice => {
             return {
               voice: voice,
-              createNode: ( tandem: Tandem ) => new LanguageAndVoiceSelectionNode( voiceProperty, voice, voice.name, voice.lang )
+              createNode: ( tandem: Tandem ) => new LanguageAndVoiceSelectionNode(
+                voiceProperty,
+                voice,
+                voice.name,
+                voice.lang, () => {
+
+                  // When changing the voiceProperty in this control, we don't want to hear the speech data being read
+                  // out, only the test voice. So disable the general announcer while testing the voice for this button.
+                  speechSynthesisAnnouncer.enabledProperty.value = false;
+
+                  voiceProperty.value = voice;
+                  voiceSelectionUtteranceQueue.testVoiceBySpeaking( voice, locale );
+
+                  speechSynthesisAnnouncer.enabledProperty.value = true;
+                } )
             };
           } );
 

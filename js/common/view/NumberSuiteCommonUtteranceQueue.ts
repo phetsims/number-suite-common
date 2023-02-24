@@ -17,21 +17,24 @@ import Multilink from '../../../../axon/js/Multilink.js';
 export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQueue {
 
   private speechDataProperty: TReadOnlyProperty<string | null> | null;
-  private numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer;
-  private readonly speechUtterance: Utterance;
-  private readonly readAloudProperty: TReadOnlyProperty<boolean>;
   private initialized: boolean;
 
-  protected constructor( numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
-               readAloudProperty: TReadOnlyProperty<boolean>
+  private readonly numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer;
+  private readonly readAloudProperty: TReadOnlyProperty<boolean>;
+  private readonly speechUtterance: Utterance;
+
+  protected constructor(
+    numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+    readAloudProperty: TReadOnlyProperty<boolean>
   ) {
     super( numberSuiteCommonAnnouncer );
 
     this.speechDataProperty = null;
+    this.initialized = false;
+
     this.numberSuiteCommonAnnouncer = numberSuiteCommonAnnouncer;
     this.readAloudProperty = readAloudProperty;
     this.speechUtterance = new Utterance();
-    this.initialized = false;
   }
 
   /**
@@ -50,17 +53,18 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   }
 
   /**
-   * Initialized this UtteranceQueue by providing speechDataProperty to use for speaking.
+   * Initializes this UtteranceQueue by providing speechDataProperty to use for speaking.
    */
   protected initializeNumberSuiteCommonUtteranceQueue( speechDataProperty: TReadOnlyProperty<string | null> ): void {
     assert && assert( !this.initialized, 'Tried to initialize NumberSuiteCommonUtteranceQueue more than once.' );
 
     this.speechDataProperty = speechDataProperty;
 
-    // speak the speech data if the voice or speech data changes and readAloud is turned on
-    Multilink.lazyMultilink( [ this.speechDataProperty, this.numberSuiteCommonAnnouncer.voiceProperty ], () => {
-      this.readAloudProperty.value && this.speakSpeechData();
-    } );
+    // Speak the speechData if readAloud is turned on, the speechData changes, or the voice changes
+    Multilink.lazyMultilink( [ this.readAloudProperty, this.speechDataProperty, this.numberSuiteCommonAnnouncer.voiceProperty ],
+      readAloud => {
+        readAloud && this.speakSpeechData();
+      } );
 
     this.initialized = true;
   }

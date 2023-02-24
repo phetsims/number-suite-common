@@ -1,11 +1,10 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * An Announcer for speech synthesis that can be used with an UtteranceQueue. Used in number-play
- * to support speaking numbers either when a "speak" button is pressed or when a value changes
- * with the ?readAloud query parameter.
+ * An Announcer for speech synthesis that can be used with an UtteranceQueue. Used in Number Suite sims for various
+ * screens.
  *
- * Not usable until initialized after the sim is created. See number-play-main.ts.
+ * Not usable until initialized after the sim is created. See number-play-main.ts and number-compare-main.ts.
  *
  * @author Jesse Greenberg (PhET Interactive Simulations)
  * @author Chris Klusendorf (PhET Interactive Simulations)
@@ -24,10 +23,11 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
   public readonly voiceEnabledProperty: TReadOnlyProperty<boolean>;
 
-  public constructor( isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
-                      secondLocaleProperty: TReadOnlyProperty<Locale>,
-                      primaryVoiceProperty: TProperty<SpeechSynthesisVoice | null>,
-                      secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>
+  public constructor(
+    isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
+    secondLocaleProperty: TReadOnlyProperty<Locale>,
+    primaryVoiceProperty: TProperty<SpeechSynthesisVoice | null>,
+    secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>
   ) {
     super();
 
@@ -36,16 +36,19 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     this.voiceEnabledProperty = new DerivedProperty( [ this.voiceProperty ],
       ( voice: SpeechSynthesisVoice | null ) => !!voice );
 
-    // When the SpeechSynthesisAnnouncer becomes initialized or when the available voices change, set the primaryVoice
-    // to the first available voice for the primary locale.
-    Multilink.multilink( [ this.isInitializedProperty, this.voicesProperty ],
-     () => this.setFirstAvailableVoiceForLocale( localeProperty.value, primaryVoiceProperty ) );
+    // When the SpeechSynthesisAnnouncer becomes initialized or when the available voices change, set the provided
+    // voice Properties to the first available voice for their respective locales.
+    Multilink.multilink(
+      [ this.isInitializedProperty, this.voicesProperty ], () => {
+        this.setFirstAvailableVoiceForLocale( localeProperty.value, primaryVoiceProperty );
+        this.setFirstAvailableVoiceForLocale( secondLocaleProperty.value, secondVoiceProperty );
+      } );
 
     // Update our voiceProperty when the primaryVoice, secondVoice, or isPrimaryLocale changes.
     Multilink.multilink( [ isPrimaryLocaleProperty, primaryVoiceProperty, secondVoiceProperty ],
       ( isPrimaryLocale, primaryVoice, secondVoice ) => {
-      this.voiceProperty.value = isPrimaryLocale ? primaryVoice : secondVoice;
-    } );
+        this.voiceProperty.value = isPrimaryLocale ? primaryVoice : secondVoice;
+      } );
   }
 
   /**
