@@ -1,8 +1,7 @@
 // Copyright 2023, University of Colorado Boulder
 
 /**
- * Class for items of a language selection Carousel OR voice selection Carousel. Text is wrapped in a Rectangle for
- * highlighting and input listeners.
+ * Class for named items of a Carousel. Text is wrapped in a Rectangle for highlighting and input listeners.
  *
  * TODO: Consider moving to joist and generalizing further, see https://github.com/phetsims/number-suite-common/issues/47.
  *

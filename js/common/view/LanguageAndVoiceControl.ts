@@ -17,7 +17,7 @@ import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Caro
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import LanguageAndVoiceSelectionNode from './LanguageAndVoiceSelectionNode.js';
+import CarouselItemNode from './CarouselItemNode.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
@@ -69,7 +69,7 @@ export default class LanguageAndVoiceControl extends HBox {
         return {
           locale: locale,
           createNode: ( tandem: Tandem ) =>
-            new LanguageAndVoiceSelectionNode(
+            new CarouselItemNode(
               localeProperty,
               locale,
               StringUtils.localeToLocalizedName( locale ),
@@ -126,7 +126,7 @@ export default class LanguageAndVoiceControl extends HBox {
           voice => {
             return {
               voice: voice,
-              createNode: ( tandem: Tandem ) => new LanguageAndVoiceSelectionNode(
+              createNode: ( tandem: Tandem ) => new CarouselItemNode(
                 voiceProperty,
                 voice,
                 voice.name,
