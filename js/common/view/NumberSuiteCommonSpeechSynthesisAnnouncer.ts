@@ -1,8 +1,8 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * An Announcer for speech synthesis that can be used with an UtteranceQueue. Used in Number Suite sims for various
- * screens.
+ * An Announcer for speech synthesis that can be used with an UtteranceQueue. Used in Number Suite sims on screens that
+ * support speech synthesis.
  *
  * Not usable until initialized after the sim is created. See number-play-main.ts and number-compare-main.ts.
  *
@@ -20,7 +20,10 @@ import TProperty from '../../../../axon/js/TProperty.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
+  // See doc in NumberSuiteCommonPreferences
   private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
+
+  // Whether this Announcer is using a valid voice
   public readonly voiceEnabledProperty: TReadOnlyProperty<boolean>;
 
   public constructor(

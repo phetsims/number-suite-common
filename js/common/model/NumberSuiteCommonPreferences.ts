@@ -1,7 +1,7 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * NumberSuiteCommonPreferences is the model for sim-specific preferences for all Number suite sims, accessed via the
+ * NumberSuiteCommonPreferences is the model for sim-specific preferences for all Number Suite sims, accessed via the
  * Preferences dialog. These preferences are global, and affect all screens.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)

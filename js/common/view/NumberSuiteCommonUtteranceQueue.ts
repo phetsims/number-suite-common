@@ -16,11 +16,19 @@ import Multilink from '../../../../axon/js/Multilink.js';
 
 export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQueue {
 
+  // Data that can be spoken to the user. The data comes from the screen that is currently being interacted with.
   private speechDataProperty: TReadOnlyProperty<string | null> | null;
+
+  // Whether this class has been initialized.
   private initialized: boolean;
 
+  // The SpeechSynthesisAnnouncer used for this UtteranceQueue.
   private readonly numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer;
+
+  // See doc in NumberSuiteCommonPreferences.
   private readonly readAloudProperty: TReadOnlyProperty<boolean>;
+
+  // The Utterance that this UtteranceQueue uses for speaking.
   private readonly speechUtterance: Utterance;
 
   protected constructor(

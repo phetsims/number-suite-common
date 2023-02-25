@@ -17,8 +17,11 @@ const ONE_TWO_THREE_STRING_KEY = `${NumberSuiteCommonConstants.NUMBER_SUITE_COMM
 
 export default class PreferencesUtteranceQueue extends UtteranceQueue {
 
-  private readonly speechUtterance: Utterance;
+  // The SpeechSynthesisAnnouncer used for this UtteranceQueue.
   private readonly speechSynthesisAnnouncer: SpeechSynthesisAnnouncer;
+
+  // The Utterance that this UtteranceQueue uses for speaking.
+  private readonly speechUtterance: Utterance;
 
   public constructor( speechSynthesisAnnouncer: SpeechSynthesisAnnouncer ) {
     super( speechSynthesisAnnouncer );
