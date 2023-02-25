@@ -1,9 +1,9 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * A toggle control in the Preferences Dialog that controls whether the sim automatically reads the current total out loud
- * when it changes. It also includes a warning message below the toggle control that shows if there are no available
- * voices for either of the selected locales.
+ * A toggle control in the Preferences Dialog that controls whether the sim automatically reads the current total out
+ * loud when it changes. It also includes a warning message below the toggle control that shows if there are no
+ * available voices for either of the selected locales.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  * @author Marla Schulz (PhET Interactive Simulations)
@@ -83,11 +83,11 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
     Multilink.multilink( [
         preferences.readAloudProperty,
         preferences.showSecondLocaleProperty,
-        speechSynthesisAnnouncer.voiceEnabledProperty
+        speechSynthesisAnnouncer.hasVoiceProperty
       ],
-      ( readAloud, showSecondLocale, voiceEnabled ) => {
+      ( readAloud, showSecondLocale, hasVoice ) => {
         // TODO: More logic is maybe needed here related to the state of isPrimaryLocaleProperty for https://github.com/phetsims/number-suite-common/issues/47
-        missingVoiceWarning.visible = readAloud && !voiceEnabled;
+        missingVoiceWarning.visible = readAloud && !hasVoice;
       } );
   }
 }

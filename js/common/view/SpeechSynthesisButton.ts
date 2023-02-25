@@ -10,7 +10,7 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstants.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
-import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
+import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import optionize from '../../../../phet-core/js/optionize.js';
@@ -31,11 +31,12 @@ const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the
 
 class SpeechSynthesisButton extends RectangularPushButton {
 
-  public constructor( speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
-                      utteranceQueue: NumberSuiteCommonUtteranceQueue,
-                      providedOptions?: SpeechSynthesisButtonOptions ) {
+  public constructor(
+    speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+    utteranceQueue: NumberSuiteCommonUtteranceQueue,
+    providedOptions?: SpeechSynthesisButtonOptions ) {
 
-    const options = optionize<SpeechSynthesisButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
+    const options = optionize<SpeechSynthesisButtonOptions, SelfOptions>()( {
       comparisonSignsAndTextVisibleProperty: new BooleanProperty( true )
     }, providedOptions );
 
@@ -49,12 +50,9 @@ class SpeechSynthesisButton extends RectangularPushButton {
       enabledProperty: new DerivedProperty( [
         audioManager.audioEnabledProperty,
         options.comparisonSignsAndTextVisibleProperty,
-        speechSynthesisAnnouncer.voiceEnabledProperty
-      ], (
-        audioEnabled,
-        comparisonSignsAndTextVisible,
-        voiceEnabled
-      ) => audioEnabled && comparisonSignsAndTextVisible && voiceEnabled )
+        speechSynthesisAnnouncer.hasVoiceProperty
+      ], ( audioEnabled, comparisonSignsAndTextVisible, hasVoice ) =>
+        audioEnabled && comparisonSignsAndTextVisible && hasVoice )
     } );
   }
 }

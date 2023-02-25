@@ -44,9 +44,7 @@ export default class SpeechSynthesisControl extends VBox {
       options.speechSynthesisButtonOptions
     );
 
-    const noVoiceWarningButton = new NoVoiceWarningButton(
-      speechSynthesisAnnouncer.voiceEnabledProperty
-    );
+    const noVoiceWarningButton = new NoVoiceWarningButton( speechSynthesisAnnouncer.hasVoiceProperty );
 
     options.children = [ speechSynthesisButton, noVoiceWarningButton ];
 

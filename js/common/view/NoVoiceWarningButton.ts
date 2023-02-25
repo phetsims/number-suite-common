@@ -14,15 +14,15 @@ import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushBut
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NoVoiceWarningDialog from './NoVoiceWarningDialog.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 // constants
-//TODO https://github.com/phetsims/number-suite-common/issues/29 Factor out with other buttons
+// TODO: Factor out with other buttons https://github.com/phetsims/number-suite-common/issues/29
 const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the size of the ResetAllButton, in screen coords
 
 class NoVoiceWarningButton extends RectangularPushButton {
 
-  public constructor( voiceEnabledProperty: TReadOnlyProperty<boolean>
-  ) {
+  public constructor( hasVoiceProperty: TReadOnlyProperty<boolean> ) {
 
     const warningDialog = new NoVoiceWarningDialog();
 
@@ -32,11 +32,8 @@ class NoVoiceWarningButton extends RectangularPushButton {
       } ),
       size: new Dimension2( SIDE_LENGTH, SIDE_LENGTH ),
       baseColor: Color.WHITE,
-      listener: () => warningDialog.show()
-    } );
-
-    voiceEnabledProperty.link( voiceEnabled => {
-      this.visible = !voiceEnabled;
+      listener: () => warningDialog.show(),
+      visibleProperty: new DerivedProperty( [ hasVoiceProperty ], hasVoice => !hasVoice )
     } );
   }
 }

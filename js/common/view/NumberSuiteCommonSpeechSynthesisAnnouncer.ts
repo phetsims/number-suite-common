@@ -23,8 +23,8 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   // See doc in NumberSuiteCommonPreferences
   private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
 
-  // Whether this Announcer is using a valid voice
-  public readonly voiceEnabledProperty: TReadOnlyProperty<boolean>;
+  // Whether this SpeechSynthesisAnnouncer is using a valid voice
+  public readonly hasVoiceProperty: TReadOnlyProperty<boolean>;
 
   public constructor(
     isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
@@ -36,7 +36,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
     this.secondLocaleProperty = secondLocaleProperty;
 
-    this.voiceEnabledProperty = new DerivedProperty( [ this.voiceProperty ],
+    this.hasVoiceProperty = new DerivedProperty( [ this.voiceProperty ],
       ( voice: SpeechSynthesisVoice | null ) => !!voice );
 
     // When the SpeechSynthesisAnnouncer becomes initialized or when the available voices change, set the provided
