@@ -73,7 +73,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     // default option.
     Multilink.lazyMultilink( [ this.readAloudProperty, this.speechDataProperty, this.numberSuiteCommonAnnouncer.voiceProperty ],
       readAloud => {
-        readAloud && this.numberSuiteCommonAnnouncer.hasVoice() && this.speakSpeechData();
+        readAloud && this.speakSpeechData();
       } );
 
     this.initialized = true;

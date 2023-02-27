@@ -36,7 +36,8 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
     this.secondLocaleProperty = secondLocaleProperty;
 
-    this.hasVoiceProperty = new DerivedProperty( [ this.voiceProperty ], () => this.hasVoice() );
+    this.hasVoiceProperty = new DerivedProperty( [ this.voiceProperty ],
+      ( voice: SpeechSynthesisVoice | null ) => !!voice );
 
     // When the SpeechSynthesisAnnouncer becomes initialized or when the available voices change, set the provided
     // voice Properties to the first available voice for their respective locales.
@@ -68,10 +69,6 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
         voiceProperty.value = null;
       }
     }
-  }
-
-  public hasVoice(): boolean {
-    return !!this.voiceProperty.value;
   }
 }
 
