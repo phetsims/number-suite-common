@@ -117,7 +117,7 @@ export default class LanguageAndVoiceControl extends HBox {
     // Rebuild the voiceCarousel with the available voices when the locale changes
     localeProperty.link( locale => {
 
-      // TODO: consider way of remembering the users preference for this locale https://github.com/phetsims/number-suite-common/issues/47
+      // TODO: consider way of remembering the users preference for this locale, see https://github.com/phetsims/number-suite-common/issues/53
       speechSynthesisAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
       const availableVoicesForLocale = speechSynthesisAnnouncer.getPrioritizedVoicesForLocale( locale );
 
