@@ -24,10 +24,10 @@ class NumberSuiteCommonPreferences {
 
   // preference Properties directly controlled by UI
 
-  // whether a second locale should be shown. A toggle switch is added on screens that use speech synthesis when true.
+  // whether a second locale should be shown. A toggle switch is added on screens that support two locales when true.
   public readonly showSecondLocaleProperty: Property<boolean>;
 
-  // the value of the second locale
+  // the second locale
   public readonly secondLocaleProperty: Property<Locale>;
 
   // whether the Ones are included on the 'Lab' Screen
@@ -36,7 +36,7 @@ class NumberSuiteCommonPreferences {
   // whether the sim speaks the model value of screens that use speech synthesis when the data or voice changes
   public readonly readAloudProperty: Property<boolean>;
 
-  // whether the sim is using the locale it was loaded in or a second locale
+  // whether the sim is using its primary locale or a second locale on screens that support two locales
   public readonly isPrimaryLocaleProperty: Property<boolean>;
 
   // the voice of the primary locale
