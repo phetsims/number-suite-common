@@ -68,10 +68,12 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     this.speechDataProperty = speechDataProperty;
 
-    // Speak the speechData if readAloud is turned on, the speechData changes, or the voice changes
+    // Speak the speechData if readAloud is turned on, the speechData changes, or the voice changes. Also check that
+    // the announcer has a voice because even if the voiceProperty is set to null, the browser still speaks with a
+    // default option, see https://github.com/phetsims/number-suite-common/issues/47
     Multilink.lazyMultilink( [ this.readAloudProperty, this.speechDataProperty, this.numberSuiteCommonAnnouncer.voiceProperty ],
       readAloud => {
-        readAloud && this.speakSpeechData();
+        readAloud && this.numberSuiteCommonAnnouncer.hasVoice() && this.speakSpeechData();
       } );
 
     this.initialized = true;
