@@ -164,6 +164,10 @@ export default class LanguageAndVoiceControl extends HBox {
   }
 }
 
+/**
+ * Text for informing the user that there is no available voice for their selected language. The text wraps at the
+ * provided width.
+ */
 class NoVoiceDescriptionNode extends VBox {
 
   public constructor( width: number ) {
@@ -185,7 +189,6 @@ class NoVoiceDescriptionNode extends VBox {
       align: 'left'
     } );
   }
-
 }
 
 numberSuiteCommon.register( 'LanguageAndVoiceControl', LanguageAndVoiceControl );
