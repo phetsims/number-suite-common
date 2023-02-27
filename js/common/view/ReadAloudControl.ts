@@ -1,15 +1,15 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * A toggle control in the Preferences Dialog that controls whether the sim automatically reads the current total out
- * loud when it changes. It also includes a warning message below the toggle control that shows if there are no
- * available voices for either of the selected locales.
+ * A toggle control in the Preferences Dialog that controls whether the sim automatically reads the current data out
+ * loud when the data is updated or the voice is changed. It also includes a warning message below the toggle control
+ * that is visible if there is no voice.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  * @author Marla Schulz (PhET Interactive Simulations)
  */
 
-import { Color, Node, Path, Text, VBox } from '../../../../scenery/js/imports.js';
+import { Color, Node, Path, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
@@ -18,19 +18,24 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
-import Multilink from '../../../../axon/js/Multilink.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
-export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
-  A extends NumberSuiteCommonSpeechSynthesisAnnouncer> extends Node {
+const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
+  font: new PhetFont( 14 )
+};
 
-  public constructor( preferences: T,
-                      speechSynthesisAnnouncer: A,
-                      labelStringProperty: TReadOnlyProperty<string>,
-                      descriptionStringProperty: TReadOnlyProperty<string>,
-                      visible: boolean ) {
+export default class ReadAloudControl extends Node {
+
+  public constructor(
+    preferences: NumberSuiteCommonPreferences,
+    speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+    labelStringProperty: TReadOnlyProperty<string>,
+    descriptionStringProperty: TReadOnlyProperty<string>,
+    visible: boolean
+  ) {
 
     super( {
       visible: visible
@@ -52,43 +57,40 @@ export default class ReadAloudControl<T extends NumberSuiteCommonPreferences,
     } );
     this.addChild( control );
 
-    const missingVoiceWarningTextOptions = {
-      font: new PhetFont( 14 )
-    };
-    const noVoiceFoundDescriptionText = new Text( NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty,
-      missingVoiceWarningTextOptions );
-    const yourDeviceMaySupportDescriptionText = new Text( NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty,
-      missingVoiceWarningTextOptions );
+    const warningIcon = new Path( exclamationTriangleSolidShape, {
+      fill: new Color( 240, 79, 79 ),
+      maxWidth: 30
+    } );
 
-    const missingVoiceWarning = new Node();
+    const noVoiceFoundDescriptionText = new Text(
+      NumberSuiteCommonStrings.noVoiceFoundDescriptionStringProperty,
+      MISSING_VOICE_WARNING_TEXT_OPTIONS
+    );
+    const yourDeviceMaySupportDescriptionText = new Text(
+      NumberSuiteCommonStrings.yourDeviceMaySupportDescriptionStringProperty,
+      MISSING_VOICE_WARNING_TEXT_OPTIONS
+    );
+
     const missingVoiceWarningMessage = new VBox( {
       children: [ noVoiceFoundDescriptionText, yourDeviceMaySupportDescriptionText ],
       spacing: 8,
       align: 'left'
     } );
-    missingVoiceWarning.addChild( missingVoiceWarningMessage );
 
-    const warningIcon = new Path( exclamationTriangleSolidShape, {
-      fill: new Color( 240, 79, 79 ),
-      maxWidth: 30
+    const missingVoiceWarningNode = new VBox( {
+      children: [ warningIcon, missingVoiceWarningMessage ],
+      spacing: 14,
+      align: 'center',
+      visibleProperty: new DerivedProperty( [
+          preferences.readAloudProperty,
+          speechSynthesisAnnouncer.hasVoiceProperty
+        ], ( readAloud, hasVoice ) => readAloud && !hasVoice
+      )
     } );
-    missingVoiceWarning.addChild( warningIcon );
-    this.addChild( missingVoiceWarning );
+    this.addChild( missingVoiceWarningNode );
 
-    missingVoiceWarningMessage.left = control.left;
-    warningIcon.centerX = missingVoiceWarningMessage.centerX;
-    missingVoiceWarning.top = control.bottom + 24;
-    missingVoiceWarningMessage.top = warningIcon.bottom + 14;
-
-    Multilink.multilink( [
-        preferences.readAloudProperty,
-        preferences.showSecondLocaleProperty,
-        speechSynthesisAnnouncer.hasVoiceProperty
-      ],
-      ( readAloud, showSecondLocale, hasVoice ) => {
-        // TODO: More logic is maybe needed here related to the state of isPrimaryLocaleProperty for https://github.com/phetsims/number-suite-common/issues/47
-        missingVoiceWarning.visible = readAloud && !hasVoice;
-      } );
+    missingVoiceWarningNode.left = control.left;
+    missingVoiceWarningNode.top = control.bottom + 24;
   }
 }
 
