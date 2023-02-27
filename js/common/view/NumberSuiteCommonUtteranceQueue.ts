@@ -70,11 +70,11 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     // Speak the speechData if readAloud is turned on, the speechData changes, or the voice changes. Also check that
     // the announcer has a voice because even if the voiceProperty is set to null, the browser still speaks with a
-    // default option.
-    Multilink.lazyMultilink( [ this.readAloudProperty, this.speechDataProperty, this.numberSuiteCommonAnnouncer.voiceProperty ],
-      readAloud => {
-        readAloud && this.speakSpeechData();
-      } );
+    // default voice.
+    Multilink.lazyMultilink(
+      [ this.readAloudProperty, this.numberSuiteCommonAnnouncer.voiceProperty, this.speechDataProperty ],
+      ( readAloud, voice ) => readAloud && !!voice && this.speakSpeechData()
+    );
 
     this.initialized = true;
   }
