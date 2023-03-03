@@ -23,7 +23,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   private initialized: boolean;
 
   // The SpeechSynthesisAnnouncer used for this UtteranceQueue.
-  private readonly numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer;
+  public readonly numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer;
 
   // See doc in NumberSuiteCommonPreferences.
   private readonly readAloudProperty: TReadOnlyProperty<boolean>;

@@ -19,6 +19,7 @@ import ShowOnesControl from './ShowOnesControl.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LabScreen from '../../lab/LabScreen.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 type SelfOptions = {
   secondLanguageControlEnabled?: boolean; // should the 'Second Language' control be enabled?
@@ -29,7 +30,7 @@ export type NumberSuiteCommonPreferencesNodeOptions = SelfOptions & StrictOmit<H
 export default class NumberSuiteCommonPreferencesNode extends HBox {
 
   protected constructor( preferences: NumberSuiteCommonPreferences,
-                         speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                         utteranceQueue: NumberSuiteCommonUtteranceQueue,
                          additionalRightControls: Node[],
                          providedOptions?: NumberSuiteCommonPreferencesNodeOptions ) {
 
@@ -48,7 +49,7 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
       preferences.secondLocaleProperty,
       preferences.secondVoiceProperty,
       preferences.allUrl,
-      speechSynthesisAnnouncer, {
+      utteranceQueue, {
         visible: options.secondLanguageControlEnabled
       } );
 

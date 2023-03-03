@@ -23,6 +23,7 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
@@ -33,7 +34,7 @@ export default class SecondLanguageControl extends VBox {
                       secondLocaleProperty: Property<Locale>,
                       secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>,
                       allUrl: string,
-                      speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                      utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions?: SecondLanguageControlOptions ) {
 
     const options = optionize<SecondLanguageControlOptions, SelfOptions, VBoxOptions>()( {
@@ -73,7 +74,7 @@ export default class SecondLanguageControl extends VBox {
     const languageAndVoiceControl = new LanguageAndVoiceControl(
       secondLocaleProperty,
       secondVoiceProperty,
-      speechSynthesisAnnouncer, {
+      utteranceQueue, {
         visibleProperty: showSecondLocaleProperty
       }
     );

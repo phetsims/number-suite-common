@@ -23,6 +23,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import preferencesSpeechSynthesisAnnouncer from './preferencesSpeechSynthesisAnnouncer.js';
 import PreferencesUtteranceQueue from './PreferencesUtteranceQueue.js';
+import numberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',
@@ -46,7 +48,7 @@ export default class LanguageAndVoiceControl extends HBox {
 
   public constructor( localeProperty: Property<Locale>,
                       voiceProperty: TProperty<SpeechSynthesisVoice | null>,
-                      speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                      utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions?: LanguageAndVoiceControlOptions ) {
 
     const options = optionize<LanguageAndVoiceControlOptions, SelfOptions, HBoxOptions>()( {
@@ -118,8 +120,14 @@ export default class LanguageAndVoiceControl extends HBox {
     localeProperty.link( locale => {
 
       // TODO: consider way of remembering the users preference for this locale, see https://github.com/phetsims/number-suite-common/issues/53
-      speechSynthesisAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
-      const availableVoicesForLocale = speechSynthesisAnnouncer.getPrioritizedVoicesForLocale( locale );
+      utteranceQueue.numberSuiteCommonAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
+
+      // When changing the voiceProperty in this control, we don't want to hear the speech data being read
+      // out, only the test voice. So clear the general utteranceQueue that may have been triggered by setting a voice
+      // above
+      utteranceQueue.clear();
+
+      const availableVoicesForLocale = utteranceQueue.numberSuiteCommonAnnouncer.getPrioritizedVoicesForLocale( locale );
 
       if ( availableVoicesForLocale.length ) {
         const voiceCarouselItems: VoiceCarouselItem[] = availableVoicesForLocale.map(
@@ -131,15 +139,13 @@ export default class LanguageAndVoiceControl extends HBox {
                 voice,
                 voice.name,
                 voice.lang, () => {
+                  voiceProperty.value = voice;
 
                   // When changing the voiceProperty in this control, we don't want to hear the speech data being read
-                  // out, only the test voice. So disable the general announcer while testing the voice for this button.
-                  speechSynthesisAnnouncer.enabledProperty.value = false;
+                  // out, only the test voice. So clear the general utteranceQueue while testing the voice for this button.
+                  utteranceQueue.clear();
 
-                  voiceProperty.value = voice;
                   voiceSelectionUtteranceQueue.testVoiceBySpeaking( voice, locale );
-
-                  speechSynthesisAnnouncer.enabledProperty.value = true;
                 } )
             };
           } );
