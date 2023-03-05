@@ -20,7 +20,6 @@ import { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/local
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';

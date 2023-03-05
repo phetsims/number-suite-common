@@ -18,7 +18,6 @@ import SecondLanguageControl from './SecondLanguageControl.js';
 import ShowOnesControl from './ShowOnesControl.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LabScreen from '../../lab/LabScreen.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 type SelfOptions = {

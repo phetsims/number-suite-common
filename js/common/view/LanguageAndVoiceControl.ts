@@ -15,7 +15,6 @@ import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import CarouselItemNode from './CarouselItemNode.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
@@ -23,7 +22,6 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import preferencesSpeechSynthesisAnnouncer from './preferencesSpeechSynthesisAnnouncer.js';
 import PreferencesUtteranceQueue from './PreferencesUtteranceQueue.js';
-import numberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 const LABEL_TEXT_OPTIONS = {
