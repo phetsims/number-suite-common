@@ -23,6 +23,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import preferencesSpeechSynthesisAnnouncer from './preferencesSpeechSynthesisAnnouncer.js';
 import PreferencesUtteranceQueue from './PreferencesUtteranceQueue.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',
@@ -114,52 +115,56 @@ export default class LanguageAndVoiceControl extends HBox {
 
     super( options );
 
-    // Rebuild the voiceCarousel with the available voices when the locale changes
-    localeProperty.link( locale => {
+    // Rebuild the voiceCarousel with the available voices when the locale changes or when voices become available
+    Multilink.multilink(
+      [ localeProperty, utteranceQueue.numberSuiteCommonAnnouncer.voicesProperty ],
+      ( locale, voices ) => {
+        if ( voices.length ) {
 
-      // TODO: consider way of remembering the users preference for this locale, see https://github.com/phetsims/number-suite-common/issues/53
-      utteranceQueue.numberSuiteCommonAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
+          // TODO: consider way of remembering the users preference for this locale, see https://github.com/phetsims/number-suite-common/issues/53
+          utteranceQueue.numberSuiteCommonAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
 
-      // When changing the voiceProperty in this control, we don't want to hear the speech data being read
-      // out, only the test voice. So clear the general utteranceQueue that may have been triggered by setting a voice
-      // above
-      utteranceQueue.clear();
+          // When changing the voiceProperty in this control, we don't want to hear the speech data being read
+          // out, only the test voice. So clear the general utteranceQueue that may have been triggered by setting a voice
+          // above
+          utteranceQueue.clear();
 
-      const availableVoicesForLocale = utteranceQueue.numberSuiteCommonAnnouncer.getPrioritizedVoicesForLocale( locale );
+          const availableVoicesForLocale = utteranceQueue.numberSuiteCommonAnnouncer.getPrioritizedVoicesForLocale( locale );
 
-      if ( availableVoicesForLocale.length ) {
-        const voiceCarouselItems: VoiceCarouselItem[] = availableVoicesForLocale.map(
-          voice => {
-            return {
-              voice: voice,
-              createNode: ( tandem: Tandem ) => new CarouselItemNode(
-                voiceProperty,
-                voice,
-                voice.name,
-                voice.lang, () => {
-                  voiceProperty.value = voice;
+          if ( availableVoicesForLocale.length ) {
+            const voiceCarouselItems: VoiceCarouselItem[] = availableVoicesForLocale.map(
+              voice => {
+                return {
+                  voice: voice,
+                  createNode: ( tandem: Tandem ) => new CarouselItemNode(
+                    voiceProperty,
+                    voice,
+                    voice.name,
+                    voice.lang, () => {
+                      voiceProperty.value = voice;
 
-                  // When changing the voiceProperty in this control, we don't want to hear the speech data being read
-                  // out, only the test voice. So clear the general utteranceQueue while testing the voice for this button.
-                  utteranceQueue.clear();
+                      // When changing the voiceProperty in this control, we don't want to hear the speech data being read
+                      // out, only the test voice. So clear the general utteranceQueue while testing the voice for this button.
+                      utteranceQueue.clear();
 
-                  voiceSelectionUtteranceQueue.testVoiceBySpeaking( voice, locale );
-                } )
-            };
-          } );
+                      voiceSelectionUtteranceQueue.testVoiceBySpeaking( voice, locale );
+                    } )
+                };
+              } );
 
-        voiceCarousel.dispose();
-        voiceCarousel = new Carousel( voiceCarouselItems, CAROUSEL_OPTIONS );
+            voiceCarousel.dispose();
+            voiceCarousel = new Carousel( voiceCarouselItems, CAROUSEL_OPTIONS );
 
-        // Set the children so the new carousel is visible.
-        voiceControlVBox.children = [ voiceCarouselLabel, voiceCarousel ];
-      }
-      else {
+            // Set the children so the new carousel is visible.
+            voiceControlVBox.children = [ voiceCarouselLabel, voiceCarousel ];
+          }
+          else {
 
-        // No available voices, so set the children so the noVoicesFoundDescriptionNode is visible instead of the voices.
-        voiceControlVBox.children = [ voiceCarouselLabel, noVoiceDescriptionNode ];
-      }
-    } );
+            // No available voices, so set the children so the noVoicesFoundDescriptionNode is visible instead of the voices.
+            voiceControlVBox.children = [ voiceCarouselLabel, noVoiceDescriptionNode ];
+          }
+        }
+      } );
   }
 
   public override dispose(): void {
