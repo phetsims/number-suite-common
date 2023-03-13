@@ -120,8 +120,6 @@ export default class LanguageAndVoiceControl extends HBox {
       [ localeProperty, utteranceQueue.numberSuiteCommonAnnouncer.voicesProperty ],
       ( locale, voices ) => {
         if ( voices.length ) {
-
-          // TODO: consider way of remembering the users preference for this locale, see https://github.com/phetsims/number-suite-common/issues/53
           utteranceQueue.numberSuiteCommonAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
 
           // When changing the voiceProperty in this control, we don't want to hear the speech data being read
