@@ -20,8 +20,6 @@ import CarouselItemNode from './CarouselItemNode.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import preferencesSpeechSynthesisAnnouncer from './preferencesSpeechSynthesisAnnouncer.js';
-import PreferencesUtteranceQueue from './PreferencesUtteranceQueue.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 
@@ -58,9 +56,6 @@ export default class LanguageAndVoiceControl extends HBox {
       justify: 'left',
       spacing: 10
     }, providedOptions );
-
-    // An UtteranceQueue specifically for testing out voices when selecting a voice with this control.
-    const voiceSelectionUtteranceQueue = new PreferencesUtteranceQueue( preferencesSpeechSynthesisAnnouncer );
 
     const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageStringProperty, LABEL_TEXT_OPTIONS );
 
@@ -140,12 +135,7 @@ export default class LanguageAndVoiceControl extends HBox {
                     voice.name,
                     voice.lang, () => {
                       voiceProperty.value = voice;
-
-                      // When changing the voiceProperty in this control, we don't want to hear the speech data being read
-                      // out, only the test voice. So clear the general utteranceQueue while testing the voice for this button.
-                      utteranceQueue.clear();
-
-                      voiceSelectionUtteranceQueue.testVoiceBySpeaking( voice, locale );
+                      utteranceQueue.testVoiceBySpeaking( voice, locale );
                     } )
                 };
               } );

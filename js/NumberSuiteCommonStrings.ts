@@ -44,6 +44,7 @@ type StringsType = {
   'showOnesDescriptionStringProperty': LinkableProperty<string>;
   'noVoiceFoundDescriptionStringProperty': LinkableProperty<string>;
   'yourDeviceMaySupportDescriptionStringProperty': LinkableProperty<string>;
+  'oneTwoThreeStringProperty': LinkableProperty<string>;
 };
 
 const NumberSuiteCommonStrings = getStringModule( 'NUMBER_SUITE_COMMON' ) as StringsType;
