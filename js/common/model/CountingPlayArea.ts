@@ -220,40 +220,66 @@ class CountingPlayArea extends CountingCommonModel {
    * values greater than one exist, break them up and send their components with values of one back.
    */
   //TODO https://github.com/phetsims/number-suite-common/issues/29 Rename to something that indicates finding closest paper number to return
-  public returnCountingObjectToBucket(): void {
+  public returnCountingObjectToBucket( valueToReturn: number = NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ): void {
     assert && assert( this.countingObjects.lengthProperty.value > 0, 'countingObjects should exist in play area' );
     assert && assert( this.initialized, 'returnCountingObjectToBucket called before initialization' );
 
-    // sort by not in a ten frame, then by lowest value, then by proximity to the bucket
+    // Sort by not in a ten frame, then by proximity to the bucket.
     const sortedCountingObjects = _.sortBy( this.getCountingObjectsIncludedInSum(), [
       countingObject => {
         return this.countingObjectContainedByTenFrame( countingObject ) ? 1 : 0;
-      },
-      countingObject => {
-        return countingObject.numberValueProperty.value;
       },
       countingObject => {
         return countingObject.positionProperty.value.distance( this.getCountingObjectOrigin() );
       }
     ] );
 
-    let countingObjectToReturn = sortedCountingObjects.shift();
-    if ( countingObjectToReturn ) {
+    /**
+     * Recursively search for the best countingObjects to return to the creatorNode for the given value. The criteria
+     * for the best matches is described below in the parts of this function.
+     */
+    const recursivelyFindBestMatches = ( value: number, sortedCountingObjects: CountingObject[] ): CountingObject[] => {
 
-      // if the chosen paperNumber has a value greater than 1, break it up by creating a new paperNumber with a value of
-      // 1 to return instead
-      if ( countingObjectToReturn.numberValueProperty.value > NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ) {
-        const amountRemaining = countingObjectToReturn.numberValueProperty.value - NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE;
-        countingObjectToReturn.changeNumber( amountRemaining );
-
-        countingObjectToReturn = new CountingObject(
-          NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE,
-          countingObjectToReturn.positionProperty.value, {
-            groupingEnabledProperty: this.groupingEnabledProperty
-          } );
-        this.addCountingObject( countingObjectToReturn );
+      // First, see if there are any countingObjects with the same value. If so, we are done.
+      for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
+        const countingObject = sortedCountingObjects[ i ];
+        if ( countingObject.numberValueProperty.value === value ) {
+          return [ countingObject ];
+        }
       }
 
+      // If there are not of the same value, find the largest countingObject.
+      let largestCountingObject = sortedCountingObjects[ 0 ];
+      for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
+        const countingObject = sortedCountingObjects[ i ];
+        if ( countingObject.numberValueProperty.value > largestCountingObject.numberValueProperty.value ) {
+          largestCountingObject = countingObject;
+        }
+      }
+
+      // If the value we're looking for is larger than the largest countingObject, then we're going to need to send
+      // more than one countingObject back to the creatorNode. So include the largest, and then start the search over
+      // for the next best match.
+      if ( value > largestCountingObject.numberValueProperty.value ) {
+        const nextValueToReturn = value - largestCountingObject.numberValueProperty.value;
+
+        // Before starting the search again for the next countingObject, remove the one we know we want so it's not
+        // a part of the next search.
+        _.remove( sortedCountingObjects, largestCountingObject );
+
+        return [ largestCountingObject, ...recursivelyFindBestMatches( nextValueToReturn, sortedCountingObjects ) ];
+      }
+      // If the value we're looking for is smaller than the largestCountingObject, create a new countingObject by
+      // breaking off the value we need from the largest one.
+      else {
+        return [ this.splitCountingObject( largestCountingObject, value ) ];
+      }
+    };
+
+    const countingObjectsToReturn = recursivelyFindBestMatches( valueToReturn, sortedCountingObjects );
+
+    // Send all of our matches back to the creator node.
+    countingObjectsToReturn.forEach( countingObjectToReturn => {
       if ( this.countingObjectContainedByTenFrame( countingObjectToReturn ) ) {
         const tenFrame = this.getContainingTenFrame( countingObjectToReturn );
         tenFrame.removeCountingObject();
@@ -261,7 +287,7 @@ class CountingPlayArea extends CountingCommonModel {
       else {
         this.sendCountingObjectToCreatorNode( countingObjectToReturn );
       }
-    }
+    } );
   }
 
   /**
@@ -520,7 +546,7 @@ class CountingPlayArea extends CountingCommonModel {
    * Splits the provided countingObject into two countingObjects. This is a function for the model to use for automated
    * actions, and does not relate to the USER splitting a countingObject when grabbing the handle of countingObject.
    */
-  private splitCountingObject( countingObject: CountingObject, valueToSplit: number ): void {
+  private splitCountingObject( countingObject: CountingObject, valueToSplit: number ): CountingObject {
     assert && assert( countingObject.includeInSumProperty.value,
       'attempted to split countingObject that has already been removed from the total' );
     const startingCount = _.sum( this.getCountingObjectsIncludedInSum().map( x => x.numberValueProperty.value ) );
@@ -538,6 +564,8 @@ class CountingPlayArea extends CountingCommonModel {
 
     const endingCount = _.sum( this.getCountingObjectsIncludedInSum().map( x => x.numberValueProperty.value ) );
     assert && assert( startingCount === endingCount, 'total doesn\'t match after splitting counting object' );
+
+    return newCountingObject;
   }
 
   /**
