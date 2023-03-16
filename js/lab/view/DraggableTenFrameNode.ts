@@ -66,9 +66,6 @@ class DraggableTenFrameNode extends Node {
       },
       drag: ( event: PressListenerEvent, listener: DragListener ) => {
         tenFrame.setConstrainedDestination( dragBoundsProperty.value, listener.parentPoint );
-        tenFrame.countingObjects.forEach( countingObject => {
-          countingObject.setDestination( tenFrame.getCountingObjectSpot( countingObject ), false );
-        } );
       },
       end: () => {
         options.dropListener( this );

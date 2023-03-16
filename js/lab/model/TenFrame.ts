@@ -140,11 +140,16 @@ class TenFrame extends Disposable {
   }
 
   /**
-   * If this ten frame outside the available view bounds, move in inside those bounds.
+   * If this ten frame outside the available view bounds, move in inside those bounds. Also move any countingObjects
+   * that it contains.
    */
   public setConstrainedDestination( viewBounds: Bounds2, newDestination: Vector2 ): void {
     const originBounds = this.getOriginBounds( viewBounds );
     this.positionProperty.value = originBounds.closestPointTo( newDestination );
+
+    this.countingObjects.forEach( countingObject => {
+      countingObject.setDestination( this.getCountingObjectSpot( countingObject ), false );
+    } );
   }
 
   /**
