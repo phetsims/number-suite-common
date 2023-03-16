@@ -216,15 +216,13 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * Finds the closest countingObject to their origin and animates it back over the bucket. If only countingObjects with
-   * values greater than one exist, break them up and send their components with values of one back.
+   * Finds the best matching countingObject or countingObject and animates them back to the creatorNode.
    */
-  //TODO https://github.com/phetsims/number-suite-common/issues/29 Rename to something that indicates finding closest paper number to return
-  public returnCountingObjectToBucket( valueToReturn: number = NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ): void {
-    assert && assert( this.countingObjects.lengthProperty.value > 0, 'countingObjects should exist in play area' );
-    assert && assert( this.initialized, 'returnCountingObjectToBucket called before initialization' );
+  public returnCountingObjectToCreatorNode( valueToReturn: number = NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ): void {
+    assert && assert( this.getCountingObjectsIncludedInSum().length > 0, 'countingObjects should exist in play area' );
+    assert && assert( this.initialized, 'returnCountingObjectToCreatorNode called before initialization' );
 
-    // Sort by not in a ten frame, then by proximity to the bucket.
+    // Sort by not in a ten frame, then by proximity to the creatorNode.
     const sortedCountingObjects = _.sortBy( this.getCountingObjectsIncludedInSum(), [
       countingObject => {
         return this.countingObjectContainedByTenFrame( countingObject ) ? 1 : 0;
@@ -295,7 +293,7 @@ class CountingPlayArea extends CountingCommonModel {
    */
   public sendCountingObjectToCreatorNode( countingObject: CountingObject ): void {
     assert && assert( this.countingObjects.lengthProperty.value > 0, 'countingObjects should exist in play area' );
-    assert && assert( this.initialized, 'returnCountingObjectToBucket called before initialization' );
+    assert && assert( this.initialized, 'returnCountingObjectToCreatorNode called before initialization' );
     assert && assert( countingObject.includeInSumProperty.value, 'countingObject already removed from sum' );
 
     // Remove it from counting towards the sum and send it back to its origin. countingObjects aren't removed from the

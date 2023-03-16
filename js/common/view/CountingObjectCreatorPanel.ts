@@ -51,7 +51,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: -3 }, arrowButtonOptions ) );
     const downArrowButton = new ArrowButton( 'down', () => {
       // console.log( `about to remove 1 with up arrow in in ${playArea.name}` );
-      playArea.returnCountingObjectToBucket();
+      playArea.returnCountingObjectToCreatorNode();
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: 3 }, arrowButtonOptions ) );
     const arrowButtons = new VBox( {
       children: [ upArrowButton, downArrowButton ],
