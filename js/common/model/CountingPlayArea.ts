@@ -31,7 +31,7 @@ type SelfOptions = {
 };
 export type CountingPlayAreaOptions = SelfOptions;
 
-type CreateCountingObjectFromBucketOptions = {
+type createCountingObjectFromCreatorNodeOptions = {
   shouldAnimate?: boolean;
   value?: number;
   remainder?: boolean;
@@ -118,14 +118,14 @@ class CountingPlayArea extends CountingCommonModel {
       const remainderCardValue = currentNumber % divisor;
 
       _.times( numberOfCards, () => {
-        this.createCountingObjectFromBucket( {
+        this.createCountingObjectFromCreatorNode( {
           shouldAnimate: objectShouldAnimate,
           value: divisor
         } );
       } );
 
       if ( remainderCardValue ) {
-        this.createCountingObjectFromBucket( {
+        this.createCountingObjectFromCreatorNode( {
           shouldAnimate: objectShouldAnimate,
           value: remainderCardValue,
           remainder: true
@@ -134,7 +134,7 @@ class CountingPlayArea extends CountingCommonModel {
     }
     else {
       _.times( currentNumber, () => {
-        this.createCountingObjectFromBucket( {
+        this.createCountingObjectFromCreatorNode( {
           shouldAnimate: objectShouldAnimate
         } );
       } );
@@ -146,10 +146,10 @@ class CountingPlayArea extends CountingCommonModel {
   /**
    * Creates a countingObject and animates it to a random open place in the play area.
    */
-  public createCountingObjectFromBucket( providedOptions?: CreateCountingObjectFromBucketOptions ): void {
-    assert && assert( this.initialized, 'createCountingObjectFromBucket called before initialization' );
+  public createCountingObjectFromCreatorNode( providedOptions?: createCountingObjectFromCreatorNodeOptions ): void {
+    assert && assert( this.initialized, 'createCountingObjectFromCreatorNode called before initialization' );
 
-    const options = optionize<CreateCountingObjectFromBucketOptions>()( {
+    const options = optionize<createCountingObjectFromCreatorNodeOptions>()( {
       shouldAnimate: true,
       value: NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE,
       remainder: false

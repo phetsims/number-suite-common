@@ -44,10 +44,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
     };
     const upArrowButton = new ArrowButton( 'up', () => {
       // console.log( `about to add 1 with up arrow in in ${playArea.name}` );
-      playArea.createCountingObjectFromBucket( {
-        shouldAnimate: true,
-        value: 1
-      } );
+      playArea.createCountingObjectFromCreatorNode();
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: -3 }, arrowButtonOptions ) );
     const downArrowButton = new ArrowButton( 'down', () => {
       // console.log( `about to remove 1 with up arrow in in ${playArea.name}` );
