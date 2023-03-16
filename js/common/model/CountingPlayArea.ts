@@ -216,7 +216,7 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * Finds the best matching countingObject or countingObject and animates them back to the creatorNode.
+   * Finds the best matching countingObject or countingObjects and animates them back to the creatorNode.
    */
   public returnCountingObjectToCreatorNode( valueToReturn: number = NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ): void {
     assert && assert( this.getCountingObjectsIncludedInSum().length > 0, 'countingObjects should exist in play area' );
