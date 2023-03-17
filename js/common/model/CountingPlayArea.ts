@@ -238,40 +238,52 @@ class CountingPlayArea extends CountingCommonModel {
      */
     const recursivelyFindBestMatches = ( value: number, sortedCountingObjects: CountingObject[] ): CountingObject[] => {
 
-      // First, see if there are any countingObjects with the same value. If so, we are done.
-      for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
-        const countingObject = sortedCountingObjects[ i ];
-        if ( countingObject.numberValueProperty.value === value ) {
-          return [ countingObject ];
+      let bestMatches: CountingObject[] = [];
+
+      // Our base case is value === 0, when value is greater than zero, there is still work to be done.
+      if ( value > 0 ) {
+
+        // First, see if there are any countingObjects with the same value. If so, we are done.
+        for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
+          const countingObject = sortedCountingObjects[ i ];
+
+          // We want to grab the first countingObject that matches to also get the closest.
+          if ( countingObject.numberValueProperty.value === value && bestMatches.length === 0 ) {
+            bestMatches = [ countingObject ];
+          }
+        }
+
+        // If there are none of the same value, find the largest countingObject.
+        let largestCountingObject = sortedCountingObjects[ 0 ];
+        for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
+          const countingObject = sortedCountingObjects[ i ];
+          if ( countingObject.numberValueProperty.value > largestCountingObject.numberValueProperty.value ) {
+            largestCountingObject = countingObject;
+          }
+        }
+
+        // If the value we're looking for is larger than the largest countingObject, then we're going to need to send
+        // more than one countingObject back to the creatorNode. So include the largest, and then start the search over
+        // for the next best match.
+        if ( value > largestCountingObject.numberValueProperty.value ) {
+          const nextValueToReturn = value - largestCountingObject.numberValueProperty.value;
+          assert && assert( nextValueToReturn >= 0, 'The next value to return cannot be less than zero. nextValueToReturn = ' + nextValueToReturn );
+
+          // Before starting the search again for the next countingObject, remove the one we know we want, so it's not
+          // a part of the next search.
+          _.remove( sortedCountingObjects, largestCountingObject );
+
+          bestMatches = [ largestCountingObject, ...recursivelyFindBestMatches( nextValueToReturn, sortedCountingObjects ) ];
+        }
+
+        // If the value we're looking for is smaller than the largestCountingObject, create a new countingObject by
+        // breaking off the value we need from the largest one.
+        else if ( value < largestCountingObject.numberValueProperty.value ) {
+          bestMatches = [ this.splitCountingObject( largestCountingObject, value ) ];
         }
       }
 
-      // If there are not of the same value, find the largest countingObject.
-      let largestCountingObject = sortedCountingObjects[ 0 ];
-      for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
-        const countingObject = sortedCountingObjects[ i ];
-        if ( countingObject.numberValueProperty.value > largestCountingObject.numberValueProperty.value ) {
-          largestCountingObject = countingObject;
-        }
-      }
-
-      // If the value we're looking for is larger than the largest countingObject, then we're going to need to send
-      // more than one countingObject back to the creatorNode. So include the largest, and then start the search over
-      // for the next best match.
-      if ( value > largestCountingObject.numberValueProperty.value ) {
-        const nextValueToReturn = value - largestCountingObject.numberValueProperty.value;
-
-        // Before starting the search again for the next countingObject, remove the one we know we want so it's not
-        // a part of the next search.
-        _.remove( sortedCountingObjects, largestCountingObject );
-
-        return [ largestCountingObject, ...recursivelyFindBestMatches( nextValueToReturn, sortedCountingObjects ) ];
-      }
-      // If the value we're looking for is smaller than the largestCountingObject, create a new countingObject by
-      // breaking off the value we need from the largest one.
-      else {
-        return [ this.splitCountingObject( largestCountingObject, value ) ];
-      }
+      return bestMatches;
     };
 
     const countingObjectsToReturn = recursivelyFindBestMatches( valueToReturn, sortedCountingObjects );
