@@ -52,9 +52,11 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
       tenFrameNode.dragListener.press( event, tenFrameNode );
     } );
 
-    model.tenFrameIconPickableProperty.link( pickable => {
-      iconNode.cursor = pickable ? 'pointer' : 'auto';
-      iconNode.inputListeners = pickable ? [ dragListener ] : [];
+    iconNode.cursor = 'pointer';
+    iconNode.inputListeners = [ dragListener ];
+
+    model.tenFrameIconVisibleProperty.link( visible => {
+      iconNode.visible = visible;
     } );
 
     super( creatorNodeBackground, {
