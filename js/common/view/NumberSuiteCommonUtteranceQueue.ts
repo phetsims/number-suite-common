@@ -98,7 +98,9 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
       if ( !this.isTestVoiceSpeaking ) {
         this.numberSuiteCommonAnnouncer.voiceProperty.value = currentVoice;
       }
-      this.speechDataUtterance.reset();
+
+      // Resetting the voice back to what it was above may trigger speaking for speechData, so cancel the speechDataUtterance
+      this.cancelUtterance( this.speechDataUtterance );
       this.numberSuiteCommonAnnouncer.announcementCompleteEmitter.removeListener( resetVoiceListener );
     };
 
