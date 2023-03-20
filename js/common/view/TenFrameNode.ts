@@ -11,7 +11,7 @@
 
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
-import { Circle, HBox, Node, PaintableOptions, Path } from '../../../../scenery/js/imports.js';
+import { Circle, HBox, Node, Path, PathOptions } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
@@ -24,9 +24,10 @@ type GetSpotCentersOptions = {
   sideLength?: number;
   lineWidth?: number;
 };
-type GetTenFramePathOptions = {
+type GetTenFramePathSelfOptions = {
   sideLength?: number;
-} & Pick<PaintableOptions, 'fill' | 'lineWidth'>;
+};
+type GetTenFramePathOptions = GetTenFramePathSelfOptions & PathOptions;
 
 // constants - all are used for both drawing the ten frame shape and positioning the dots within the ten frame shape
 const NUMBER_OF_X_SQUARES = 5; // a ten frame is this many squares wide
@@ -129,10 +130,15 @@ class TenFrameNode extends Node {
    */
   public static getTenFramePath( providedOptions?: GetTenFramePathOptions ): Path {
 
-    const options = optionize<GetTenFramePathOptions>()( {
+    const options = optionize<GetTenFramePathOptions, GetTenFramePathSelfOptions, PathOptions>()( {
+
+      // GetTenFramePathSelfOptions
+      sideLength: SIDE_LENGTH,
+
+      // PathOptions
       fill: 'white',
-      lineWidth: LINE_WIDTH,
-      sideLength: SIDE_LENGTH
+      stroke: 'black',
+      lineWidth: LINE_WIDTH
     }, providedOptions );
 
     const tenFrameShape = new Shape()
@@ -159,11 +165,8 @@ class TenFrameNode extends Node {
       .lineToRelative( 0, NUMBER_OF_Y_SQUARES * options.sideLength )
       .close();
 
-    return new Path( tenFrameShape, {
-      fill: options.fill,
-      stroke: 'black',
-      lineWidth: options.lineWidth
-    } );
+    // TODO: Why does path allow type GetTenFramePathOptions instead of just PathOptions? see https://github.com/phetsims/number-suite-common/issues/29
+    return new Path( tenFrameShape, options );
   }
 }
 

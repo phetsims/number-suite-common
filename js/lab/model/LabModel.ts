@@ -15,16 +15,12 @@ import Tandem from '../../../../tandem/js/Tandem.js';
 import CountingPlayArea from '../../common/model/CountingPlayArea.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from './TenFrame.js';
-import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 
 // constants
 const HIGHEST_COUNT = 20;
 
 class LabModel implements TModel {
   public readonly tenFrames: ObservableArray<TenFrame>;
-
-  // Whether the tenFrame icon is visible or not.
-  public readonly tenFrameIconVisibleProperty: Property<boolean>;
   public readonly onesPlayArea: CountingPlayArea;
   public readonly dogPlayArea: CountingPlayArea;
   public readonly applePlayArea: CountingPlayArea;
@@ -35,7 +31,6 @@ class LabModel implements TModel {
   public constructor( tandem: Tandem ) {
 
     this.tenFrames = createObservableArray();
-    this.tenFrameIconVisibleProperty = new BooleanProperty( this.tenFrames.length < NumberSuiteCommonConstants.MAX_AMOUNT_OF_TEN_FRAMES );
     this.selectedTenFrameProperty = new Property<TenFrame | null>( null );
 
     // create five different kinds of play areas
@@ -70,12 +65,6 @@ class LabModel implements TModel {
         tenFrames: this.tenFrames
       } );
 
-    this.tenFrames.lengthProperty.link( length => {
-
-      // Limit the amount of tenFrames a user can add to the screen
-      this.tenFrameIconVisibleProperty.value = length < NumberSuiteCommonConstants.MAX_AMOUNT_OF_TEN_FRAMES;
-    } );
-
     this.tenFrames.addItemRemovedListener( tenFrame => {
       tenFrame.dispose();
     } );
@@ -98,7 +87,6 @@ class LabModel implements TModel {
     this.ballPlayArea.reset();
     this.onesPlayArea.reset();
     this.tenFrames.clear();
-    this.tenFrameIconVisibleProperty.reset();
   }
 }
 

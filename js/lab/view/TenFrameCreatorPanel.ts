@@ -19,6 +19,7 @@ import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js'
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 const ICON_SIE_LENGTH = 20;
 
@@ -33,7 +34,9 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
     // create the ten frame icon and the plus icon
     const iconNode = TenFrameNode.getTenFramePath( {
       sideLength: ICON_SIE_LENGTH,
-      lineWidth: 0.8
+      lineWidth: 0.8,
+      visibleProperty: new DerivedProperty( [ model.tenFrames.lengthProperty ],
+          length => length < NumberSuiteCommonConstants.MAX_AMOUNT_OF_TEN_FRAMES )
     } );
 
     const creatorNodeBackground = new Rectangle( 0, 0,
@@ -54,10 +57,6 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
 
     iconNode.cursor = 'pointer';
     iconNode.inputListeners = [ dragListener ];
-
-    model.tenFrameIconVisibleProperty.link( visible => {
-      iconNode.visible = visible;
-    } );
 
     super( creatorNodeBackground, {
       xMargin: 10
