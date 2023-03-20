@@ -30,7 +30,7 @@ class LabModel implements TModel {
 
   public constructor( tandem: Tandem ) {
 
-    this.tenFrames = createObservableArray();
+    this.tenFrames = createObservableArray( { hasListenerOrderDependencies: true } );
     this.selectedTenFrameProperty = new Property<TenFrame | null>( null );
 
     // create five different kinds of play areas
