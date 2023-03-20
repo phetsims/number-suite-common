@@ -58,11 +58,6 @@ class DraggableTenFrameNode extends Node {
     this.dragListener = new DragListener( {
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
-        this.moveToFront();
-        tenFrame.countingObjects.forEach( countingObject => {
-          const countingObjectNode = options.getCountingObjectNode( countingObject );
-          countingObjectNode.moveToFront();
-        } );
       },
       drag: ( event: PressListenerEvent, listener: DragListener ) => {
         tenFrame.setConstrainedDestination( dragBoundsProperty.value, listener.parentPoint );
@@ -96,16 +91,29 @@ class DraggableTenFrameNode extends Node {
       options.removeCountingObjectListener( countingObject );
     } );
 
-    // show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
-    // in the tenFrame. Requires disposal as it is storing references that point outside DraggableTenFrameNode and
-    // TenFrame.
-    const returnButtonMultilink = Multilink.lazyMultilink( [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
+    // Management for when this tenFrame becomes selected. Requires disposal as it is storing references that point
+    // outside DraggableTenFrameNode and TenFrame.
+    const isSelectedTenFrameMultilink = Multilink.lazyMultilink(
+      [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
       ( selectedTenFrame, numberOfCountingObjects ) => {
-        returnButton.visible = selectedTenFrame === tenFrame && numberOfCountingObjects > 0;
+        const thisTenFrameIsSelected = selectedTenFrame === tenFrame;
+
+        // Show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
+        // in the tenFrame.
+        returnButton.visible = thisTenFrameIsSelected && numberOfCountingObjects > 0;
+
+        // Whenever we are selected, move ourselves and any countingObjects we contain to front.
+        if ( thisTenFrameIsSelected ) {
+          this.moveToFront();
+          tenFrame.countingObjects.forEach( countingObject => {
+            const countingObjectNode = options.getCountingObjectNode( countingObject );
+            countingObjectNode.moveToFront();
+          } );
+        }
       } );
 
     this.disposeDraggableTenFrameNode = () => {
-      Multilink.unmultilink( returnButtonMultilink );
+      Multilink.unmultilink( isSelectedTenFrameMultilink );
       assert && assert( tenFrame.isDisposed, 'TenFrame model should have been disposed by now.' );
     };
   }

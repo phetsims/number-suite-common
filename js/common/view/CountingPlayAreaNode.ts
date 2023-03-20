@@ -357,30 +357,27 @@ class CountingPlayAreaNode extends Node {
       return false;
     }
 
-    const attachableDroppedTenFrameNodes = this.findAttachableTenFrameNodes( droppedNode, allDraggableTenFrameNodes );
+    const droppedTenFrameNode = this.findAttachableTenFrameNode( droppedNode, allDraggableTenFrameNodes );
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 Docs and cleanup
-    if ( attachableDroppedTenFrameNodes.length ) {
-      attachableDroppedTenFrameNodes.forEach( droppedTenFrameNode => {
-        if ( !this.isCountingObjectContainedByTenFrame( droppedCountingObject ) ) {
+    if ( droppedTenFrameNode ) {
+      if ( !this.isCountingObjectContainedByTenFrame( droppedCountingObject ) ) {
+        const droppedTenFrame = droppedTenFrameNode.tenFrame;
+        let matchingCountingObjectType = false;
 
-          const droppedTenFrame = droppedTenFrameNode.tenFrame;
-          let matchingCountingObjectType = false;
-
-          if ( droppedTenFrame.countingObjects.lengthProperty.value ) {
-            matchingCountingObjectType = this.playArea.countingObjects.includes( droppedTenFrame.countingObjects[ 0 ] );
-          }
-
-          if ( matchingCountingObjectType ||
-               ( !droppedTenFrame.countingObjects.lengthProperty.value && droppedNodeCountingType !== CountingObjectType.PAPER_NUMBER )
-          ) {
-            droppedTenFrame.tryToAddCountingObject( droppedCountingObject );
-          }
-          else {
-            droppedTenFrame.pushAwayCountingObject( droppedCountingObject, this.playAreaBoundsProperty.value );
-          }
+        if ( droppedTenFrame.countingObjects.lengthProperty.value ) {
+          matchingCountingObjectType = this.playArea.countingObjects.includes( droppedTenFrame.countingObjects[ 0 ] );
         }
-      } );
+
+        if ( matchingCountingObjectType ||
+             ( !droppedTenFrame.countingObjects.lengthProperty.value && droppedNodeCountingType !== CountingObjectType.PAPER_NUMBER )
+        ) {
+          droppedTenFrame.tryToAddCountingObject( droppedCountingObject );
+        }
+        else {
+          droppedTenFrame.pushAwayCountingObject( droppedCountingObject, this.playAreaBoundsProperty.value );
+        }
+      }
       return true;
     }
     else {
@@ -403,20 +400,29 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * TODO https://github.com/phetsims/number-suite-common/issues/29 document
+   * Given the countingObjectNode and an array of DraggableTenFrameNodes, return the highest TenFrameNode that the
+   * countingObjectNode is on top of, if any. This relies on the assumption that the DraggableTenFrameNodes provided
+   * are currently children of a Node layer.
    */
-  private findAttachableTenFrameNodes( countingObjectNode: CountingObjectNode,
-                                       allDraggableTenFrameNodes: DraggableTenFrameNode[] ): DraggableTenFrameNode[] {
+  private findAttachableTenFrameNode( countingObjectNode: CountingObjectNode,
+                                      allDraggableTenFrameNodes: DraggableTenFrameNode[] ): DraggableTenFrameNode | null {
     const tenFrameNodeCandidates = allDraggableTenFrameNodes.slice();
 
-    // find all other counting Object nodes that are overlapping the dropped node
+    // Find all DraggableTenFrameNodes that are underneath the dropped countingObjectNode.
     const unorderedAttachableTenFrameNodes = tenFrameNodeCandidates.filter( tenFrameNode => {
       return tenFrameNode.tenFrame.isCountingObjectOnTopOf( countingObjectNode.countingObject );
     } );
 
-    return _.sortBy( unorderedAttachableTenFrameNodes, attachableTenFrameNode => {
-      return attachableTenFrameNode.parent!.indexOfChild( attachableTenFrameNode );
-    } );
+    let attachableTenFrameNode = null;
+
+    // Select the top attachable TenFrameNode, if any were attachable from above.
+    if ( unorderedAttachableTenFrameNodes ) {
+      attachableTenFrameNode = _.maxBy( unorderedAttachableTenFrameNodes, attachableTenFrameNode => {
+        return attachableTenFrameNode.parent!.indexOfChild( attachableTenFrameNode );
+      } )!;
+    }
+
+    return attachableTenFrameNode;
   }
 
   /**
