@@ -36,9 +36,10 @@ type createCountingObjectFromCreatorNodeOptions = {
   value?: number;
   remainder?: boolean;
 };
-type CountingObjectSerialization = {
+export type CountingObjectSerialization = {
   position: Vector2;
   numberValue: number;
+  zIndex: number;
 };
 
 // constants
@@ -276,7 +277,7 @@ class CountingPlayArea extends CountingCommonModel {
           bestMatches = [ largestCountingObject, ...recursivelyFindBestMatches( nextValueToReturn, sortedCountingObjects ) ];
         }
 
-        // If the value we're looking for is smaller than the largestCountingObject, create a new countingObject by
+          // If the value we're looking for is smaller than the largestCountingObject, create a new countingObject by
         // breaking off the value we need from the largest one.
         else if ( value < largestCountingObject.numberValueProperty.value ) {
           bestMatches = [ this.splitCountingObject( largestCountingObject, value ) ];
@@ -394,22 +395,11 @@ class CountingPlayArea extends CountingCommonModel {
     return spots;
   }
 
-  private getCountingObjectsIncludedInSum(): CountingObject[] {
+  /**
+   * Returns all countingObjects not included in the sum of this playArea.
+   */
+  public getCountingObjectsIncludedInSum(): CountingObject[] {
     return [ ...this.countingObjects ].filter( countingObject => countingObject.includeInSumProperty.value );
-  }
-
-  public getSerializedCountingObjectsIncludedInSum(): CountingObjectSerialization[] {
-    const countingObjectsIncludedInSum = this.getCountingObjectsIncludedInSum();
-
-    const countingObjectPositions: CountingObjectSerialization[] = [];
-    countingObjectsIncludedInSum.forEach( countingObject => {
-      countingObjectPositions.push( {
-        position: countingObject.positionProperty.value,
-        numberValue: countingObject.numberValueProperty.value
-      } );
-    } );
-
-    return countingObjectPositions;
   }
 
   /**
@@ -460,7 +450,7 @@ class CountingPlayArea extends CountingCommonModel {
     if ( !objectsLinkedToOnes ) {
       objectsToOrganize.forEach( countingObject => this.removeCountingObject( countingObject ) );
 
-      countingObjectSerializations.forEach( serialization => {
+      _.sortBy( countingObjectSerializations, 'zIndex' ).forEach( serialization => {
         const newCountingObject = new CountingObject( serialization.numberValue, serialization.position, {
           groupingEnabledProperty: this.groupingEnabledProperty
         } );
@@ -581,7 +571,8 @@ class CountingPlayArea extends CountingCommonModel {
   /**
    * Breaks apart all counting objects into counting objects with a value of 1. By default, it creates all new counting
    * objects in the position of the original counting object. If stack=true, it arranges them according to the
-   * background shape of the original counting object.
+   * background shape of the original counting object. Any newly created countingObjects are added in front of the
+   * existing countingObjects (z-index).
    */
   public breakApartCountingObjects( stack = false ): void {
 

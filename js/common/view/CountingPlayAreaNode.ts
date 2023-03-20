@@ -14,7 +14,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node, NodeOptions, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
 import ClosestDragListener from '../../../../sun/js/ClosestDragListener.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import CountingPlayArea from '../model/CountingPlayArea.js';
+import CountingPlayArea, { CountingObjectSerialization } from '../model/CountingPlayArea.js';
 import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
 import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -516,6 +516,29 @@ class CountingPlayAreaNode extends Node {
         targetHandleOpacity: 0
       } );
     }
+  }
+
+  /**
+   * Creates a serialization of the countingObjects in the model. This includes the position, value, and z-index of the
+   * countingObjects.
+   */
+  public getSerializedCountingObjectsIncludedInSum(): CountingObjectSerialization[] {
+    const countingObjectsIncludedInSum = this.playArea.getCountingObjectsIncludedInSum();
+
+    const countingObjectPositions: CountingObjectSerialization[] = [];
+    countingObjectsIncludedInSum.forEach( countingObject => {
+      const countingObjectZIndex = this.countingObjectLayerNode.children.indexOf( this.getCountingObjectNode( countingObject ) );
+      assert && assert( countingObjectZIndex >= 0,
+        `countingObject's corresponding Node not in countingObjectLayerNode: ${countingObjectZIndex}` );
+
+      countingObjectPositions.push( {
+        position: countingObject.positionProperty.value,
+        numberValue: countingObject.numberValueProperty.value,
+        zIndex: countingObjectZIndex
+      } );
+    } );
+
+    return countingObjectPositions;
   }
 
   /**

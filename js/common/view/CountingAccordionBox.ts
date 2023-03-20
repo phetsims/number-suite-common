@@ -41,6 +41,7 @@ export type CountingAccordionBoxOptions = SelfOptions &
 const RADIO_BUTTON_SIZE = new Dimension2( 28, 28 ); // in screen coordinates
 
 class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
+  public readonly countingPlayAreaNode: CountingPlayAreaNode;
 
   public constructor( playArea: CountingPlayArea,
                       countingObjectTypeProperty: EnumerationProperty<CountingObjectType>,
@@ -60,8 +61,8 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
 
     super( width, new Property<number>( height ), options );
 
-    const objectsPlayAreaNode = new CountingPlayAreaNode( playArea, countingObjectTypeProperty, this.contentBoundsProperty );
-    this.contentNode.addChild( objectsPlayAreaNode );
+    this.countingPlayAreaNode = new CountingPlayAreaNode( playArea, countingObjectTypeProperty, this.contentBoundsProperty );
+    this.contentNode.addChild( this.countingPlayAreaNode );
 
     let radioButtonGroup: RectangularRadioButtonGroup<CountingObjectType> | null = null;
     if ( options.countingObjectTypes ) {
@@ -114,7 +115,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
 
       options.objectsLinkedEmitter.addListener( objectsLinked => {
         linkedObjectsPlayAreaNode.visible = objectsLinked;
-        objectsPlayAreaNode.visible = !objectsLinked;
+        this.countingPlayAreaNode.visible = !objectsLinked;
         radioButtonGroup && radioButtonGroup.moveToFront();
       } );
     }
