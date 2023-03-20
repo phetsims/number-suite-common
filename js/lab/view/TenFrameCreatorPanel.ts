@@ -44,14 +44,18 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
     iconNode.center = creatorNodeBackground.center;
     creatorNodeBackground.addChild( iconNode );
 
-    iconNode.cursor = 'pointer';
-    iconNode.inputListeners = [ DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
+    const dragListener = DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
       const tenFrame = new TenFrame( Vector2.ZERO );
       tenFrame.positionProperty.value = screenView.globalToLocalPoint( event.pointer.point ).minus( tenFrame.localBounds.centerBottom );
       model.dragTenFrameFromIcon( tenFrame );
       const tenFrameNode = screenView.getTenFrameNode( tenFrame );
       tenFrameNode.dragListener.press( event, tenFrameNode );
-    } ) ];
+    } );
+
+    model.tenFrameIconPickableProperty.link( pickable => {
+      iconNode.cursor = pickable ? 'pointer' : 'auto';
+      iconNode.inputListeners = pickable ? [ dragListener ] : [];
+    } );
 
     super( creatorNodeBackground, {
       xMargin: 10

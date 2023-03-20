@@ -81,6 +81,7 @@ const NumberSuiteCommonConstants = {
   TEN: 10, // used for organizing things into group of ten
   TWENTY: 20, // used for formatting a number display
 
+  MAX_AMOUNT_OF_TEN_FRAMES: 10, // The maximum amount of ten frames allowed on lab screens
   PAPER_NUMBER_INITIAL_VALUE: 1, // the initial value of every created countingObject
 
   // accordion box sizing
