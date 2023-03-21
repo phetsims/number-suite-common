@@ -71,6 +71,9 @@ export default class LanguageAndVoiceControl extends HBox {
               StringUtils.localeToLocalizedName( locale ),
               `${locale}`, () => {
                 localeProperty.value = locale;
+
+                // Read the test string in the first available voice for the new language, see https://github.com/phetsims/number-suite-common/issues/56
+                !!voiceProperty.value && utteranceQueue.testVoiceBySpeaking( voiceProperty.value, locale );
               }
             )
         };
@@ -116,11 +119,6 @@ export default class LanguageAndVoiceControl extends HBox {
       ( locale, voices ) => {
         if ( voices.length ) {
           utteranceQueue.numberSuiteCommonAnnouncer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
-
-          // When changing the voiceProperty in this control, we don't want to hear the speech data being read
-          // out, only the test voice. So clear the general utteranceQueue that may have been triggered by setting a voice
-          // above
-          utteranceQueue.clear();
 
           const availableVoicesForLocale = utteranceQueue.numberSuiteCommonAnnouncer.getPrioritizedVoicesForLocale( locale );
 
