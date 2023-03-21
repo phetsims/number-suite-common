@@ -14,7 +14,6 @@ import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import CarouselItemNode from './CarouselItemNode.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
@@ -64,18 +63,17 @@ export default class LanguageAndVoiceControl extends HBox {
       locale => {
         return {
           locale: locale,
-          createNode: ( tandem: Tandem ) =>
-            new CarouselItemNode(
-              localeProperty,
-              locale,
-              StringUtils.localeToLocalizedName( locale ),
-              `${locale}`, () => {
-                localeProperty.value = locale;
+          createNode: () => new CarouselItemNode(
+            localeProperty,
+            locale,
+            StringUtils.localeToLocalizedName( locale ),
+            `${locale}`, () => {
+              localeProperty.value = locale;
 
-                // Read the test string in the first available voice for the new language, see https://github.com/phetsims/number-suite-common/issues/56
-                !!voiceProperty.value && utteranceQueue.testVoiceBySpeaking( voiceProperty.value, locale );
-              }
-            )
+              // Read the test string in the first available voice for the new language, see https://github.com/phetsims/number-suite-common/issues/56
+              !!voiceProperty.value && utteranceQueue.testVoiceBySpeaking( voiceProperty.value, locale );
+            }
+          )
         };
       } );
     const languageCarousel = new Carousel( languageCarouselItems, CAROUSEL_OPTIONS );
@@ -127,7 +125,7 @@ export default class LanguageAndVoiceControl extends HBox {
               voice => {
                 return {
                   voice: voice,
-                  createNode: ( tandem: Tandem ) => new CarouselItemNode(
+                  createNode: () => new CarouselItemNode(
                     voiceProperty,
                     voice,
                     voice.name,
