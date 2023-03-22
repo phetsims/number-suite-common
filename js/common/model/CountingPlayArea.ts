@@ -430,9 +430,7 @@ class CountingPlayArea extends CountingCommonModel {
                                                objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean,
                                                groupAndLinkType: GroupAndLinkType ): void {
 
-    const callback = () => {
-      objectsLinkedEmitter.emit( objectsLinkedToOnes );
-    };
+    const callback = () => objectsLinkedEmitter.emit( objectsLinkedToOnes );
     const animate = objectsLinkedToOnes;
 
     const objectsToOrganize = this.getCountingObjectsIncludedInSum();
@@ -442,7 +440,7 @@ class CountingPlayArea extends CountingCommonModel {
     // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
     // the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
     // matching).
-    if ( !objectsLinkedToOnes ) {
+    if ( !objectsLinkedToOnes ) { // TODO: this is just saying we don't animate, thats weird! https://github.com/phetsims/number-suite-common/issues/12
       objectsToOrganize.forEach( countingObject => this.removeCountingObject( countingObject ) );
 
       _.sortBy( countingObjectSerializations, 'zIndex' ).forEach( serialization => {
@@ -456,9 +454,10 @@ class CountingPlayArea extends CountingCommonModel {
       // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
       // we clear them out and re-add them above.
       groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
+        /// TODO: just fire the linkedEmitter already! https://github.com/phetsims/number-suite-common/issues/12
     }
     else {
-
+ // TODO: we can factor out the whole block into its own function (including the iteration of inputs https://github.com/phetsims/number-suite-common/issues/12
       // If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
       // to one spot and the other half another. Don't use breakApartObjects because that is
       // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
@@ -467,65 +466,17 @@ class CountingPlayArea extends CountingCommonModel {
       const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
         countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
 
-      let countingObjectsSortedByValue = this.getCountingObjectsByValue();
+      const countingObjectsSortedByValue = this.getCountingObjectsByValue();
       const handledCountingObjects: CountingObject[] = [];
 
+      // Iterate through each input and try to mutate the current countingObjects list to support that target
       for ( let i = 0; i < inputSortedByValue.length; i++ ) {
-
-        const target = inputSortedByValue[ i ];
-        const desiredValue = target.numberValue;
-        let currentNumberValueCount = 0;
-        let targetHandled = false;
-
-        for ( let j = 0; j < countingObjectsSortedByValue.length; j++ ) {
-          const countingObject = countingObjectsSortedByValue[ j ];
-
-          // If there is a match with the same value and position, then we don't need to call sendTo because this
-          // countingObject is already in the correct spot.
-          if ( countingObject.numberValueProperty.value === desiredValue &&
-               countingObject.positionProperty.value.equals( target.position ) ) {
-            handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
-            currentNumberValueCount += countingObject.numberValueProperty.value;
-            numberOfAnimationsFinishedProperty.value += 1;
-            targetHandled = true;
-          }
-        }
-
-        while ( !targetHandled && countingObjectsSortedByValue.length ) {
-
-          const currentCountingObject = countingObjectsSortedByValue[ 0 ];
-          assert && assert( this.countingObjects.includes( currentCountingObject ),
-            'old, removed countingObject still at play here' );
-          assert && assert( !handledCountingObjects.includes( currentCountingObject ),
-            'currentCountingObject is already animating' );
-
-          const nextNeededValue = desiredValue - currentNumberValueCount;
-
-          if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
-            this.sendCountingObjectTo( currentCountingObject, target.position, numberOfAnimationsFinishedProperty, animate );
-            handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
-            currentNumberValueCount += currentCountingObject.numberValueProperty.value;
-
-            // We are done when we've reached the desired value.
-            targetHandled = currentNumberValueCount === desiredValue;
-          }
-          else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
-
-            // split off the value we need to be used in the next iteration
-            this.splitCountingObject( currentCountingObject, nextNeededValue );
-
-            // recompute after splitting
-            const allCountingObjectsSortedByValue = this.getCountingObjectsByValue();
-
-            numberOfObjectsToOrganize = allCountingObjectsSortedByValue.length;
-
-            countingObjectsSortedByValue = allCountingObjectsSortedByValue.filter(
-              countingObject => !handledCountingObjects.includes( countingObject ) );
-          }
-        }
+        numberOfObjectsToOrganize = this.updateObjectsForSerialization( inputSortedByValue[ i ], numberOfObjectsToOrganize, countingObjectsSortedByValue,
+          handledCountingObjects, numberOfAnimationsFinishedProperty, animate );
       }
     }
 
+    // TODO: animation logic can be moved to the else https://github.com/phetsims/number-suite-common/issues/12
     if ( animate ) {
       const numberOfAnimationsFinishedListener = ( numberOfAnimationsFinished: number ) => {
         if ( numberOfAnimationsFinished === numberOfObjectsToOrganize ) {
@@ -541,6 +492,71 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
+   * Will update the total number of counting objects that are desired. Can only increase, as objects are split apart.
+   */
+  private updateObjectsForSerialization( targetCountingObjects: CountingObjectSerialization,
+                                         totalNumberOfCountingObjects: number,
+                                         countingObjectsSortedByValue: CountingObject[],
+                                         handledCountingObjects: CountingObject[],
+                                         numberOfAnimationsFinishedProperty: Property<number>,
+                                         animate: boolean ): number {
+
+    const desiredValue = targetCountingObjects.numberValue;
+    let currentNumberValueCount = 0;
+    let targetHandled = false;
+
+    for ( let j = 0; j < countingObjectsSortedByValue.length; j++ ) {
+      const countingObject = countingObjectsSortedByValue[ j ];
+
+      // If there is a match with the same value and position, then we don't need to call sendTo because this
+      // countingObject is already in the correct spot.
+      if ( countingObject.numberValueProperty.value === desiredValue &&
+           countingObject.positionProperty.value.equals( targetCountingObjects.position ) ) {
+        handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
+        currentNumberValueCount += countingObject.numberValueProperty.value;
+        numberOfAnimationsFinishedProperty.value += 1;
+        targetHandled = true;
+      }
+    }
+
+    while ( !targetHandled && countingObjectsSortedByValue.length ) {
+
+      const currentCountingObject = countingObjectsSortedByValue[ 0 ];
+      assert && assert( this.countingObjects.includes( currentCountingObject ),
+        'old, removed countingObject still at play here' );
+      assert && assert( !handledCountingObjects.includes( currentCountingObject ),
+        'currentCountingObject is already animating' );
+
+      const nextNeededValue = desiredValue - currentNumberValueCount;
+
+      if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
+        this.sendCountingObjectTo( currentCountingObject, targetCountingObjects.position, numberOfAnimationsFinishedProperty, animate );
+        handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
+        currentNumberValueCount += currentCountingObject.numberValueProperty.value;
+
+        // We are done when we've reached the desired value.
+        targetHandled = currentNumberValueCount === desiredValue;
+      }
+      else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
+
+        // split off the value we need to be used in the next iteration
+        this.splitCountingObject( currentCountingObject, nextNeededValue );
+
+        // recompute after splitting
+        const allCountingObjectsSortedByValue = this.getCountingObjectsByValue();
+
+        totalNumberOfCountingObjects = allCountingObjectsSortedByValue.length;
+
+        countingObjectsSortedByValue.length = 0;
+        countingObjectsSortedByValue.push( ...allCountingObjectsSortedByValue.filter(
+          countingObject => !handledCountingObjects.includes( countingObject ) ) );
+      }
+    }
+
+    return totalNumberOfCountingObjects;
+  }
+
+  /**
    * Only meant to be used for "mass exodus" where we want to keep track of when all are finished animated to destination
    */
   private sendCountingObjectTo( countingObject: CountingObject,
@@ -552,8 +568,9 @@ class CountingPlayArea extends CountingCommonModel {
       targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE,
       useStandardAnimationSpeed: false
     } );
-    countingObject.endAnimationEmitter.addListener( () => {
+    countingObject.endAnimationEmitter.addListener( function toRemove() {
       numberOfAnimationsFinishedProperty.value += 1;
+      countingObject.endAnimationEmitter.removeListener( toRemove );
     } );
   }
 
