@@ -77,7 +77,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     assert && assert( this.initialized && this.speechDataProperty, 'Cannot speak before initialization' );
     const speechData = this.speechDataProperty!.value;
 
-    speechData && this.speak( speechData, this.speechDataUtterance );
+    speechData && this.numberSuiteCommonAnnouncer.voiceProperty.value && this.speak( speechData, this.speechDataUtterance );
   }
 
   /**
@@ -98,9 +98,6 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
       if ( !this.isTestVoiceSpeaking ) {
         this.numberSuiteCommonAnnouncer.voiceProperty.value = currentVoice;
       }
-
-      // Resetting the voice back to what it was above may trigger speaking for speechData, so cancel the speechDataUtterance
-      this.cancelUtterance( this.speechDataUtterance );
       this.numberSuiteCommonAnnouncer.announcementCompleteEmitter.removeListener( resetVoiceListener );
     };
 
@@ -113,6 +110,9 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
    * Speaks the provided string.
    */
   private speak( string: string, utterance: Utterance ): void {
+    const voice = this.numberSuiteCommonAnnouncer.voiceProperty.value;
+    assert && assert( voice, 'No voice set for voiceProperty: ', voice );
+
     utterance.alert = string;
     this.addToBack( utterance );
   }
@@ -142,12 +142,11 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     this.speechDataProperty = speechDataProperty;
 
-    // Speak the speechData if readAloud is turned on, the speechData changes, or the voice changes. Also check that
-    // the announcer has a voice because even if the voiceProperty is set to null, the browser still speaks with a
-    // default voice.
+    // Speak the speechData if readAloud is turned on or the speechData changes. Also check that the announcer has a
+    // voice because even if the voiceProperty is set to null, the browser still speaks with a default voice.
     Multilink.lazyMultilink(
-      [ this.readAloudProperty, this.numberSuiteCommonAnnouncer.voiceProperty, this.speechDataProperty ],
-      ( readAloud, voice ) => readAloud && !!voice && this.speakSpeechData()
+      [ this.readAloudProperty, this.speechDataProperty ],
+      ( readAloud ) => readAloud && this.speakSpeechData()
     );
 
     this.initialized = true;

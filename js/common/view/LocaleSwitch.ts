@@ -15,6 +15,7 @@ import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 // constants
 const AB_SWITCH_OPTIONS = {
@@ -29,7 +30,11 @@ const TEXT_OPTIONS = {
 
 export default class LocaleSwitch extends ABSwitch<boolean> {
 
-  public constructor( preferences: NumberSuiteCommonPreferences, maxWidth: number ) {
+  public constructor(
+    preferences: NumberSuiteCommonPreferences,
+    utteranceQueue: NumberSuiteCommonUtteranceQueue,
+    maxWidth: number
+  ) {
 
     const firstLanguageStringProperty = new DerivedProperty( [ localeProperty ], StringUtils.localeToLocalizedName );
 
@@ -44,6 +49,9 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
       false, secondLanguageText,
       AB_SWITCH_OPTIONS
     );
+
+    // Speak speechData if readAloud is turned on.
+    this.onInputEmitter.addListener( () => preferences.readAloudProperty.value && utteranceQueue.speakSpeechData() );
 
     preferences.showSecondLocaleProperty.link( showSecondLocale => {
       this.visible = showSecondLocale;
