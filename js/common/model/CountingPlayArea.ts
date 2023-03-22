@@ -255,13 +255,7 @@ class CountingPlayArea extends CountingCommonModel {
         }
 
         // If there are none of the same value, find the largest countingObject.
-        let largestCountingObject = sortedCountingObjects[ 0 ];
-        for ( let i = 0; i < sortedCountingObjects.length; i++ ) {
-          const countingObject = sortedCountingObjects[ i ];
-          if ( countingObject.numberValueProperty.value > largestCountingObject.numberValueProperty.value ) {
-            largestCountingObject = countingObject;
-          }
-        }
+        const largestCountingObject = _.maxBy( sortedCountingObjects, x => x.numberValueProperty.value )!;
 
         // If the value we're looking for is larger than the largest countingObject, then we're going to need to send
         // more than one countingObject back to the creatorNode. So include the largest, and then start the search over
@@ -492,8 +486,22 @@ class CountingPlayArea extends CountingCommonModel {
         const target = inputSortedByValue[ i ];
         const desiredValue = target.numberValue;
         let currentNumberValueCount = 0;
+        let targetHandled = false;
 
-        while ( countingObjectsSortedByValue.length ) {
+        for ( let j = 0; j < countingObjectsSortedByValue.length; j++ ) {
+          const countingObject = countingObjectsSortedByValue[ j ];
+
+          // If there is a match with the same value and position, then we don't need to call sendTo because this
+          // countingObject is already in the correct spot.
+          if ( countingObject.numberValueProperty.value === desiredValue &&
+               countingObject.positionProperty.value.equals( target.position ) ) {
+            handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
+            currentNumberValueCount += countingObject.numberValueProperty.value;
+            targetHandled = true;
+          }
+        }
+
+        while ( !targetHandled && countingObjectsSortedByValue.length ) {
 
           const currentCountingObject = countingObjectsSortedByValue[ 0 ];
           assert && assert( this.countingObjects.includes( currentCountingObject ),
@@ -507,6 +515,9 @@ class CountingPlayArea extends CountingCommonModel {
             sendObjectTo( currentCountingObject, target.position );
             handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
             currentNumberValueCount += currentCountingObject.numberValueProperty.value;
+
+            // We are done when we've reached the desired value.
+            targetHandled = currentNumberValueCount === desiredValue;
           }
           else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
 
@@ -516,13 +527,11 @@ class CountingPlayArea extends CountingCommonModel {
             // recompute after splitting
             const allCountingObjectsSortedByValue = _.sortBy( this.getCountingObjectsIncludedInSum(),
               countingObject => countingObject.numberValueProperty.value ).reverse();
+
             numberOfObjectsToOrganize = allCountingObjectsSortedByValue.length;
+
             countingObjectsSortedByValue = allCountingObjectsSortedByValue.filter(
               countingObject => !handledCountingObjects.includes( countingObject ) );
-          }
-
-          if ( currentNumberValueCount === desiredValue ) {
-            break;
           }
         }
       }
