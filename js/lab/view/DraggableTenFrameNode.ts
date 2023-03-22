@@ -88,6 +88,11 @@ class DraggableTenFrameNode extends Node {
 
     tenFrame.countingObjects.addItemRemovedListener( countingObject => {
       options.removeCountingObjectListener( countingObject );
+
+      // If the last countingObject was removed, hide the returnButton.
+      if ( tenFrame.countingObjects.lengthProperty.value === 0 ) {
+        returnButton.visible = false;
+      }
     } );
 
     // Management for when this tenFrame becomes selected. Requires disposal as it is storing references that point
