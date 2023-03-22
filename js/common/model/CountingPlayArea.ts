@@ -539,10 +539,13 @@ class CountingPlayArea extends CountingCommonModel {
     }
   }
 
+  /**
+   * Only meant to be used for "mass exodus" where we want to keep track of when all are finished animated to destination
+   */
   private sendCountingObjectTo( countingObject: CountingObject,
-                        position: Vector2,
-                        numberOfAnimationsFinishedProperty: TProperty<number>,
-                        animate: boolean ): void {
+                                position: Vector2,
+                                numberOfAnimationsFinishedProperty: TProperty<number>,
+                                animate: boolean ): void {
 
     countingObject.setDestination( position, animate, {
       targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE,
