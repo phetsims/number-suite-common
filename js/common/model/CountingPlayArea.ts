@@ -25,6 +25,7 @@ import Property from '../../../../axon/js/Property.js';
 import TEmitter from '../../../../axon/js/TEmitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import GroupAndLinkType from './GroupAndLinkType.js';
+import TProperty from '../../../../axon/js/TProperty.js';
 
 type SelfOptions = {
   tenFrames?: null | ObservableArray<TenFrame>;
@@ -466,17 +467,6 @@ class CountingPlayArea extends CountingCommonModel {
       const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
         countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
 
-      const sendObjectTo = ( countingObject: CountingObject, position: Vector2 ) => {
-
-        countingObject.setDestination( position, animate, {
-          targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE,
-          useStandardAnimationSpeed: false
-        } );
-        countingObject.endAnimationEmitter.addListener( () => {
-          numberOfAnimationsFinishedProperty.value = numberOfAnimationsFinishedProperty.value += 1;
-        } );
-      };
-
       let countingObjectsSortedByValue = this.getCountingObjectsByValue();
       const handledCountingObjects: CountingObject[] = [];
 
@@ -511,7 +501,7 @@ class CountingPlayArea extends CountingCommonModel {
           const nextNeededValue = desiredValue - currentNumberValueCount;
 
           if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
-            sendObjectTo( currentCountingObject, target.position );
+            this.sendCountingObjectTo( currentCountingObject, target.position, numberOfAnimationsFinishedProperty, animate );
             handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
             currentNumberValueCount += currentCountingObject.numberValueProperty.value;
 
@@ -547,6 +537,20 @@ class CountingPlayArea extends CountingCommonModel {
     else {
       callback && callback();
     }
+  }
+
+  private sendCountingObjectTo( countingObject: CountingObject,
+                        position: Vector2,
+                        numberOfAnimationsFinishedProperty: TProperty<number>,
+                        animate: boolean ): void {
+
+    countingObject.setDestination( position, animate, {
+      targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE,
+      useStandardAnimationSpeed: false
+    } );
+    countingObject.endAnimationEmitter.addListener( () => {
+      numberOfAnimationsFinishedProperty.value = numberOfAnimationsFinishedProperty.value += 1;
+    } );
   }
 
   /**
