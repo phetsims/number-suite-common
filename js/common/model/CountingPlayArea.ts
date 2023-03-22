@@ -486,6 +486,7 @@ class CountingPlayArea extends CountingCommonModel {
                countingObject.positionProperty.value.equals( target.position ) ) {
             handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
             currentNumberValueCount += countingObject.numberValueProperty.value;
+            numberOfAnimationsFinishedProperty.value += 1;
             targetHandled = true;
           }
         }
@@ -552,7 +553,7 @@ class CountingPlayArea extends CountingCommonModel {
       useStandardAnimationSpeed: false
     } );
     countingObject.endAnimationEmitter.addListener( () => {
-      numberOfAnimationsFinishedProperty.value = numberOfAnimationsFinishedProperty.value + 1;
+      numberOfAnimationsFinishedProperty.value += 1;
     } );
   }
 
