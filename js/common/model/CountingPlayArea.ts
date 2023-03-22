@@ -477,8 +477,7 @@ class CountingPlayArea extends CountingCommonModel {
         } );
       };
 
-      let countingObjectsSortedByValue: CountingObject[] = _.sortBy( this.getCountingObjectsIncludedInSum(),
-        countingObject => countingObject.numberValueProperty.value ).reverse();
+      let countingObjectsSortedByValue = this.getCountingObjectsByValue();
       const handledCountingObjects: CountingObject[] = [];
 
       for ( let i = 0; i < inputSortedByValue.length; i++ ) {
@@ -525,8 +524,7 @@ class CountingPlayArea extends CountingCommonModel {
             this.splitCountingObject( currentCountingObject, nextNeededValue );
 
             // recompute after splitting
-            const allCountingObjectsSortedByValue = _.sortBy( this.getCountingObjectsIncludedInSum(),
-              countingObject => countingObject.numberValueProperty.value ).reverse();
+            const allCountingObjectsSortedByValue = this.getCountingObjectsByValue();
 
             numberOfObjectsToOrganize = allCountingObjectsSortedByValue.length;
 
@@ -549,6 +547,13 @@ class CountingPlayArea extends CountingCommonModel {
     else {
       callback && callback();
     }
+  }
+
+  /**
+   * Returns a list with the largest value counting objects first (only included in sum).
+   */
+  private getCountingObjectsByValue(): CountingObject[] {
+    return _.sortBy( this.getCountingObjectsIncludedInSum(), countingObject => countingObject.numberValueProperty.value ).reverse();
   }
 
   /**
