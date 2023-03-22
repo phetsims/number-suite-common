@@ -552,7 +552,7 @@ class CountingPlayArea extends CountingCommonModel {
       useStandardAnimationSpeed: false
     } );
     countingObject.endAnimationEmitter.addListener( () => {
-      numberOfAnimationsFinishedProperty.value = numberOfAnimationsFinishedProperty.value += 1;
+      numberOfAnimationsFinishedProperty.value = numberOfAnimationsFinishedProperty.value + 1;
     } );
   }
 
