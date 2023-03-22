@@ -6,7 +6,6 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
@@ -93,27 +92,26 @@ class DraggableTenFrameNode extends Node {
 
     // Management for when this tenFrame becomes selected. Requires disposal as it is storing references that point
     // outside DraggableTenFrameNode and TenFrame.
-    const isSelectedTenFrameMultilink = Multilink.lazyMultilink(
-      [ selectedTenFrameProperty, tenFrame.countingObjects.lengthProperty ],
-      ( selectedTenFrame, numberOfCountingObjects ) => {
-        const thisTenFrameIsSelected = selectedTenFrame === tenFrame;
+    const selectedTenFramePropertyListener = ( selectedTenFrame: TenFrame | null ) => {
+      const thisTenFrameIsSelected = selectedTenFrame === tenFrame;
 
-        // Show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
-        // in the tenFrame.
-        returnButton.visible = thisTenFrameIsSelected && numberOfCountingObjects > 0;
+      // Show the returnButton if this is the selected tenFrame and if there's at least one countingObject contained
+      // in the tenFrame.
+      returnButton.visible = thisTenFrameIsSelected && tenFrame.countingObjects.lengthProperty.value > 0;
 
-        // Whenever we are selected, move ourselves and any countingObjects we contain to front.
-        if ( thisTenFrameIsSelected ) {
-          this.moveToFront();
-          tenFrame.countingObjects.forEach( countingObject => {
-            const countingObjectNode = options.getCountingObjectNode( countingObject );
-            countingObjectNode.moveToFront();
-          } );
-        }
-      } );
+      // Whenever we are selected, move ourselves and any countingObjects we contain to front.
+      if ( thisTenFrameIsSelected ) {
+        this.moveToFront();
+        tenFrame.countingObjects.forEach( countingObject => {
+          const countingObjectNode = options.getCountingObjectNode( countingObject );
+          countingObjectNode.moveToFront();
+        } );
+      }
+    };
+    selectedTenFrameProperty.link( selectedTenFramePropertyListener );
 
     this.disposeDraggableTenFrameNode = () => {
-      Multilink.unmultilink( isSelectedTenFrameMultilink );
+      selectedTenFrameProperty.unlink( selectedTenFramePropertyListener );
       assert && assert( tenFrame.isDisposed, 'TenFrame model should have been disposed by now.' );
     };
   }
