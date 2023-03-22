@@ -25,16 +25,13 @@ const ONE_TWO_THREE_STRING_KEY = `${NumberSuiteCommonConstants.NUMBER_SUITE_COMM
 // the sim is running in), we can't use this string Property like normal.
 NumberSuiteCommonStrings.oneTwoThreeStringProperty;
 
-export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQueue {
+export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQueue<NumberSuiteCommonSpeechSynthesisAnnouncer> {
 
   // Data that can be spoken to the user. The data comes from the screen that is currently being interacted with.
   private speechDataProperty: TReadOnlyProperty<string | null> | null;
 
   // Whether this class has been initialized.
   private initialized: boolean;
-
-  // The SpeechSynthesisAnnouncer used for this UtteranceQueue.
-  public readonly numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer;
 
   // See doc in NumberSuiteCommonPreferences.
   private readonly readAloudProperty: TReadOnlyProperty<boolean>;
@@ -56,8 +53,6 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     this.speechDataProperty = null;
     this.initialized = false;
-
-    this.numberSuiteCommonAnnouncer = numberSuiteCommonAnnouncer;
     this.readAloudProperty = readAloudProperty;
 
     this.speechDataUtterance = new Utterance( {
@@ -77,7 +72,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     assert && assert( this.initialized && this.speechDataProperty, 'Cannot speak before initialization' );
     const speechData = this.speechDataProperty!.value;
 
-    speechData && this.numberSuiteCommonAnnouncer.voiceProperty.value && this.speak( speechData, this.speechDataUtterance );
+    speechData && this.announcer.voiceProperty.value && this.speak( speechData, this.speechDataUtterance );
   }
 
   /**
@@ -85,8 +80,8 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
    * string, and then resets the voice to what it was before starting the test read.
    */
   public testVoiceBySpeaking( voiceToTest: SpeechSynthesisVoice, locale: Locale ): void {
-    const currentVoice = this.numberSuiteCommonAnnouncer.voiceProperty.value;
-    this.numberSuiteCommonAnnouncer.voiceProperty.value = voiceToTest;
+    const currentVoice = this.announcer.voiceProperty.value;
+    this.announcer.voiceProperty.value = voiceToTest;
 
     // Indicate when we are speaking with the test voice so we know if we should set the voice back to the non-testing
     // voice or not.
@@ -96,21 +91,21 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     const resetVoiceListener = () => {
       if ( !this.isTestVoiceSpeaking ) {
-        this.numberSuiteCommonAnnouncer.voiceProperty.value = currentVoice;
+        this.announcer.voiceProperty.value = currentVoice;
       }
-      this.numberSuiteCommonAnnouncer.announcementCompleteEmitter.removeListener( resetVoiceListener );
+      this.announcer.announcementCompleteEmitter.removeListener( resetVoiceListener );
     };
 
     // When the test speech is complete, set the voice back to what it was before testing, unless we have already
     // started speaking for a different test.
-    this.numberSuiteCommonAnnouncer.announcementCompleteEmitter.addListener( resetVoiceListener );
+    this.announcer.announcementCompleteEmitter.addListener( resetVoiceListener );
   }
 
   /**
    * Speaks the provided string.
    */
   private speak( string: string, utterance: Utterance ): void {
-    const voice = this.numberSuiteCommonAnnouncer.voiceProperty.value;
+    const voice = this.announcer.voiceProperty.value;
     assert && assert( voice, 'No voice set for voiceProperty: ', voice );
 
     utterance.alert = string;
@@ -145,8 +140,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     // Speak the speechData if readAloud is turned on or the speechData changes. Also check that the announcer has a
     // voice because even if the voiceProperty is set to null, the browser still speaks with a default voice.
     Multilink.lazyMultilink(
-      [ this.readAloudProperty, this.speechDataProperty ],
-      ( readAloud ) => readAloud && this.speakSpeechData()
+      [ this.readAloudProperty, this.speechDataProperty ], readAloud => readAloud && this.speakSpeechData()
     );
 
     this.initialized = true;
