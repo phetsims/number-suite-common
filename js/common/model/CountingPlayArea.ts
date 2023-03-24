@@ -479,6 +479,9 @@ class CountingPlayArea extends CountingCommonModel {
       // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
       // we clear them out and re-add them above.
       groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
+
+      // Since there is no animation, fire this immediately
+      // TODO: is there a better name for this emitter? https://github.com/phetsims/number-suite-common/issues/12
       objectsLinkedEmitter.emit( objectsLinkedToOnes );
     }
   }
