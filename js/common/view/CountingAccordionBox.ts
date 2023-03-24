@@ -31,7 +31,7 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
   linkedPlayArea?: CountingPlayArea | null;
-  objectsLinkedEmitter?: TEmitter<[ boolean ]> | null;
+  linkStatusChangedEmitter?: TEmitter<[ boolean ]> | null;
 };
 export type CountingAccordionBoxOptions = SelfOptions &
   StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'> &
@@ -56,7 +56,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
       },
       countingObjectTypes: null,
       linkedPlayArea: null,
-      objectsLinkedEmitter: null
+      linkStatusChangedEmitter: null
     }, providedOptions );
 
     super( width, new Property<number>( height ), options );
@@ -102,7 +102,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
     }
 
     // add the linked play area
-    if ( options.linkedPlayArea && options.objectsLinkedEmitter ) {
+    if ( options.linkedPlayArea && options.linkStatusChangedEmitter ) {
       const linkedObjectsPlayAreaNode = new CountingPlayAreaNode(
         options.linkedPlayArea,
         countingObjectTypeProperty,
@@ -113,7 +113,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
       linkedObjectsPlayAreaNode.visible = false;
       this.contentNode.addChild( linkedObjectsPlayAreaNode );
 
-      options.objectsLinkedEmitter.addListener( objectsLinked => {
+      options.linkStatusChangedEmitter.addListener( objectsLinked => {
         linkedObjectsPlayAreaNode.visible = objectsLinked;
         this.countingPlayAreaNode.visible = !objectsLinked;
         radioButtonGroup && radioButtonGroup.moveToFront();

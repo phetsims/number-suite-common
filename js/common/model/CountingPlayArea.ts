@@ -426,8 +426,14 @@ class CountingPlayArea extends CountingCommonModel {
     }
   }
 
+  /**
+   * @param countingObjectSerializations
+   * @param linkStatusChangedEmitter
+   * @param areObjectsLinkedToOnes - if we want to link the play areas, or unlink them.
+   * @param groupAndLinkType
+   */
   public matchCountingObjectsToLinkedPlayArea( countingObjectSerializations: CountingObjectSerialization[],
-                                               objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean,
+                                               linkStatusChangedEmitter: TEmitter<[ boolean ]>, areObjectsLinkedToOnes: boolean,
                                                groupAndLinkType: GroupAndLinkType ): void {
 
     const objectsToOrganize = this.getCountingObjectsIncludedInSum();
@@ -439,11 +445,11 @@ class CountingPlayArea extends CountingCommonModel {
     // to one spot and the other half another. Don't use breakApartObjects because that is
     // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
     // animate to the right spots.
-    if ( objectsLinkedToOnes ) {
+    if ( areObjectsLinkedToOnes ) {
 
       const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
         countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
-      const animate = objectsLinkedToOnes; // Only animate if we are linking to the ones play area
+      const animate = areObjectsLinkedToOnes; // Only animate if we are linking to the ones play area
 
       const countingObjectsSortedByValue = this.getCountingObjectsByValue();
       const handledCountingObjects: CountingObject[] = [];
@@ -456,7 +462,7 @@ class CountingPlayArea extends CountingCommonModel {
 
       numberOfAnimationsFinishedProperty.link( function numberOfAnimationsFinishedListener( numberOfAnimationsFinished: number ) {
         if ( numberOfAnimationsFinished === numberOfObjectsToOrganize ) {
-          objectsLinkedEmitter.emit( objectsLinkedToOnes );
+          linkStatusChangedEmitter.emit( areObjectsLinkedToOnes );
           numberOfAnimationsFinishedProperty.unlink( numberOfAnimationsFinishedListener );
         }
       } );
@@ -482,7 +488,7 @@ class CountingPlayArea extends CountingCommonModel {
 
       // Since there is no animation, fire this immediately
       // TODO: is there a better name for this emitter? https://github.com/phetsims/number-suite-common/issues/12
-      objectsLinkedEmitter.emit( objectsLinkedToOnes );
+      linkStatusChangedEmitter.emit( areObjectsLinkedToOnes );
     }
   }
 
