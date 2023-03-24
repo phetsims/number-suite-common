@@ -398,8 +398,7 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * Organizes the countingObjects in a grid pattern.
-   * // TODO: This is inherently for singles only??? https://github.com/phetsims/number-suite-common/issues/12
+   * Organizes the countingObjects in a grid pattern, but first breaks all down into singles.
    */
   public organizeObjects(): void {
 
