@@ -487,7 +487,6 @@ class CountingPlayArea extends CountingCommonModel {
       groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
 
       // Since there is no animation, fire this immediately
-      // TODO: is there a better name for this emitter? https://github.com/phetsims/number-suite-common/issues/12
       linkStatusChangedEmitter.emit( areObjectsLinkedToOnes );
     }
   }
