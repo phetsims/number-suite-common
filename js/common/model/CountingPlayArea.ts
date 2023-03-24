@@ -460,6 +460,7 @@ class CountingPlayArea extends CountingCommonModel {
           handledCountingObjects, numberOfAnimationsFinishedProperty, animate );
       }
 
+      // Wait to proceed until all animations have completed
       numberOfAnimationsFinishedProperty.link( function numberOfAnimationsFinishedListener( numberOfAnimationsFinished: number ) {
         if ( numberOfAnimationsFinished === numberOfObjectsToOrganize ) {
           linkStatusChangedEmitter.emit( areObjectsLinkedToOnes );
