@@ -502,6 +502,8 @@ class CountingPlayArea extends CountingCommonModel {
 
     // Iterate through each input and try to mutate the current countingObjects list to support that target
     for ( let i = 0; i < inputSortedByValue.length; i++ ) {
+      assert && assert( countingObjectsSortedByValue.length > 0, 'still have serializations, but no CountingObjects left' );
+
       const targetSerialization = inputSortedByValue[ i ];
 
       const desiredValue = targetSerialization.numberValue;
@@ -524,7 +526,7 @@ class CountingPlayArea extends CountingCommonModel {
         }
       } );
 
-      while ( !targetHandled && countingObjectsSortedByValue.length ) {
+      while ( !targetHandled ) {
 
         const currentCountingObject = countingObjectsSortedByValue[ 0 ];
         assert && assert( this.countingObjects.includes( currentCountingObject ),
