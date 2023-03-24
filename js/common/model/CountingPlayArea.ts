@@ -430,9 +430,6 @@ class CountingPlayArea extends CountingCommonModel {
                                                objectsLinkedEmitter: TEmitter<[ boolean ]>, objectsLinkedToOnes: boolean,
                                                groupAndLinkType: GroupAndLinkType ): void {
 
-    const callback = () => objectsLinkedEmitter.emit( objectsLinkedToOnes );
-    const animate = objectsLinkedToOnes;
-
     const objectsToOrganize = this.getCountingObjectsIncludedInSum();
     let numberOfObjectsToOrganize = objectsToOrganize.length;
     const numberOfAnimationsFinishedProperty = new NumberProperty( 0 );
@@ -454,10 +451,10 @@ class CountingPlayArea extends CountingCommonModel {
       // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
       // we clear them out and re-add them above.
       groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
-        /// TODO: just fire the linkedEmitter already! https://github.com/phetsims/number-suite-common/issues/12
+      objectsLinkedEmitter.emit( objectsLinkedToOnes );
     }
     else {
- // TODO: we can factor out the whole block into its own function (including the iteration of inputs https://github.com/phetsims/number-suite-common/issues/12
+      // TODO: we can factor out the whole block into its own function (including the iteration of inputs https://github.com/phetsims/number-suite-common/issues/12
       // If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
       // to one spot and the other half another. Don't use breakApartObjects because that is
       // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
@@ -465,6 +462,7 @@ class CountingPlayArea extends CountingCommonModel {
 
       const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
         countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
+      const animate = objectsLinkedToOnes; // Only animate if we are linking to the ones play area
 
       const countingObjectsSortedByValue = this.getCountingObjectsByValue();
       const handledCountingObjects: CountingObject[] = [];
@@ -474,20 +472,13 @@ class CountingPlayArea extends CountingCommonModel {
         numberOfObjectsToOrganize = this.updateObjectsForSerialization( inputSortedByValue[ i ], numberOfObjectsToOrganize, countingObjectsSortedByValue,
           handledCountingObjects, numberOfAnimationsFinishedProperty, animate );
       }
-    }
 
-    // TODO: animation logic can be moved to the else https://github.com/phetsims/number-suite-common/issues/12
-    if ( animate ) {
-      const numberOfAnimationsFinishedListener = ( numberOfAnimationsFinished: number ) => {
+      numberOfAnimationsFinishedProperty.link( function numberOfAnimationsFinishedListener( numberOfAnimationsFinished: number ) {
         if ( numberOfAnimationsFinished === numberOfObjectsToOrganize ) {
-          callback && callback();
+          objectsLinkedEmitter.emit( objectsLinkedToOnes );
           numberOfAnimationsFinishedProperty.unlink( numberOfAnimationsFinishedListener );
         }
-      };
-      numberOfAnimationsFinishedProperty.link( numberOfAnimationsFinishedListener );
-    }
-    else {
-      callback && callback();
+      } );
     }
   }
 
