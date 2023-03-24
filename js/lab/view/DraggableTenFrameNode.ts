@@ -59,7 +59,10 @@ class DraggableTenFrameNode extends Node {
         selectedTenFrameProperty.value = tenFrame;
       },
       drag: ( event: PressListenerEvent, listener: DragListener ) => {
-        tenFrame.setConstrainedDestination( dragBoundsProperty.value, listener.parentPoint );
+
+        // Constrain position in a way that always leaves room for the return button on the left side of the ten frame, see https://github.com/phetsims/number-compare/issues/29
+        const dragBounds = dragBoundsProperty.value.withOffsets( -returnButton.width - RETURN_BUTTON_MARGIN, 0, 0, 0 );
+        tenFrame.setConstrainedDestination( dragBounds, listener.parentPoint );
       },
       end: () => {
         options.dropListener( this );
