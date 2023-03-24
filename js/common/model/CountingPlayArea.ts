@@ -26,6 +26,7 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import GroupAndLinkType from './GroupAndLinkType.js';
 import TProperty from '../../../../axon/js/TProperty.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 type SelfOptions = {
   tenFrames?: null | ObservableArray<TenFrame>;
@@ -508,19 +509,20 @@ class CountingPlayArea extends CountingCommonModel {
       let targetHandled = false;
 
       // First see if there are any exact position/value matches, and keep those where they are.
-      for ( let j = 0; j < countingObjectsSortedByValue.length; j++ ) {
-        const countingObject = countingObjectsSortedByValue[ j ];
+      // Use a forEach because we may mutate the list inline.
+      countingObjectsSortedByValue.forEach( currentCountingObject => {
 
         // If there is a match with the same value and position, then we don't need to call sendTo because this
         // countingObject is already in the correct spot.
-        if ( countingObject.numberValueProperty.value === desiredValue &&
-             countingObject.positionProperty.value.equals( targetSerialization.position ) ) {
-          handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
-          currentNumberValueCount += countingObject.numberValueProperty.value;
+        if ( currentCountingObject.numberValueProperty.value === desiredValue &&
+             currentCountingObject.positionProperty.value.equals( targetSerialization.position ) ) {
+          arrayRemove( countingObjectsSortedByValue, currentCountingObject );
+          handledCountingObjects.push( currentCountingObject );
+          currentNumberValueCount += currentCountingObject.numberValueProperty.value;
           numberOfAnimationsFinishedProperty.value += 1;
           targetHandled = true;
         }
-      }
+      } );
 
       while ( !targetHandled && countingObjectsSortedByValue.length ) {
 
@@ -534,7 +536,8 @@ class CountingPlayArea extends CountingCommonModel {
 
         if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
           this.sendCountingObjectTo( currentCountingObject, targetSerialization.position, numberOfAnimationsFinishedProperty, animate );
-          handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
+          arrayRemove( countingObjectsSortedByValue, currentCountingObject );
+          handledCountingObjects.push( currentCountingObject );
           currentNumberValueCount += currentCountingObject.numberValueProperty.value;
 
           // We are done when we've reached the desired value.
