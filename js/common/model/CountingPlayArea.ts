@@ -435,43 +435,15 @@ class CountingPlayArea extends CountingCommonModel {
                                                linkStatusChangedEmitter: TEmitter<[ boolean ]>, areObjectsLinkedToOnes: boolean,
                                                groupAndLinkType: GroupAndLinkType ): void {
 
-    const objectsToOrganize = this.getCountingObjectsIncludedInSum();
-    let numberOfObjectsToOrganize = objectsToOrganize.length;
-    const numberOfAnimationsFinishedProperty = new NumberProperty( 0 );
-
-    // TODO: we can factor out the whole block into its own function (including the iteration of inputs https://github.com/phetsims/number-suite-common/issues/12
-    // If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
-    // to one spot and the other half another. Don't use breakApartObjects because that is
-    // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
-    // animate to the right spots.
     if ( areObjectsLinkedToOnes ) {
-
-      const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
-        countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
-      const animate = areObjectsLinkedToOnes; // Only animate if we are linking to the ones play area
-
-      const countingObjectsSortedByValue = this.getCountingObjectsByValue();
-      const handledCountingObjects: CountingObject[] = [];
-
-      // Iterate through each input and try to mutate the current countingObjects list to support that target
-      for ( let i = 0; i < inputSortedByValue.length; i++ ) {
-        numberOfObjectsToOrganize = this.updateObjectsForSerialization( inputSortedByValue[ i ], numberOfObjectsToOrganize, countingObjectsSortedByValue,
-          handledCountingObjects, numberOfAnimationsFinishedProperty, animate );
-      }
-
-      // Wait to proceed until all animations have completed
-      numberOfAnimationsFinishedProperty.link( function numberOfAnimationsFinishedListener( numberOfAnimationsFinished: number ) {
-        if ( numberOfAnimationsFinished === numberOfObjectsToOrganize ) {
-          linkStatusChangedEmitter.emit( areObjectsLinkedToOnes );
-          numberOfAnimationsFinishedProperty.unlink( numberOfAnimationsFinishedListener );
-        }
-      } );
+      this.linkToSerializedCountObjects( countingObjectSerializations, linkStatusChangedEmitter, areObjectsLinkedToOnes );
     }
     else {
       // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
       // the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
       // matching).
 
+      const objectsToOrganize = this.getCountingObjectsIncludedInSum();
       objectsToOrganize.forEach( countingObject => this.removeCountingObject( countingObject ) );
 
       _.sortBy( countingObjectSerializations, 'zIndex' ).forEach( serialization => {
@@ -492,68 +464,106 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * Will update the total number of counting objects that are desired. Can only increase, as objects are split apart.
+   * "Link" current CountingObjects to the provided serialization state (presumably from another play area). Here link
+   * means that it is matched.
+   *
+   * If linking, we may want to break apart so that half of a group can animate
+   * to one spot and the other half another. We don't use breakApartObjects because that is
+   * overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
+   * animate to the right spots.
+   *
+   * NOTE: This function never combines objects when linking, but just animates cards to the same location to give the
+   * illusion of combining. 2 items are assumed to ensure this behavior:
+   * 1. Because the actual "linked" state is just a mimic of the other play area, and this play area is hidden.
+   * 2. Because it assumes that when unlinking (reshowing this underlying play area, see the other half of
+   *  `matchCountingObjectsToLinkedPlayArea()`), that the state will be auto-updated (without animation) to match
+   *  the appropriate and exact county object state.
    */
-  private updateObjectsForSerialization( targetCountingObjects: CountingObjectSerialization,
-                                         totalNumberOfCountingObjects: number,
-                                         countingObjectsSortedByValue: CountingObject[],
-                                         handledCountingObjects: CountingObject[],
-                                         numberOfAnimationsFinishedProperty: Property<number>,
-                                         animate: boolean ): number {
+  private linkToSerializedCountObjects( targetCountingObjectSerializations: CountingObjectSerialization[],
+                                        linkStatusChangedEmitter: TEmitter<[ boolean ]>,
+                                        areObjectsLinkedToOnes: boolean ): void {
 
-    const desiredValue = targetCountingObjects.numberValue;
-    let currentNumberValueCount = 0;
-    let targetHandled = false;
+    const objectsToOrganize = this.getCountingObjectsIncludedInSum();
 
-    for ( let j = 0; j < countingObjectsSortedByValue.length; j++ ) {
-      const countingObject = countingObjectsSortedByValue[ j ];
+    // Starting length, but could increase if Counting Objects are broken apart
+    let numberOfObjectsToOrganize = objectsToOrganize.length;
 
-      // If there is a match with the same value and position, then we don't need to call sendTo because this
-      // countingObject is already in the correct spot.
-      if ( countingObject.numberValueProperty.value === desiredValue &&
-           countingObject.positionProperty.value.equals( targetCountingObjects.position ) ) {
-        handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
-        currentNumberValueCount += countingObject.numberValueProperty.value;
-        numberOfAnimationsFinishedProperty.value += 1;
-        targetHandled = true;
+    const numberOfAnimationsFinishedProperty = new NumberProperty( 0 );
+
+    // Highest value first
+    const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( targetCountingObjectSerializations,
+      countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
+
+    const animate = areObjectsLinkedToOnes; // Only animate if we are linking to the ones play area
+
+    const countingObjectsSortedByValue = this.getCountingObjectsByValue();
+    const handledCountingObjects: CountingObject[] = [];
+
+    // Iterate through each input and try to mutate the current countingObjects list to support that target
+    for ( let i = 0; i < inputSortedByValue.length; i++ ) {
+      const targetSerialization = inputSortedByValue[ i ];
+
+      const desiredValue = targetSerialization.numberValue;
+      let currentNumberValueCount = 0;
+      let targetHandled = false;
+
+      // First see if there are any exact position/value matches, and keep those where they are.
+      for ( let j = 0; j < countingObjectsSortedByValue.length; j++ ) {
+        const countingObject = countingObjectsSortedByValue[ j ];
+
+        // If there is a match with the same value and position, then we don't need to call sendTo because this
+        // countingObject is already in the correct spot.
+        if ( countingObject.numberValueProperty.value === desiredValue &&
+             countingObject.positionProperty.value.equals( targetSerialization.position ) ) {
+          handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
+          currentNumberValueCount += countingObject.numberValueProperty.value;
+          numberOfAnimationsFinishedProperty.value += 1;
+          targetHandled = true;
+        }
+      }
+
+      while ( !targetHandled && countingObjectsSortedByValue.length ) {
+
+        const currentCountingObject = countingObjectsSortedByValue[ 0 ];
+        assert && assert( this.countingObjects.includes( currentCountingObject ),
+          'old, removed countingObject still at play here' );
+        assert && assert( !handledCountingObjects.includes( currentCountingObject ),
+          'currentCountingObject is already animating' );
+
+        const nextNeededValue = desiredValue - currentNumberValueCount;
+
+        if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
+          this.sendCountingObjectTo( currentCountingObject, targetSerialization.position, numberOfAnimationsFinishedProperty, animate );
+          handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
+          currentNumberValueCount += currentCountingObject.numberValueProperty.value;
+
+          // We are done when we've reached the desired value.
+          targetHandled = currentNumberValueCount === desiredValue;
+        }
+        else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
+
+          // split off the value we need to be used in the next iteration
+          this.splitCountingObject( currentCountingObject, nextNeededValue );
+
+          // recompute after splitting
+          const allCountingObjectsSortedByValue = this.getCountingObjectsByValue();
+
+          numberOfObjectsToOrganize = allCountingObjectsSortedByValue.length;
+
+          countingObjectsSortedByValue.length = 0;
+          countingObjectsSortedByValue.push( ...allCountingObjectsSortedByValue.filter(
+            countingObject => !handledCountingObjects.includes( countingObject ) ) );
+        }
       }
     }
 
-    while ( !targetHandled && countingObjectsSortedByValue.length ) {
-
-      const currentCountingObject = countingObjectsSortedByValue[ 0 ];
-      assert && assert( this.countingObjects.includes( currentCountingObject ),
-        'old, removed countingObject still at play here' );
-      assert && assert( !handledCountingObjects.includes( currentCountingObject ),
-        'currentCountingObject is already animating' );
-
-      const nextNeededValue = desiredValue - currentNumberValueCount;
-
-      if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
-        this.sendCountingObjectTo( currentCountingObject, targetCountingObjects.position, numberOfAnimationsFinishedProperty, animate );
-        handledCountingObjects.push( countingObjectsSortedByValue.shift()! );
-        currentNumberValueCount += currentCountingObject.numberValueProperty.value;
-
-        // We are done when we've reached the desired value.
-        targetHandled = currentNumberValueCount === desiredValue;
+    // Wait to proceed until all animations have completed
+    numberOfAnimationsFinishedProperty.link( function numberOfAnimationsFinishedListener( numberOfAnimationsFinished: number ) {
+      if ( numberOfAnimationsFinished === numberOfObjectsToOrganize ) {
+        linkStatusChangedEmitter.emit( areObjectsLinkedToOnes );
+        numberOfAnimationsFinishedProperty.unlink( numberOfAnimationsFinishedListener );
       }
-      else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
-
-        // split off the value we need to be used in the next iteration
-        this.splitCountingObject( currentCountingObject, nextNeededValue );
-
-        // recompute after splitting
-        const allCountingObjectsSortedByValue = this.getCountingObjectsByValue();
-
-        totalNumberOfCountingObjects = allCountingObjectsSortedByValue.length;
-
-        countingObjectsSortedByValue.length = 0;
-        countingObjectsSortedByValue.push( ...allCountingObjectsSortedByValue.filter(
-          countingObject => !handledCountingObjects.includes( countingObject ) ) );
-      }
-    }
-
-    return totalNumberOfCountingObjects;
+    } );
   }
 
   /**
