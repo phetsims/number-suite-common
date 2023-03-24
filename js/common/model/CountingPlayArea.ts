@@ -434,31 +434,12 @@ class CountingPlayArea extends CountingCommonModel {
     let numberOfObjectsToOrganize = objectsToOrganize.length;
     const numberOfAnimationsFinishedProperty = new NumberProperty( 0 );
 
-    // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
-    // the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
-    // matching).
-    if ( !objectsLinkedToOnes ) { // TODO: this is just saying we don't animate, thats weird! https://github.com/phetsims/number-suite-common/issues/12
-      objectsToOrganize.forEach( countingObject => this.removeCountingObject( countingObject ) );
-
-      _.sortBy( countingObjectSerializations, 'zIndex' ).forEach( serialization => {
-        const newCountingObject = new CountingObject( serialization.numberValue, serialization.position, {
-          groupingEnabledProperty: this.groupingEnabledProperty
-        } );
-        this.addCountingObject( newCountingObject );
-      } );
-
-      // If the groupAndLinkType was set to ungrouped, break apart the counting objects. This is needed to avoid an order
-      // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
-      // we clear them out and re-add them above.
-      groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
-      objectsLinkedEmitter.emit( objectsLinkedToOnes );
-    }
-    else {
-      // TODO: we can factor out the whole block into its own function (including the iteration of inputs https://github.com/phetsims/number-suite-common/issues/12
-      // If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
-      // to one spot and the other half another. Don't use breakApartObjects because that is
-      // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
-      // animate to the right spots.
+    // TODO: we can factor out the whole block into its own function (including the iteration of inputs https://github.com/phetsims/number-suite-common/issues/12
+    // If linking, then we NEVER need to combine, but we may want to break apart so that half of a group can animate
+    // to one spot and the other half another. Don't use breakApartObjects because that is
+    // overkill and bad UX (imagine both models have a group of 4, don't split that up to animate in one model). Then
+    // animate to the right spots.
+    if ( objectsLinkedToOnes ) {
 
       const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( countingObjectSerializations,
         countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
@@ -479,6 +460,26 @@ class CountingPlayArea extends CountingCommonModel {
           numberOfAnimationsFinishedProperty.unlink( numberOfAnimationsFinishedListener );
         }
       } );
+    }
+    else {
+      // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
+      // the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
+      // matching).
+
+      objectsToOrganize.forEach( countingObject => this.removeCountingObject( countingObject ) );
+
+      _.sortBy( countingObjectSerializations, 'zIndex' ).forEach( serialization => {
+        const newCountingObject = new CountingObject( serialization.numberValue, serialization.position, {
+          groupingEnabledProperty: this.groupingEnabledProperty
+        } );
+        this.addCountingObject( newCountingObject );
+      } );
+
+      // If the groupAndLinkType was set to ungrouped, break apart the counting objects. This is needed to avoid an order
+      // dependency problem when switching to an ungrouped state where the existing countingObjects are broken apart before
+      // we clear them out and re-add them above.
+      groupAndLinkType === GroupAndLinkType.UNGROUPED && this.breakApartCountingObjects( true );
+      objectsLinkedEmitter.emit( objectsLinkedToOnes );
     }
   }
 
