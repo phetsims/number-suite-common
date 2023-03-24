@@ -437,7 +437,7 @@ class CountingPlayArea extends CountingCommonModel {
                                                groupAndLinkType: GroupAndLinkType ): void {
 
     if ( areObjectsLinkedToOnes ) {
-      this.linkToSerializedCountObjects( countingObjectSerializations, linkStatusChangedEmitter, areObjectsLinkedToOnes );
+      this.linkToSerializedCountingObjects( countingObjectSerializations, linkStatusChangedEmitter, areObjectsLinkedToOnes );
     }
     else {
       // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
@@ -480,7 +480,7 @@ class CountingPlayArea extends CountingCommonModel {
    *  `matchCountingObjectsToLinkedPlayArea()`), that the state will be auto-updated (without animation) to match
    *  the appropriate and exact county object state.
    */
-  private linkToSerializedCountObjects( targetCountingObjectSerializations: CountingObjectSerialization[],
+  private linkToSerializedCountingObjects( targetCountingObjectSerializations: CountingObjectSerialization[],
                                         linkStatusChangedEmitter: TEmitter<[ boolean ]>,
                                         areObjectsLinkedToOnes: boolean ): void {
 
@@ -526,6 +526,7 @@ class CountingPlayArea extends CountingCommonModel {
         }
       } );
 
+      // Then, move or split the remaining countingObjects to match the serializations.
       while ( !targetHandled ) {
 
         const currentCountingObject = countingObjectsSortedByValue[ 0 ];
@@ -536,6 +537,8 @@ class CountingPlayArea extends CountingCommonModel {
 
         const nextNeededValue = desiredValue - currentNumberValueCount;
 
+        // If the currentCountingObject has a matching or smaller value than the target serialization, send it to the
+        // location of the target.
         if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
           this.sendCountingObjectTo( currentCountingObject, targetSerialization.position, numberOfAnimationsFinishedProperty, animate );
           arrayRemove( countingObjectsSortedByValue, currentCountingObject );
@@ -546,6 +549,7 @@ class CountingPlayArea extends CountingCommonModel {
           targetHandled = currentNumberValueCount === desiredValue;
         }
         else if ( currentCountingObject.numberValueProperty.value > nextNeededValue ) {
+          // If the currentCountingObject has a greater value than the target, split it up and then try this loop again.
 
           // split off the value we need to be used in the next iteration
           this.splitCountingObject( currentCountingObject, nextNeededValue );
