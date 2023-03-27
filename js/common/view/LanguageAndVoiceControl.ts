@@ -71,7 +71,7 @@ export default class LanguageAndVoiceControl extends HBox {
               localeProperty.value = locale;
 
               // Read the test string in the first available voice for the new language, see https://github.com/phetsims/number-suite-common/issues/56
-              !!voiceProperty.value && utteranceQueue.testVoiceBySpeaking( voiceProperty.value, locale );
+               utteranceQueue.speakTestVoice( voiceProperty.value, locale );
             }
           )
         };
@@ -131,7 +131,7 @@ export default class LanguageAndVoiceControl extends HBox {
                     voice.name,
                     voice.lang, () => {
                       voiceProperty.value = voice;
-                      utteranceQueue.testVoiceBySpeaking( voice, locale );
+                      utteranceQueue.speakTestVoice( voice, locale );
                     } )
                 };
               } );

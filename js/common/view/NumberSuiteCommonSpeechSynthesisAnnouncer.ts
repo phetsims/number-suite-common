@@ -23,7 +23,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   // See doc in NumberSuiteCommonPreferences
   private readonly secondLocaleProperty: TReadOnlyProperty<Locale>;
 
-  // Whether this SpeechSynthesisAnnouncer is using a valid voice
+  // Whether the current voice (of primaryVoiceProperty or secondVoiceProperty) has a valid voice.
   public readonly hasVoiceProperty: TReadOnlyProperty<boolean>;
 
   public constructor(
@@ -36,8 +36,10 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
     this.secondLocaleProperty = secondLocaleProperty;
 
-    this.hasVoiceProperty = new DerivedProperty( [ this.voiceProperty ],
-      ( voice: SpeechSynthesisVoice | null ) => !!voice );
+    // Update when the primaryVoice, secondVoice, or isPrimaryLocale changes.
+    this.hasVoiceProperty = new DerivedProperty(
+      [ isPrimaryLocaleProperty, primaryVoiceProperty, secondVoiceProperty ],
+      ( isPrimaryLocale, primaryVoice, secondVoice ) => isPrimaryLocale ? !!primaryVoice : !!secondVoice );
 
     // When the SpeechSynthesisAnnouncer becomes initialized or when the available voices change, set the provided
     // voice Properties to the first available voice for their respective locales.
@@ -45,12 +47,6 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
       [ this.isInitializedProperty, this.voicesProperty ], () => {
         this.setFirstAvailableVoiceForLocale( localeProperty.value, primaryVoiceProperty );
         this.setFirstAvailableVoiceForLocale( secondLocaleProperty.value, secondVoiceProperty );
-      } );
-
-    // Update our voiceProperty when the primaryVoice, secondVoice, or isPrimaryLocale changes.
-    Multilink.multilink( [ isPrimaryLocaleProperty, primaryVoiceProperty, secondVoiceProperty ],
-      ( isPrimaryLocale, primaryVoice, secondVoice ) => {
-        this.voiceProperty.value = isPrimaryLocale ? primaryVoice : secondVoice;
       } );
   }
 

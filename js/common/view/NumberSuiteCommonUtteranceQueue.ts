@@ -33,27 +33,28 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   // Whether this class has been initialized.
   private initialized: boolean;
 
-  // See doc in NumberSuiteCommonPreferences.
-  private readonly readAloudProperty: TReadOnlyProperty<boolean>;
-
   // The Utterance used for speaking speechData.
   private readonly speechDataUtterance: Utterance;
 
   // The Utterance used for speaking when the user is testing a voice in Preferences.
   private readonly testVoiceUtterance: Utterance;
 
-  // Whether the test voice is currently speaking.
-  private isTestVoiceSpeaking: boolean;
+  // See doc in NumberSuiteCommonPreferences.
+  private readonly isPrimaryLocaleProperty: TReadOnlyProperty<boolean>;
+  private readonly primaryLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>;
+  private readonly secondLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>;
+  private readonly readAloudProperty: TReadOnlyProperty<boolean>;
 
-  protected constructor(
-    numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
-    readAloudProperty: TReadOnlyProperty<boolean>
+  protected constructor( numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+                         isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
+                         primaryLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>,
+                         secondLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>,
+                         readAloudProperty: TReadOnlyProperty<boolean>
   ) {
     super( numberSuiteCommonAnnouncer );
 
     this.speechDataProperty = null;
     this.initialized = false;
-    this.readAloudProperty = readAloudProperty;
 
     this.speechDataUtterance = new Utterance( {
       priority: Utterance.DEFAULT_PRIORITY
@@ -62,7 +63,10 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
       priority: Utterance.HIGH_PRIORITY
     } );
 
-    this.isTestVoiceSpeaking = false;
+    this.isPrimaryLocaleProperty = isPrimaryLocaleProperty;
+    this.primaryLocaleProperty = primaryLocaleProperty;
+    this.secondLocaleProperty = secondLocaleProperty;
+    this.readAloudProperty = readAloudProperty;
   }
 
   /**
@@ -72,41 +76,27 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     assert && assert( this.initialized && this.speechDataProperty, 'Cannot speak before initialization' );
     const speechData = this.speechDataProperty!.value;
 
-    speechData && this.announcer.voiceProperty.value && this.speak( speechData, this.speechDataUtterance );
+    // determine which voice to use based on isPrimaryLocaleProperty
+    const voice = this.isPrimaryLocaleProperty.value ? this.primaryLocaleProperty.value : this.secondLocaleProperty.value;
+
+    speechData && voice && this.speak( speechData, this.speechDataUtterance, voice );
   }
 
   /**
-   * Speaks a 'test' string in the provided voice and locale. This temporarily sets the voice to read out the test
-   * string, and then resets the voice to what it was before starting the test read.
+   * Speaks a 'test' string in the provided voice and locale.
    */
-  public testVoiceBySpeaking( voiceToTest: SpeechSynthesisVoice, locale: Locale ): void {
-    const currentVoice = this.announcer.voiceProperty.value;
-    this.announcer.voiceProperty.value = voiceToTest;
-
-    // Indicate when we are speaking with the test voice so we know if we should set the voice back to the non-testing
-    // voice or not.
-    this.isTestVoiceSpeaking = true;
-    this.speak( this.getTestStringForLocale( locale ), this.testVoiceUtterance );
-    this.isTestVoiceSpeaking = false;
-
-    const resetVoiceListener = () => {
-      if ( !this.isTestVoiceSpeaking ) {
-        this.announcer.voiceProperty.value = currentVoice;
-      }
-      this.announcer.announcementCompleteEmitter.removeListener( resetVoiceListener );
-    };
-
-    // When the test speech is complete, set the voice back to what it was before testing, unless we have already
-    // started speaking for a different test.
-    this.announcer.announcementCompleteEmitter.addListener( resetVoiceListener );
+  public speakTestVoice( voiceToTest: SpeechSynthesisVoice | null, locale: Locale ): void {
+    voiceToTest && this.speak( this.getTestStringForLocale( locale ), this.testVoiceUtterance, voiceToTest );
   }
 
   /**
    * Speaks the provided string.
    */
-  private speak( string: string, utterance: Utterance ): void {
-    const voice = this.announcer.voiceProperty.value;
+  private speak( string: string, utterance: Utterance, voice: SpeechSynthesisVoice ): void {
     assert && assert( voice, 'No voice set for voiceProperty: ', voice );
+
+    // Set the provided voice before speaking.
+    utterance.announcerOptions.voice = voice;
 
     utterance.alert = string;
     this.addToBack( utterance );
