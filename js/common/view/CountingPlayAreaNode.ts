@@ -298,15 +298,12 @@ class CountingPlayAreaNode extends Node {
     const draggedNode = this.getCountingObjectNode( draggedCountingObject );
 
     // TODO: semi-duplication https://github.com/phetsims/number-play/issues/119
-    const allCountingObjectNodes = _.filter( this.countingObjectLayerNode.children,
-      child => child instanceof CountingObjectNode ) as CountingObjectNode[];
-
     // remove any countingObjects that aren't included in the sum - these are already on their way back to the bucket and
     // should not be tried to combined with. return if no countingObjects are left or if the draggedCountingObject is not
     // included in the sum
-    _.remove( allCountingObjectNodes, countingObjectNode => {
-      return !countingObjectNode.countingObject.includeInSumProperty.value;
-    } );
+    const allCountingObjectNodes = _.filter( this.countingObjectLayerNode.children,
+      child => child instanceof CountingObjectNode && child.countingObject.includeInSumProperty.value ) as CountingObjectNode[];
+
     if ( allCountingObjectNodes.length === 0 || !draggedCountingObject.includeInSumProperty.value ) {
       return;
     }
@@ -342,6 +339,9 @@ class CountingPlayAreaNode extends Node {
     }
   }
 
+  /**
+   * Returns if it was able to add the object to the tenFrame
+   */
   private tryToAddToTenFrame( droppedCountingObject: CountingObject ): boolean {
     if ( !this.playArea.tenFrames ) {
       return false;
