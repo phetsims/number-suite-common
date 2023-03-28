@@ -18,16 +18,13 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 // constants
-const AB_SWITCH_OPTIONS = {
-  spacing: 8,
-  toggleSwitchOptions: {
-    size: new Dimension2( 40, 20 )
-  }
-};
+const TOGGLE_SWITCH_SIZE = new Dimension2( 40, 20 );
+const SPACING = 8;
 const TEXT_OPTIONS = {
   font: new PhetFont( 14 )
 };
 
+// TODO: Move to Number Play, don't need general preferences anymoreeee, https://github.com/phetsims/number-suite-common/issues/29
 export default class LocaleSwitch extends ABSwitch<boolean> {
 
   public constructor(
@@ -46,21 +43,19 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
 
     super( preferences.isPrimaryLocaleProperty,
       true, firstLanguageText,
-      false, secondLanguageText,
-      AB_SWITCH_OPTIONS
+      false, secondLanguageText, {
+        spacing: SPACING,
+        toggleSwitchOptions: {
+          size: TOGGLE_SWITCH_SIZE
+        },
+        visibleProperty: new DerivedProperty( [ preferences.showSecondLocaleProperty ], showSecondLocale => showSecondLocale )
+      }
     );
 
     // Speak speechData if readAloud is turned on.
     this.onInputEmitter.addListener( () => preferences.readAloudProperty.value && utteranceQueue.speakSpeechData() );
 
-    preferences.showSecondLocaleProperty.link( showSecondLocale => {
-      this.visible = showSecondLocale;
-      if ( !showSecondLocale ) {
-        preferences.isPrimaryLocaleProperty.value = true;
-      }
-    } );
-
-    const availableTextSpace = maxWidth - AB_SWITCH_OPTIONS.toggleSwitchOptions.size.width - AB_SWITCH_OPTIONS.spacing * 2;
+    const availableTextSpace = maxWidth - TOGGLE_SWITCH_SIZE.width - SPACING * 2;
     let isAdjusting = false; // to prevent recursion that will exceed maximum call stack size
     this.boundsProperty.link( () => {
       if ( !isAdjusting ) {

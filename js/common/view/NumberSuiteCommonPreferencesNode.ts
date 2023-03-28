@@ -43,14 +43,9 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
       align: 'top'
     }, providedOptions );
 
-    const secondLanguageControl = new SecondLanguageControl(
-      preferences.showSecondLocaleProperty,
-      preferences.secondLocaleProperty,
-      preferences.secondVoiceProperty,
-      preferences.allUrl,
-      utteranceQueue, {
-        visible: options.secondLanguageControlEnabled
-      } );
+    const secondLanguageControl = new SecondLanguageControl( preferences, utteranceQueue, {
+      visible: options.secondLanguageControlEnabled
+    } );
 
     const showOnesControl = new ShowOnesControl( preferences.showLabOnesProperty, {
       visible: NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen )

@@ -16,23 +16,19 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import { availableRuntimeLocales } from '../../../../joist/js/i18n/localeProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
+import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
 
 export default class SecondLanguageControl extends VBox {
 
-  public constructor( showSecondLocaleProperty: Property<boolean>,
-                      secondLocaleProperty: Property<Locale>,
-                      secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>,
-                      allUrl: string,
+  public constructor( preferences: NumberSuiteCommonPreferences,
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions?: SecondLanguageControlOptions ) {
 
@@ -54,7 +50,7 @@ export default class SecondLanguageControl extends VBox {
       fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE
     } );
 
-    const toggleSwitch = new ToggleSwitch( showSecondLocaleProperty, false, true,
+    const toggleSwitch = new ToggleSwitch( preferences.showSecondLocaleProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     // Control for showing or hiding the languageAndVoiceControl
@@ -67,14 +63,14 @@ export default class SecondLanguageControl extends VBox {
     } );
 
     // Additional description that is visible when the Second Language control is disabled.
-    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, allUrl );
+    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, preferences.allUrl );
 
     // Control for choosing a second language and associated voice
     const languageAndVoiceControl = new LanguageAndVoiceControl(
-      secondLocaleProperty,
-      secondVoiceProperty,
+      preferences.secondLocaleProperty,
+      preferences.secondVoiceProperty,
       utteranceQueue, {
-        visibleProperty: showSecondLocaleProperty
+        visibleProperty: preferences.showSecondLocaleProperty
       }
     );
 
@@ -88,6 +84,18 @@ export default class SecondLanguageControl extends VBox {
     ];
 
     super( options );
+
+    // If we turn off the secondLocale, switch back to the primary locale.
+    preferences.showSecondLocaleProperty.lazyLink( showSecondLocale => {
+      if ( !showSecondLocale ) {
+        preferences.isPrimaryLocaleProperty.value = true;
+
+        // When we turn off the second locale and switch back to the primary locale, if readAloud is on, the speechData
+        // is spoken in NumberCompare because it changed from a language change. For consistency with Number Play,
+        // cancel the speech instead.
+        utteranceQueue.cancelSpeechDataSpeaking();
+      }
+    } );
   }
 
   public override dispose(): void {
