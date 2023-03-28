@@ -22,6 +22,7 @@ import Disposable from '../../../../axon/js/Disposable.js';
 const SQUARE_SIDE_LENGTH = 60;
 const LINE_WIDTH = 1;
 const NUMBER_OF_SPOTS = 10;
+const PUSH_AWAY_MARGIN = 10;
 
 class TenFrame extends Disposable {
   public readonly countingObjects: ObservableArray<CountingObject>;
@@ -69,41 +70,23 @@ class TenFrame extends Disposable {
    * Sends the provided countingObject outside the nearest border of this ten frame
    */
   public pushAwayCountingObject( countingObject: CountingObject, playAreaBounds: Bounds2 ): void {
-
-    // bounds of this tenFrame with respect to the center of the provided countingObject
-    const globalBounds = this.localBounds.shifted( this.positionProperty.value )
-      .shiftedXY( -countingObject.localBounds.center.x, -countingObject.localBounds.center.y );
-    const countingObjectPosition = countingObject.positionProperty.value;
-
     assert && assert( this.isCountingObjectOnTopOf( countingObject ),
       'attempted to push away countingObject that was not over ten frame' );
 
-    // find the distance to the potential destination spot for every side of the tenFrame
-    const margin = 10;
-    const leftDistanceVector = new Vector2( globalBounds.left - countingObjectPosition.x - countingObject.localBounds.width / 2 - margin, 0 );
-    const topDistanceVector = new Vector2( 0, globalBounds.top - countingObjectPosition.y - countingObject.localBounds.height / 2 - margin );
-    const rightDistanceVector = new Vector2( globalBounds.right - countingObjectPosition.x + countingObject.localBounds.width / 2 + margin, 0 );
-    const bottomDistanceVector = new Vector2( 0, globalBounds.bottom - countingObjectPosition.y + countingObject.localBounds.height / 2 + margin );
+    // Bounds of this tenFrame in play area view coords, offset to the center of the provided countingObject.
+    const tenFrameBounds = this.localBounds.shifted( this.positionProperty.value )
+      .shiftedXY( -countingObject.localBounds.center.x, -countingObject.localBounds.center.y );
 
-    // find which distance is the shortest
-    let minimumDistance = Math.abs( leftDistanceVector.x );
-    let minimumVector = leftDistanceVector;
-    const topDistance = Math.abs( topDistanceVector.y );
-    if ( topDistance < minimumDistance ) {
-      minimumDistance = topDistance;
-      minimumVector = topDistanceVector;
-    }
-    if ( rightDistanceVector.x < minimumDistance ) {
-      minimumDistance = rightDistanceVector.x;
-      minimumVector = rightDistanceVector;
-    }
-    if ( bottomDistanceVector.y < minimumDistance ) {
-      minimumDistance = bottomDistanceVector.y;
-      minimumVector = bottomDistanceVector;
-    }
+    const countingObjectBounds = countingObject.localBounds;
+
+    // Adjust bounds based on the actual bounds of the provided countingObject, plus a bit of a margin.
+    const containingBounds = new Bounds2( tenFrameBounds.minX, tenFrameBounds.minY, tenFrameBounds.maxX, tenFrameBounds.maxY )
+      .dilatedXY( countingObjectBounds.width / 2 + PUSH_AWAY_MARGIN, countingObjectBounds.height / 2 + PUSH_AWAY_MARGIN );
+
+    // find the shortest distance to the edge of the tenFrame
+    const destination = containingBounds.closestBoundaryPointTo( countingObject.positionProperty.value );
 
     // send the countingObject to the closest destination
-    const destination = countingObjectPosition.plus( minimumVector );
     countingObject.setConstrainedDestination( playAreaBounds, destination, true );
   }
 
