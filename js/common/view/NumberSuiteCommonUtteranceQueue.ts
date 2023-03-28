@@ -51,10 +51,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
                          secondLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>,
                          readAloudProperty: TReadOnlyProperty<boolean>
   ) {
-    super( numberSuiteCommonAnnouncer, {
-      // TODO: Remove these eventually, see https://github.com/phetsims/number-suite-common/issues/59
-      debug: true
-    } );
+    super( numberSuiteCommonAnnouncer );
 
     this.speechDataProperty = null;
     this.initialized = false;
