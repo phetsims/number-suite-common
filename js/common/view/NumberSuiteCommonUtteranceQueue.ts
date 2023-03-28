@@ -83,6 +83,13 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   }
 
   /**
+   * Cancels any ongoing speaking of speechData.
+   */
+  public cancelSpeechDataSpeaking() {
+    this.cancelUtterance( this.speechDataUtterance );
+  }
+
+  /**
    * Speaks a 'test' string in the provided voice and locale.
    */
   public speakTestVoice( voiceToTest: SpeechSynthesisVoice | null, locale: Locale ): void {

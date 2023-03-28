@@ -70,6 +70,9 @@ export default class LanguageAndVoiceControl extends HBox {
             `${locale}`, () => {
               localeProperty.value = locale;
 
+              // Cancel any speech being read out that came from changing the locale, see https://github.com/phetsims/number-suite-common/issues/56#issuecomment-1480063879
+              utteranceQueue.cancelSpeechDataSpeaking();
+
               // Read the test string in the first available voice for the new language, see https://github.com/phetsims/number-suite-common/issues/56
                utteranceQueue.speakTestVoice( voiceProperty.value, locale );
             }
