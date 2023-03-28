@@ -75,19 +75,52 @@ class TenFrame extends Disposable {
 
     // Bounds of this tenFrame in play area view coords, offset to the center of the provided countingObject.
     const tenFrameBounds = this.localBounds.shifted( this.positionProperty.value )
+
+      // BIG NOTE HERE: We want to compare based on the visual center, so shift the whole tenFrame to account for it.
+      // When trying to instead handle this by shifting the countingObject position, there were too many cases to
+      // adjust for each potential destination (or MK isn't talented enough to figure out how).
       .shiftedXY( -countingObject.localBounds.center.x, -countingObject.localBounds.center.y );
 
     const countingObjectBounds = countingObject.localBounds;
+    const countingObjectCenter = countingObjectBounds.center;
 
     // Adjust bounds based on the actual bounds of the provided countingObject, plus a bit of a margin.
     const containingBounds = new Bounds2( tenFrameBounds.minX, tenFrameBounds.minY, tenFrameBounds.maxX, tenFrameBounds.maxY )
       .dilatedXY( countingObjectBounds.width / 2 + PUSH_AWAY_MARGIN, countingObjectBounds.height / 2 + PUSH_AWAY_MARGIN );
 
-    // find the shortest distance to the edge of the tenFrame
-    const destination = containingBounds.closestBoundaryPointTo( countingObject.positionProperty.value );
+    const playAreaBoundsErodedHalfOfCountingObject = playAreaBounds.erodedXY( countingObjectBounds.width / 2, countingObjectBounds.height / 2 );
 
-    // send the countingObject to the closest destination
-    countingObject.setConstrainedDestination( playAreaBounds, destination, true );
+    // find the shortest distance to the edge of the tenFrame
+    const countingObjectCenterPosition = countingObject.positionProperty.value;
+
+    // Get a list of all possible destinations, which will always be in cardinal direction, because of Euclidean geometry.
+    const potentialDestinations = this.getCardinalPointsFromBounds( countingObjectCenterPosition, containingBounds );
+
+    // sort it by distance, smallest first
+    const sorted = _.sortBy( potentialDestinations, a => a.distance( countingObjectCenterPosition ) );
+
+    // iterate through the other three to see which are in bounds
+    for ( let i = 0; i < sorted.length; i++ ) {
+      const potentialDestination = sorted[ i ];
+
+      // BIG NOTE HERE: add back the center for comparison to ensure that the bounds works as expected. Shrugging over here. . .
+      if ( playAreaBoundsErodedHalfOfCountingObject.containsPoint( potentialDestination.plus( countingObjectCenter ) ) ) {
+
+        // send the countingObject to the closest destination
+        countingObject.setConstrainedDestination( playAreaBounds, potentialDestination, true );
+        break; // we found our next closest point
+      }
+    }
+  }
+
+  // Too manual and unhelpful to put in Bounds2 directly
+  private getCardinalPointsFromBounds( point: Vector2, bounds: Bounds2 ): [ Vector2, Vector2, Vector2, Vector2 ] {
+    return [
+      new Vector2( bounds.minX, point.y ),
+      new Vector2( bounds.maxX, point.y ),
+      new Vector2( point.x, bounds.minY ),
+      new Vector2( point.x, bounds.maxY )
+    ];
   }
 
   public removeCountingObject(): void {
