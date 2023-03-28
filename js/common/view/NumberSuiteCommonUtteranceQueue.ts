@@ -84,7 +84,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   /**
    * Cancels any ongoing speaking of speechData.
    */
-  public cancelSpeechDataSpeaking() {
+  public cancelSpeechDataSpeaking(): void {
     this.cancelUtterance( this.speechDataUtterance );
   }
 
