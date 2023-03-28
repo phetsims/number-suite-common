@@ -33,6 +33,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>
   ) {
     super( {
+      // TODO: Remove these eventually, see https://github.com/phetsims/number-suite-common/issues/59
       debug: true
     } );
 
