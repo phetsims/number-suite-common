@@ -262,9 +262,6 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
       } );
 
     this.objectPlayAreaBoundsProperty.link( objectPlayAreaBounds => {
-      model.tenFrames.forEach( tenFrame => {
-        tenFrame.setConstrainedDestination( objectPlayAreaBounds, tenFrame.positionProperty.value );
-      } );
       this.symbolCardCreatorPanel.getAllSymbolNodes().forEach( symbolCardNode => {
         symbolCardNode.setConstrainedDestination( objectPlayAreaBounds, symbolCardNode.positionProperty.value );
       } );

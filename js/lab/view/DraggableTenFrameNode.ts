@@ -7,7 +7,7 @@
  */
 
 import TProperty from '../../../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
@@ -54,6 +54,11 @@ class DraggableTenFrameNode extends Node {
     returnButton.x = tenFrameNode.left - returnButton.width - 5;
     this.addChild( returnButton );
 
+    // It was decided to always constrain the tenFrame's drag bounds by the potential space that the return button could have, see https://github.com/phetsims/number-compare/issues/29
+    const constrainBoundsForReturnButton = ( dragBounds: Bounds2 ): Bounds2 => {
+      return dragBounds.withOffsets( -returnButton.width - RETURN_BUTTON_MARGIN, 0, 0, 0 );
+    };
+
     this.dragListener = new DragListener( {
       start: () => {
         selectedTenFrameProperty.value = tenFrame;
@@ -61,8 +66,7 @@ class DraggableTenFrameNode extends Node {
       drag: ( event: PressListenerEvent, listener: DragListener ) => {
 
         // Constrain position in a way that always leaves room for the return button on the left side of the ten frame, see https://github.com/phetsims/number-compare/issues/29
-        const dragBounds = dragBoundsProperty.value.withOffsets( -returnButton.width - RETURN_BUTTON_MARGIN, 0, 0, 0 );
-        tenFrame.setConstrainedDestination( dragBounds, listener.parentPoint );
+        tenFrame.setConstrainedDestination( constrainBoundsForReturnButton( dragBoundsProperty.value ), listener.parentPoint );
       },
       end: () => {
         options.dropListener( this );
@@ -74,6 +78,11 @@ class DraggableTenFrameNode extends Node {
 
     tenFrame.positionProperty.link( position => { this.translation = position; } );
     tenFrame.scaleProperty.link( scale => this.setScaleMagnitude( scale ) );
+
+    const dragBoundsListener: PropertyLinkListener<Bounds2> = dragBounds => {
+      tenFrame.setConstrainedDestination( constrainBoundsForReturnButton( dragBounds ), tenFrame.positionProperty.value );
+    };
+    dragBoundsProperty.link( dragBoundsListener );
 
     tenFrame.countingObjects.addItemAddedListener( countingObject => {
       const countingObjectNode = options.getCountingObjectNode( countingObject );
@@ -120,6 +129,7 @@ class DraggableTenFrameNode extends Node {
 
     this.disposeDraggableTenFrameNode = () => {
       selectedTenFrameProperty.unlink( selectedTenFramePropertyListener );
+      dragBoundsProperty.unlink( dragBoundsListener );
       assert && assert( tenFrame.isDisposed, 'TenFrame model should have been disposed by now.' );
     };
   }
