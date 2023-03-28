@@ -199,7 +199,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
       this.onesPlayAreaNode
     ];
 
-    // position and add the symbolCardCreatorPanel later so we have access to its bounds Property
+    // position and add the symbolCardCreatorPanel later, so we have access to its bounds Property
     this.symbolCardCreatorPanel.centerY = this.symbolCardBoundsProperty.value.centerY;
     this.addChild( this.symbolCardCreatorPanel );
 
