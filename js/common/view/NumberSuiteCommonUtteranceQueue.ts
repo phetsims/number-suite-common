@@ -51,17 +51,15 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
                          secondLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>,
                          readAloudProperty: TReadOnlyProperty<boolean>
   ) {
-    super( numberSuiteCommonAnnouncer );
+    super( numberSuiteCommonAnnouncer, {
+      debug: true
+    } );
 
     this.speechDataProperty = null;
     this.initialized = false;
 
-    this.speechDataUtterance = new Utterance( {
-      priority: Utterance.DEFAULT_PRIORITY
-    } );
-    this.testVoiceUtterance = new Utterance( {
-      priority: Utterance.HIGH_PRIORITY
-    } );
+    this.speechDataUtterance = new Utterance();
+    this.testVoiceUtterance = new Utterance();
 
     this.isPrimaryLocaleProperty = isPrimaryLocaleProperty;
     this.primaryLocaleProperty = primaryLocaleProperty;

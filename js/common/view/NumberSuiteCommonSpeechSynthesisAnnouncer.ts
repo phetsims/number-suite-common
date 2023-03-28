@@ -32,7 +32,9 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
     primaryVoiceProperty: TProperty<SpeechSynthesisVoice | null>,
     secondVoiceProperty: TProperty<SpeechSynthesisVoice | null>
   ) {
-    super();
+    super( {
+      debug: true
+    } );
 
     this.secondLocaleProperty = secondLocaleProperty;
 
