@@ -25,6 +25,7 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import DraggableTenFrameNode from '../../lab/view/DraggableTenFrameNode.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import Multilink from '../../../../axon/js/Multilink.js';
 
 type SelfOptions = {
   countingObjectLayerNode?: null | Node;
@@ -56,9 +57,6 @@ class CountingPlayAreaNode extends Node {
 
   // called when a countingObjectNode finishes being dragged, see onNumberDragFinished
   private readonly dragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
-
-  // called when a countingObject's position was constrained, see preventOcclusion
-  private readonly positionConstrainedListener: ( countingObject: CountingObject ) => void;
 
   // see addAndDragCountingObject
   private readonly addAndDragCountingObjectCallback: ( event: PressListenerEvent, countingObject: CountingObject ) => void;
@@ -117,8 +115,6 @@ class CountingPlayAreaNode extends Node {
     this.dragFinishedListener = ( countingObjectNode: CountingObjectNode ) => {
       this.onNumberDragFinished( countingObjectNode.countingObject );
     };
-
-    this.positionConstrainedListener = ( countingObject: CountingObject ) => this.preventOcclusion( countingObject );
 
     this.addAndDragCountingObjectCallback = this.addAndDragCountingObject.bind( this );
 
@@ -200,6 +196,32 @@ class CountingPlayAreaNode extends Node {
 
     this.includeCountingObjectCreatorPanel = options.includeCountingObjectCreatorPanel;
     this.returnZoneProperty = options.returnZoneProperty;
+
+    // In the view only because of countingObjectNode.updateNumber()
+    Multilink.lazyMultilink( [
+      this.playArea.groupingEnabledProperty,
+      countingObjectTypeProperty
+    ], groupingEnabled => {
+
+      // When grouping is turned off, break apart any object groups
+      !groupingEnabled && this.playArea.breakApartCountingObjects( true );
+
+      for ( let i = 0; i < this.playArea.countingObjects.length; i++ ) {
+        const countingObject = this.playArea.countingObjects[ i ];
+        const countingObjectNode = this.getCountingObjectNode( countingObject );
+
+        // Need to call this on countingObjects that are NOT included in sum.
+        countingObjectNode.updateNumber();
+
+        // Don't constrain a destination to objects not included in sum.
+        if ( !countingObject.isAnimating ) {
+
+          // In general this should be superfluous, but the "card" around a counting object type has larger bounds
+          // than the object itself, so we need to handle this.
+          countingObject.setConstrainedDestination( this.playAreaBoundsProperty.value, countingObject.positionProperty.value );
+        }
+      }
+    } );
   }
 
   /**
@@ -251,7 +273,6 @@ class CountingPlayAreaNode extends Node {
     countingObjectNode.interactionStartedEmitter.addListener( this.interactionListener );
     countingObject.endAnimationEmitter.addListener( this.animationFinishedListener );
     countingObjectNode.endDragEmitter.addListener( this.dragFinishedListener );
-    countingObjectNode.positionConstrainedEmitter.addListener( this.positionConstrainedListener );
   }
 
   /**
@@ -268,7 +289,6 @@ class CountingPlayAreaNode extends Node {
     countingObject.endAnimationEmitter.removeListener( this.animationFinishedListener );
     countingObjectNode.interactionStartedEmitter.removeListener( this.interactionListener );
     countingObjectNode.splitEmitter.removeListener( this.splitListener );
-    countingObjectNode.positionConstrainedEmitter.removeListener( this.positionConstrainedListener );
 
     delete this.countingObjectNodeMap[ countingObjectNode.countingObject.id ];
     this.closestDragListener.removeDraggableItem( countingObjectNode );
@@ -539,26 +559,6 @@ class CountingPlayAreaNode extends Node {
     } );
 
     return countingObjectPositions;
-  }
-
-  /**
-   * If the provided CountingObject would occlude any other CountingObject, then its position is adjusted by
-   * shifting it down. This is a workaround for https://github.com/phetsims/number-play/issues/172.
-   */
-  private preventOcclusion( countingObject: CountingObject ): void {
-    const countingObjects = this.playArea.countingObjects;
-    for ( let i = 0; i < countingObjects.length - 1; i++ ) {
-      const nextCountingObject = countingObjects[ i ];
-      if ( nextCountingObject !== countingObject ) {
-        if ( nextCountingObject.positionProperty.value.y === countingObject.positionProperty.value.y ) {
-          countingObject.positionProperty.value = new Vector2(
-            countingObject.positionProperty.value.x,
-            countingObject.positionProperty.value.y + CountingCommonConstants.BREAK_APART_Y_OFFSET
-          );
-          break;
-        }
-      }
-    }
   }
 }
 

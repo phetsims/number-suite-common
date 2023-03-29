@@ -84,11 +84,6 @@ class CountingPlayArea extends CountingCommonModel {
 
     this.tenFrames = options.tenFrames;
 
-    // when grouping is turned off, break apart any object groups
-    this.groupingEnabledProperty.lazyLink( groupingEnabled => {
-      !groupingEnabled && this.breakApartCountingObjects( true );
-    } );
-
     this.countingObjects.addItemRemovedListener( countingObject => { countingObject.dispose(); } );
   }
 
@@ -481,8 +476,8 @@ class CountingPlayArea extends CountingCommonModel {
    *  the appropriate and exact county object state.
    */
   private linkToSerializedCountingObjects( targetCountingObjectSerializations: CountingObjectSerialization[],
-                                        linkStatusChangedEmitter: TEmitter<[ boolean ]>,
-                                        areObjectsLinkedToOnes: boolean ): void {
+                                           linkStatusChangedEmitter: TEmitter<[ boolean ]>,
+                                           areObjectsLinkedToOnes: boolean ): void {
 
     const objectsToOrganize = this.getCountingObjectsIncludedInSum();
 
@@ -634,8 +629,6 @@ class CountingPlayArea extends CountingCommonModel {
    */
   public breakApartCountingObjects( stack = false ): void {
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 cleanup and doc
-
     const objectsToBreakDown = this.getCountingObjectsIncludedInSum();
     const startingCount = _.sum( objectsToBreakDown.map( x => x.numberValueProperty.value ) );
 
@@ -647,28 +640,45 @@ class CountingPlayArea extends CountingCommonModel {
         const numberOfSets = countingObjectValue < NumberSuiteCommonConstants.TEN ? 1 : 2;
         const numberOfRows = NumberSuiteCommonConstants.TEN;
 
-        const origin = stack ? countingObjectPosition.minusXY( 0, 25 ) : countingObjectPosition;
         const offsetYSegment = stack ? CountingCommonConstants.BREAK_APART_Y_OFFSET : 0;
 
-        let offsetY = 0;
+        // The movable bounds with respect to positionProperty and to how much space our countingObject bounds takes up.
+        const adjustedOriginBounds = countingObject.getOriginBounds( this.playAreaBoundsProperty.value );
+
+        // Each extra single that needs to be stacked will take up extra space, so use that in the calculation of if we
+        // stack up or down. Will be 0 if not stacking.
+        const neededSpace = offsetYSegment *
+                            ( Math.min( countingObject.numberValueProperty.value, NumberSuiteCommonConstants.TEN ) - 1 );
+
+        // If there isn't enough space below the current countingObject for a visual stack, place the stack above the
+        // countingObject instead.
+        const shouldStackUpwards = adjustedOriginBounds.maxY <= countingObjectPosition.y + neededSpace;
+
+        // position of the first new CountingObject, respecting that if stacking upwards, we still create from the top
+        // down.
+        const origin = shouldStackUpwards ? countingObjectPosition.plusXY( 0, -neededSpace ) : countingObjectPosition;
+
+        let currentOffsetY = 0;
 
         let reAddedCountingObjects = 0;
         const xShift = countingObjectValue >= NumberSuiteCommonConstants.TEN && stack ? -CountingCommonConstants.PLAY_OBJECT_SIZE.width : 0;
 
+        // We are about to add a bunch of ones to equal this countingObject's value
         this.removeCountingObject( countingObject );
 
+        // Nested looping to account for 10s place and 1s place stacks
         for ( let i = numberOfSets - 1; i >= 0; i-- ) {
           for ( let j = 0; j < numberOfRows; j++ ) {
             if ( reAddedCountingObjects < countingObjectValue ) {
-              const newCountingObject = new CountingObject( 1, origin.plusXY( i * xShift, offsetY ), {
+              const newCountingObject = new CountingObject( 1, origin.plusXY( i * xShift, currentOffsetY ), {
                 groupingEnabledProperty: this.groupingEnabledProperty
               } );
               this.addCountingObject( newCountingObject );
-              offsetY += offsetYSegment;
+              currentOffsetY += offsetYSegment;
               reAddedCountingObjects++;
             }
           }
-          offsetY = 0;
+          currentOffsetY = 0;
         }
       }
     } );
