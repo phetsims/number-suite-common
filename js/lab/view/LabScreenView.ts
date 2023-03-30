@@ -305,8 +305,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         tenFrame.countingObjects.clear();
 
         // calculate icon's origin
-        let trail = this.getUniqueLeafTrailTo( this.tenFrameCreatorPanel.iconNode );
-        trail = trail.slice( 1, trail.length );
+        let trail = this.getUniqueLeafTrailTo( this.tenFrameCreatorPanel.iconNode ).slice( 1 );
         const globalOrigin = trail.localToGlobalPoint( this.tenFrameCreatorPanel.iconNode.localBounds.leftTop );
 
         const removeAnimation = new Animation( {

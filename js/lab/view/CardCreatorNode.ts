@@ -56,8 +56,7 @@ class CardCreatorNode extends Node {
     iconNode.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
       // Calculate the icon's origin.
-      let trail = screenView.getUniqueLeafTrailTo( iconNode );
-      trail = trail.slice( 1, trail.length );
+      let trail = screenView.getUniqueLeafTrailTo( iconNode ).slice( 1 );
       const globalOrigin = trail.localToGlobalPoint( iconNode.localBounds.center );
 
       let cardNode: CardNode;
