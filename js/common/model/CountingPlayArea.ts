@@ -495,7 +495,6 @@ class CountingPlayArea extends CountingCommonModel {
     const animate = areObjectsLinkedToOnes;
 
     const countingObjectsSortedByValue = this.getCountingObjectsByValue();
-    const handledCountingObjects: CountingObject[] = [];
 
     // Iterate through each input and try to mutate the current countingObjects list to support that target
     for ( let j = inputSerializationsSortedByValue.length - 1; j >= 0; j-- ) {
@@ -514,7 +513,6 @@ class CountingPlayArea extends CountingCommonModel {
 
           arrayRemove( countingObjectsSortedByValue, currentCountingObject );
           arrayRemove( inputSerializationsSortedByValue, targetSerialization );
-          handledCountingObjects.push( currentCountingObject );
           numberOfAnimationsFinishedProperty.value += 1;
           break;
         }
@@ -536,8 +534,6 @@ class CountingPlayArea extends CountingCommonModel {
         const currentCountingObject = countingObjectsSortedByValue[ 0 ];
         assert && assert( this.countingObjects.includes( currentCountingObject ),
           'old, removed countingObject still at play here' );
-        assert && assert( !handledCountingObjects.includes( currentCountingObject ),
-          'currentCountingObject is already animating' );
 
         const nextNeededValue = desiredValue - currentNumberValueCount;
 
@@ -546,7 +542,6 @@ class CountingPlayArea extends CountingCommonModel {
         if ( currentCountingObject.numberValueProperty.value <= nextNeededValue ) {
           this.sendCountingObjectTo( currentCountingObject, targetSerialization.position, numberOfAnimationsFinishedProperty, animate );
           arrayRemove( countingObjectsSortedByValue, currentCountingObject );
-          handledCountingObjects.push( currentCountingObject );
           currentNumberValueCount += currentCountingObject.numberValueProperty.value;
 
           // We are done when we've reached the desired value.
@@ -556,16 +551,10 @@ class CountingPlayArea extends CountingCommonModel {
           // If the currentCountingObject has a greater value than the target, split it up and then try this loop again.
 
           // split off the value we need to be used in the next iteration
-          this.splitCountingObject( currentCountingObject, nextNeededValue );
+          const newCountingObject = this.splitCountingObject( currentCountingObject, nextNeededValue );
 
-          // recompute after splitting
-          const allCountingObjectsSortedByValue = this.getCountingObjectsByValue();
-
-          numberOfObjectsToOrganize = allCountingObjectsSortedByValue.length;
-
-          countingObjectsSortedByValue.length = 0;
-          countingObjectsSortedByValue.push( ...allCountingObjectsSortedByValue.filter(
-            countingObject => !handledCountingObjects.includes( countingObject ) ) );
+          numberOfObjectsToOrganize += 1;
+          countingObjectsSortedByValue.push( newCountingObject );
         }
       }
     }
