@@ -37,7 +37,7 @@ type StringsType = {
   'objectsStringProperty': LinkableProperty<string>;
   'secondLanguageStringProperty': LinkableProperty<string>;
   'secondLanguageDescriptionStringProperty': LinkableProperty<string>;
-  'languageStringProperty': LinkableProperty<string>;
+  'languageTitleStringProperty': LinkableProperty<string>;
   'voiceStringProperty': LinkableProperty<string>;
   'toDisplayASecondLanguageDescriptionStringProperty': LinkableProperty<string>;
   'showOnesStringProperty': LinkableProperty<string>;

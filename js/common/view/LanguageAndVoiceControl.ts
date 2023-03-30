@@ -56,7 +56,7 @@ export default class LanguageAndVoiceControl extends HBox {
       spacing: 10
     }, providedOptions );
 
-    const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageStringProperty, LABEL_TEXT_OPTIONS );
+    const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageTitleStringProperty, LABEL_TEXT_OPTIONS );
 
     // Carousel for choosing a language.
     const languageCarouselItems: LanguageCarouselItem[] = localeProperty.validValues!.map(

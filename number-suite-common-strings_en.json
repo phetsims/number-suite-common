@@ -77,7 +77,7 @@
   "secondLanguageDescription": {
     "value": "Select a second language to support multilingual learning."
   },
-  "language": {
+  "languageTitle": {
     "value": "Language"
   },
   "voice": {
