@@ -51,7 +51,10 @@ class NumberCardCreatorCarousel extends Carousel {
 
     super( numberCardCreatorNodes.map( numberCardCreatorNode => {
       return {
-        createNode: ( tandem: Tandem ) => new Node().addChild( numberCardCreatorNode )
+        createNode: ( tandem: Tandem ) => new Node().addChild( numberCardCreatorNode ),
+        alignBoxOptions: {
+          xAlign: 'left'
+        }
       };
     } ), {
       itemsPerPage: 10,
@@ -59,7 +62,7 @@ class NumberCardCreatorCarousel extends Carousel {
       spacing: 10,
       animationOptions: {
         duration: 0.4
-      }
+      },
     } );
 
     this.screenView = screenView;
