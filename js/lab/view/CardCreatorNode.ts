@@ -14,6 +14,7 @@ import Easing from '../../../../twixt/js/Easing.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import CardNode from './CardNode.js';
 import TProperty from '../../../../axon/js/TProperty.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import NumberCardNode from './NumberCardNode.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 
@@ -37,7 +38,8 @@ class CardCreatorNode extends Node {
       iconNode = new SymbolCardNode( {
         symbolType: options.symbolType,
         includeDragListener: false,
-        dragBoundsProperty: screenView.symbolCardBoundsProperty
+        dragBoundsProperty: screenView.symbolCardBoundsProperty,
+        homePosition: Vector2.ZERO
       } );
     }
     else {
@@ -46,28 +48,33 @@ class CardCreatorNode extends Node {
       iconNode = new NumberCardNode( {
         number: options.number!,
         includeDragListener: false,
-        dragBoundsProperty: screenView.objectPlayAreaBoundsProperty
+        dragBoundsProperty: screenView.objectPlayAreaBoundsProperty,
+        homePosition: Vector2.ZERO
       } );
     }
 
     iconNode.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
+
+      // Calculate the icon's origin.
+      let trail = screenView.getUniqueLeafTrailTo( iconNode );
+      trail = trail.slice( 1, trail.length );
+      const globalOrigin = trail.localToGlobalPoint( iconNode.localBounds.center );
+
+      let cardNode: CardNode;
+      let countProperty: TProperty<number>;
+
       const dropListener = () => {
         const homeNodeBounds = options.symbolType ? screenView.symbolCardCreatorPanel.bounds : screenView.numberCardCreatorCarousel.bounds;
 
         if ( cardNode.bounds.intersectsBounds( homeNodeBounds ) ) {
           cardNode.inputEnabled = false;
 
-          // calculate icon's origin
-          let trail = screenView.getUniqueLeafTrailTo( iconNode );
-          trail = trail.slice( 1, trail.length );
-          const globalOrigin = trail.localToGlobalPoint( iconNode.localBounds.center );
-
           cardNode.animation = new Animation( {
             duration: 0.3,
             targets: [ {
               property: cardNode.positionProperty,
               easing: Easing.CUBIC_IN_OUT,
-              to: globalOrigin
+              to: cardNode.homePosition
             } ]
           } );
 
@@ -80,8 +87,6 @@ class CardCreatorNode extends Node {
         }
       };
 
-      let cardNode: CardNode;
-      let countProperty: TProperty<number>;
       if ( options.symbolType ) {
         assert && assert( !options.number, 'symbolType and number cannot both be provided' );
 
@@ -91,7 +96,8 @@ class CardCreatorNode extends Node {
         cardNode = new SymbolCardNode( {
           symbolType: options.symbolType,
           dragBoundsProperty: screenView.symbolCardBoundsProperty,
-          dropListener: dropListener
+          dropListener: dropListener,
+          homePosition: globalOrigin
         } );
       }
       else {
@@ -102,7 +108,8 @@ class CardCreatorNode extends Node {
         cardNode = new NumberCardNode( {
           number: options.number!,
           dragBoundsProperty: screenView.numberCardBoundsProperty,
-          dropListener: dropListener
+          dropListener: dropListener,
+          homePosition: globalOrigin
         } );
       }
 

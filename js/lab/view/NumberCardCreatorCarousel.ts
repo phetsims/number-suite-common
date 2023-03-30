@@ -62,7 +62,7 @@ class NumberCardCreatorCarousel extends Carousel {
       spacing: 10,
       animationOptions: {
         duration: 0.4
-      },
+      }
     } );
 
     this.screenView = screenView;

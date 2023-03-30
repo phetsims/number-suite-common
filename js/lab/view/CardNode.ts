@@ -25,6 +25,7 @@ type SelfOptions = {
   height: number;
   width: number;
   dragBoundsProperty: TReadOnlyProperty<Bounds2>;
+  homePosition: Vector2;
   includeDragListener?: boolean;
   dropListener?: () => void;
 };
@@ -34,6 +35,9 @@ class CardNode extends Node {
   public readonly dragListener: DragListener | null;
   public readonly positionProperty: TProperty<Vector2>;
   public animation: Animation | null;
+
+  // The position of this CardNode's creator icon in screen coords, where we should animate back to when returned.
+  public homePosition: Vector2;
   public static readonly WIDTH = WIDTH;
 
   public constructor( content: Node, providedOptions: CardNodeOptions ) {
@@ -46,6 +50,7 @@ class CardNode extends Node {
 
     this.positionProperty = new Vector2Property( Vector2.ZERO );
     this.animation = null;
+    this.homePosition = options.homePosition;
 
     const halfWidth = options.width / 2;
     const halfHeight = options.height / 2;
