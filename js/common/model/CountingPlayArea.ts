@@ -486,40 +486,49 @@ class CountingPlayArea extends CountingCommonModel {
 
     const numberOfAnimationsFinishedProperty = new NumberProperty( 0 );
 
-    // Highest value first
-    const inputSortedByValue: CountingObjectSerialization[] = _.sortBy( targetCountingObjectSerializations,
+    // Sort by highest value first. Before we use these to move or breakup our countingObjects so they match the
+    // serializations, we will remove any serializations that already match existing countingObjects below.
+    const inputSerializationsSortedByValue: CountingObjectSerialization[] = _.sortBy( targetCountingObjectSerializations,
       countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
 
-    const animate = areObjectsLinkedToOnes; // Only animate if we are linking to the ones play area
+    // Only animate if we are linking to the ones play area
+    const animate = areObjectsLinkedToOnes;
 
     const countingObjectsSortedByValue = this.getCountingObjectsByValue();
     const handledCountingObjects: CountingObject[] = [];
 
     // Iterate through each input and try to mutate the current countingObjects list to support that target
-    for ( let i = 0; i < inputSortedByValue.length; i++ ) {
+    for ( let j = inputSerializationsSortedByValue.length - 1; j >= 0; j-- ) {
+      const targetSerialization = inputSerializationsSortedByValue[ j ];
+      const targetValue = targetSerialization.numberValue;
+
+      // First see if there are any exact position/value matches, and keep those where they are.
+      // Use a forEach because we may mutate the list inline.
+      for ( let i = 0; i < countingObjectsSortedByValue.length; i++ ) {
+        const currentCountingObject = countingObjectsSortedByValue[ i ];
+
+        // If there is a match with the same value and position, then we don't need to call sendTo because this
+        // countingObject is already in the correct spot.
+        if ( currentCountingObject.numberValueProperty.value === targetValue &&
+             currentCountingObject.positionProperty.value.equals( targetSerialization.position ) ) {
+
+          arrayRemove( countingObjectsSortedByValue, currentCountingObject );
+          arrayRemove( inputSerializationsSortedByValue, targetSerialization );
+          handledCountingObjects.push( currentCountingObject );
+          numberOfAnimationsFinishedProperty.value += 1;
+          break;
+        }
+      }
+    }
+
+    for ( let i = 0; i < inputSerializationsSortedByValue.length; i++ ) {
       assert && assert( countingObjectsSortedByValue.length > 0, 'still have serializations, but no CountingObjects left' );
 
-      const targetSerialization = inputSortedByValue[ i ];
+      const targetSerialization = inputSerializationsSortedByValue[ i ];
 
       const desiredValue = targetSerialization.numberValue;
       let currentNumberValueCount = 0;
       let targetHandled = false;
-
-      // First see if there are any exact position/value matches, and keep those where they are.
-      // Use a forEach because we may mutate the list inline.
-      countingObjectsSortedByValue.forEach( currentCountingObject => {
-
-        // If there is a match with the same value and position, then we don't need to call sendTo because this
-        // countingObject is already in the correct spot.
-        if ( currentCountingObject.numberValueProperty.value === desiredValue &&
-             currentCountingObject.positionProperty.value.equals( targetSerialization.position ) ) {
-          arrayRemove( countingObjectsSortedByValue, currentCountingObject );
-          handledCountingObjects.push( currentCountingObject );
-          currentNumberValueCount += currentCountingObject.numberValueProperty.value;
-          numberOfAnimationsFinishedProperty.value += 1;
-          targetHandled = true;
-        }
-      } );
 
       // Then, move or split the remaining countingObjects to match the serializations.
       while ( !targetHandled ) {
