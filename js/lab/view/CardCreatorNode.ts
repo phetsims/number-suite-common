@@ -17,6 +17,7 @@ import TProperty from '../../../../axon/js/TProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import NumberCardNode from './NumberCardNode.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 
 type SelfOptions = {
   symbolType?: SymbolType | null;
@@ -27,7 +28,8 @@ export type CardNodeOptions = SelfOptions;
 //TODO https://github.com/phetsims/number-suite-common/issues/29 add comments
 class CardCreatorNode extends Node {
 
-  public constructor( screenView: LabScreenView<NumberSuiteCommonPreferences>, contentToCountPropertyMap: Map<SymbolType | number, TProperty<number>>,
+  public constructor( screenView: LabScreenView<NumberSuiteCommonPreferences>,
+                      contentToCountPropertyMap: Map<SymbolType | number, TProperty<number>>,
                       options: CardNodeOptions ) {
     super();
 
@@ -56,7 +58,7 @@ class CardCreatorNode extends Node {
     iconNode.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
       // Calculate the icon's origin.
-      let trail = screenView.getUniqueLeafTrailTo( iconNode ).slice( 1 );
+      const trail = screenView.getUniqueLeafTrailTo( iconNode ).slice( 1 );
       const globalOrigin = trail.localToGlobalPoint( iconNode.localBounds.center );
 
       let cardNode: CardNode;
@@ -68,8 +70,12 @@ class CardCreatorNode extends Node {
         if ( cardNode.bounds.intersectsBounds( homeNodeBounds ) ) {
           cardNode.inputEnabled = false;
 
+          const distance = cardNode.positionProperty.value.distance( cardNode.homePosition );
+          const duration =
+            CountingCommonConstants.ANIMATION_TIME_RANGE.constrainValue( distance / CountingCommonConstants.ANIMATION_SPEED );
+
           cardNode.animation = new Animation( {
-            duration: 0.3,
+            duration: duration,
             targets: [ {
               property: cardNode.positionProperty,
               easing: Easing.CUBIC_IN_OUT,

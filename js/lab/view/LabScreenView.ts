@@ -305,11 +305,15 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         tenFrame.countingObjects.clear();
 
         // calculate icon's origin
-        let trail = this.getUniqueLeafTrailTo( this.tenFrameCreatorPanel.iconNode ).slice( 1 );
+        const trail = this.getUniqueLeafTrailTo( this.tenFrameCreatorPanel.iconNode ).slice( 1 );
         const globalOrigin = trail.localToGlobalPoint( this.tenFrameCreatorPanel.iconNode.localBounds.leftTop );
 
+        const distance = tenFrame.positionProperty.value.distance( globalOrigin );
+        const duration =
+          CountingCommonConstants.ANIMATION_TIME_RANGE.constrainValue( distance / CountingCommonConstants.ANIMATION_SPEED );
+
         const removeAnimation = new Animation( {
-          duration: 0.3,
+          duration: duration,
           targets: [ {
             property: tenFrame.positionProperty,
             easing: Easing.CUBIC_IN_OUT,
