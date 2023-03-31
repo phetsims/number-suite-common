@@ -30,9 +30,7 @@ class LabModel implements TModel {
 
   public constructor( tandem: Tandem ) {
 
-    this.tenFrames = createObservableArray( {
-      hasListenerOrderDependencies: true // TODO: see https://github.com/phetsims/number-suite-common/issues/57
-    } );
+    this.tenFrames = createObservableArray();
     this.selectedTenFrameProperty = new Property<TenFrame | null>( null );
 
     // create five different kinds of play areas

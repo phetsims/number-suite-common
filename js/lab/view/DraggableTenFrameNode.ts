@@ -130,7 +130,6 @@ class DraggableTenFrameNode extends Node {
     this.disposeDraggableTenFrameNode = () => {
       selectedTenFrameProperty.unlink( selectedTenFramePropertyListener );
       dragBoundsProperty.unlink( dragBoundsListener );
-      assert && assert( tenFrame.isDisposed, 'TenFrame model should have been disposed by now.' );
     };
   }
 

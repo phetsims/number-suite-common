@@ -207,7 +207,6 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 rename to addTenFrameNode and removeTenFrameNode
     model.tenFrames.addItemAddedListener( this.addTenFrame.bind( this ) );
-    model.tenFrames.addItemRemovedListener( this.removeTenFrame.bind( this ) );
 
     // add the piece layer
     this.addChild( this.pieceLayer );
@@ -347,6 +346,10 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     this.tenFrameNodes.push( tenFrameNode );
     this.pieceLayer.addChild( tenFrameNode );
+
+    tenFrame.disposeEmitter.addListener( () => {
+      this.removeTenFrame( tenFrame );
+    } );
   }
 
   /**
