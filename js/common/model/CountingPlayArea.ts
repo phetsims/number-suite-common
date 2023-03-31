@@ -301,8 +301,8 @@ class CountingPlayArea extends CountingCommonModel {
     assert && assert( countingObject.includeInSumProperty.value, 'countingObject already removed from sum' );
 
     // Remove it from counting towards the sum and send it back to its origin. countingObjects aren't removed from the
-    // playArea until they get back to the bucket, but we don't want them to count towards the sum while they're on
-    // their way to the bucket.
+    // playArea until they get back to the creatorNode, but we don't want them to count towards the sum while they're on
+    // their way to the creatorNode.
     if ( countingObject.includeInSumProperty.value ) {
       countingObject.includeInSumProperty.value = false;
       this.calculateTotal();

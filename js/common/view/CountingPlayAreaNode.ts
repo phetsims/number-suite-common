@@ -318,7 +318,7 @@ class CountingPlayAreaNode extends Node {
     const draggedNode = this.getCountingObjectNode( draggedCountingObject );
 
     // TODO: semi-duplication https://github.com/phetsims/number-play/issues/119
-    // remove any countingObjects that aren't included in the sum - these are already on their way back to the bucket and
+    // remove any countingObjects that aren't included in the sum - these are already on their way back to the creatorNode and
     // should not be tried to combined with. return if no countingObjects are left or if the draggedCountingObject is not
     // included in the sum
     const allCountingObjectNodes = _.filter( this.countingObjectLayerNode.children,
