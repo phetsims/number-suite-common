@@ -16,7 +16,7 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import Range from '../../../../dot/js/Range.js';
 import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import CountingPlayArea from '../model/CountingPlayArea.js';
+import CountingArea from '../model/CountingArea.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../../axon/js/Property.js';
@@ -32,7 +32,7 @@ export type TotalAccordionBoxOptions =
 
 class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
-  public constructor( playArea: CountingPlayArea, height: number, providedOptions: TotalAccordionBoxOptions ) {
+  public constructor( countingArea: CountingArea, height: number, providedOptions: TotalAccordionBoxOptions ) {
 
     const options = optionize<TotalAccordionBoxOptions, SelfOptions, NumberSuiteCommonAccordionBoxOptions>()( {
       titleStringProperty: NumberSuiteCommonStrings.totalStringProperty,
@@ -45,7 +45,7 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
     // create the NumberDisplay, which is a numerical representation of the current number. always format for numbers
     // up to twenty so the display looks consistent across screens.
-    const numberDisplay = new NumberDisplay( playArea.sumProperty, new Range( 0, NumberSuiteCommonConstants.TWENTY ), {
+    const numberDisplay = new NumberDisplay( countingArea.sumProperty, new Range( 0, NumberSuiteCommonConstants.TWENTY ), {
       decimalPlaces: 0,
       align: 'right',
       noValueAlign: 'left',
@@ -59,11 +59,11 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
     // create the arrow buttons, which add or remove countingObjects
     const upArrowButton = new ArrowButton( 'up', () => {
       // console.log( 'about to add 1 with up arrow in in total accordion box' );
-      playArea.createCountingObjectFromCreatorNode();
+      countingArea.createCountingObjectFromCreatorNode();
     }, options.arrowButtonOptions );
     const downArrowButton = new ArrowButton( 'down', () => {
       // console.log( 'about to remove 1 with up arrow in in total accordion box' );
-      playArea.returnCountingObjectToCreatorNode();
+      countingArea.returnCountingObjectToCreatorNode();
     }, options.arrowButtonOptions );
     const arrowButtons = new VBox( {
       children: [ upArrowButton, downArrowButton ],
@@ -72,11 +72,11 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
     // disable the arrow buttons when the currentNumberProperty value is at its min or max range
     const currentNumberPropertyObserver = ( currentNumber: number ) => {
-      assert && assert( playArea.sumProperty.range, 'Range is required for sumProperty in play areas' );
-      upArrowButton.enabled = currentNumber !== playArea.sumProperty.range.max;
-      downArrowButton.enabled = currentNumber !== playArea.sumProperty.range.min;
+      assert && assert( countingArea.sumProperty.range, 'Range is required for sumProperty in countingAreas' );
+      upArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.max;
+      downArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.min;
     };
-    playArea.sumProperty.link( currentNumberPropertyObserver );
+    countingArea.sumProperty.link( currentNumberPropertyObserver );
 
     // arrange and add the number display and arrow buttons
     const numberControl = new HBox( { children: [ numberDisplay, arrowButtons ] } );

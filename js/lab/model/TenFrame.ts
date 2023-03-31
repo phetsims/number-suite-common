@@ -69,11 +69,11 @@ class TenFrame extends Disposable {
   /**
    * Sends the provided countingObject outside the nearest border of this ten frame
    */
-  public pushAwayCountingObject( countingObject: CountingObject, playAreaBounds: Bounds2 ): void {
+  public pushAwayCountingObject( countingObject: CountingObject, countingAreaBounds: Bounds2 ): void {
     assert && assert( this.isCountingObjectOnTopOf( countingObject ),
       'attempted to push away countingObject that was not over ten frame' );
 
-    // Bounds of this tenFrame in play area view coords, offset to the center of the provided countingObject.
+    // Bounds of this tenFrame in countingArea view coords, offset to the center of the provided countingObject.
     const tenFrameBounds = this.localBounds.shifted( this.positionProperty.value )
 
       // BIG NOTE HERE: We want to compare based on the visual center, so shift the whole tenFrame to account for it.
@@ -88,7 +88,7 @@ class TenFrame extends Disposable {
     const containingBounds = new Bounds2( tenFrameBounds.minX, tenFrameBounds.minY, tenFrameBounds.maxX, tenFrameBounds.maxY )
       .dilatedXY( countingObjectBounds.width / 2 + PUSH_AWAY_MARGIN, countingObjectBounds.height / 2 + PUSH_AWAY_MARGIN );
 
-    const playAreaBoundsErodedHalfOfCountingObject = playAreaBounds.erodedXY( countingObjectBounds.width / 2, countingObjectBounds.height / 2 );
+    const countingAreaBoundsErodedHalfOfCountingObject = countingAreaBounds.erodedXY( countingObjectBounds.width / 2, countingObjectBounds.height / 2 );
 
     // find the shortest distance to the edge of the tenFrame
     const countingObjectCenterPosition = countingObject.positionProperty.value;
@@ -104,10 +104,10 @@ class TenFrame extends Disposable {
       const potentialDestination = sorted[ i ];
 
       // BIG NOTE HERE: add back the center for comparison to ensure that the bounds works as expected. Shrugging over here. . .
-      if ( playAreaBoundsErodedHalfOfCountingObject.containsPoint( potentialDestination.plus( countingObjectCenter ) ) ) {
+      if ( countingAreaBoundsErodedHalfOfCountingObject.containsPoint( potentialDestination.plus( countingObjectCenter ) ) ) {
 
         // send the countingObject to the closest destination
-        countingObject.setConstrainedDestination( playAreaBounds, potentialDestination, true );
+        countingObject.setConstrainedDestination( countingAreaBounds, potentialDestination, true );
         break; // we found our next closest point
       }
     }

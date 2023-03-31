@@ -16,8 +16,8 @@ import RectangularRadioButtonGroup, { RectangularRadioButtonGroupItem } from '..
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import CountingPlayAreaNode from './CountingPlayAreaNode.js';
-import CountingPlayArea from '../model/CountingPlayArea.js';
+import CountingAreaNode from './CountingAreaNode.js';
+import CountingArea from '../model/CountingArea.js';
 import BaseNumberNode from '../../../../counting-common/js/common/view/BaseNumberNode.js';
 import BaseNumber from '../../../../counting-common/js/common/model/BaseNumber.js';
 import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
@@ -30,7 +30,7 @@ import TEmitter from '../../../../axon/js/TEmitter.js';
 // types
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
-  linkedPlayArea?: CountingPlayArea | null;
+  linkedCountingArea?: CountingArea | null;
   linkStatusChangedEmitter?: TEmitter<[ boolean ]> | null;
 };
 export type CountingAccordionBoxOptions = SelfOptions &
@@ -41,9 +41,9 @@ export type CountingAccordionBoxOptions = SelfOptions &
 const RADIO_BUTTON_SIZE = new Dimension2( 28, 28 ); // in screen coordinates
 
 class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
-  public readonly countingPlayAreaNode: CountingPlayAreaNode;
+  public readonly countingAreaNode: CountingAreaNode;
 
-  public constructor( playArea: CountingPlayArea,
+  public constructor( countingArea: CountingArea,
                       countingObjectTypeProperty: EnumerationProperty<CountingObjectType>,
                       width: number,
                       height: number,
@@ -55,14 +55,14 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
         maxWidth: NumberSuiteCommonConstants.LOWER_ACCORDION_BOX_TITLE_MAX_WIDTH
       },
       countingObjectTypes: null,
-      linkedPlayArea: null,
+      linkedCountingArea: null,
       linkStatusChangedEmitter: null
     }, providedOptions );
 
     super( width, new Property<number>( height ), options );
 
-    this.countingPlayAreaNode = new CountingPlayAreaNode( playArea, countingObjectTypeProperty, this.contentBoundsProperty );
-    this.contentNode.addChild( this.countingPlayAreaNode );
+    this.countingAreaNode = new CountingAreaNode( countingArea, countingObjectTypeProperty, this.contentBoundsProperty );
+    this.contentNode.addChild( this.countingAreaNode );
 
     let radioButtonGroup: RectangularRadioButtonGroup<CountingObjectType> | null = null;
     if ( options.countingObjectTypes ) {
@@ -101,21 +101,21 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
       this.contentNode.addChild( radioButtonGroup );
     }
 
-    // add the linked play area
-    if ( options.linkedPlayArea && options.linkStatusChangedEmitter ) {
-      const linkedObjectsPlayAreaNode = new CountingPlayAreaNode(
-        options.linkedPlayArea,
+    // add the linked countingArea
+    if ( options.linkedCountingArea && options.linkStatusChangedEmitter ) {
+      const linkedObjectsCountingAreaNode = new CountingAreaNode(
+        options.linkedCountingArea,
         countingObjectTypeProperty,
         this.contentBoundsProperty, {
           viewHasIndependentModel: false
         }
       );
-      linkedObjectsPlayAreaNode.visible = false;
-      this.contentNode.addChild( linkedObjectsPlayAreaNode );
+      linkedObjectsCountingAreaNode.visible = false;
+      this.contentNode.addChild( linkedObjectsCountingAreaNode );
 
       options.linkStatusChangedEmitter.addListener( objectsLinked => {
-        linkedObjectsPlayAreaNode.visible = objectsLinked;
-        this.countingPlayAreaNode.visible = !objectsLinked;
+        linkedObjectsCountingAreaNode.visible = objectsLinked;
+        this.countingAreaNode.visible = !objectsLinked;
         radioButtonGroup && radioButtonGroup.moveToFront();
       } );
     }

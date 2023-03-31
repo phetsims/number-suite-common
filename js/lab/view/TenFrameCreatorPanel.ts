@@ -26,7 +26,7 @@ const ICON_SIE_LENGTH = 20;
 class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
   public readonly iconNode: Node;
 
-  // the scale of the icon relative to the standard ten frame size, which is the size of the ten frames in the play area
+  // the scale of the icon relative to the standard ten frame size, which is the size of the ten frames in the countingArea
   public static readonly ICON_SCALE = ICON_SIE_LENGTH / TenFrame.SQUARE_SIDE_LENGTH;
 
   public constructor( model: LabModel, screenView: LabScreenView<NumberSuiteCommonPreferences> ) {

@@ -13,8 +13,8 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import { HBox, Rectangle, VBox } from '../../../../scenery/js/imports.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import CountingPlayArea from '../model/CountingPlayArea.js';
-import CountingPlayAreaNode from './CountingPlayAreaNode.js';
+import CountingArea from '../model/CountingArea.js';
+import CountingAreaNode from './CountingAreaNode.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
@@ -29,7 +29,8 @@ export type CountingObjectCreatorPanelOptions = SelfOptions & NumberSuiteCommonP
 class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
   public countingCreatorNode: CountingCreatorNode;
 
-  public constructor( playArea: CountingPlayArea, countingPlayAreaNode: CountingPlayAreaNode,
+  public constructor( countingArea: CountingArea,
+                      countingAreaNode: CountingAreaNode,
                       providedOptions?: CountingObjectCreatorPanelOptions ) {
 
     const options = optionize<CountingObjectCreatorPanelOptions, SelfOptions, NumberSuiteCommonPanelOptions>()( {
@@ -43,12 +44,12 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
       visible: options.arrowButtonsVisible
     };
     const upArrowButton = new ArrowButton( 'up', () => {
-      // console.log( `about to add 1 with up arrow in in ${playArea.name}` );
-      playArea.createCountingObjectFromCreatorNode();
+      // console.log( `about to add 1 with up arrow in in ${countingArea.name}` );
+      countingArea.createCountingObjectFromCreatorNode();
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: -3 }, arrowButtonOptions ) );
     const downArrowButton = new ArrowButton( 'down', () => {
-      // console.log( `about to remove 1 with up arrow in in ${playArea.name}` );
-      playArea.returnCountingObjectToCreatorNode();
+      // console.log( `about to remove 1 with up arrow in in ${countingArea.name}` );
+      countingArea.returnCountingObjectToCreatorNode();
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: 3 }, arrowButtonOptions ) );
     const arrowButtons = new VBox( {
       children: [ upArrowButton, downArrowButton ],
@@ -60,11 +61,11 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
       CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
     );
 
-    const countingCreatorNode = new CountingCreatorNode( 0, countingPlayAreaNode, playArea.sumProperty,
-      playArea.resetEmitter, countingPlayAreaNode.addAndDragCountingObject.bind( countingPlayAreaNode ), {
+    const countingCreatorNode = new CountingCreatorNode( 0, countingAreaNode, countingArea.sumProperty,
+      countingArea.resetEmitter, countingAreaNode.addAndDragCountingObject.bind( countingAreaNode ), {
         updateCurrentNumber: true,
-        countingObjectTypeProperty: countingPlayAreaNode.countingObjectTypeProperty,
-        groupingEnabledProperty: countingPlayAreaNode.playArea.groupingEnabledProperty,
+        countingObjectTypeProperty: countingAreaNode.countingObjectTypeProperty,
+        groupingEnabledProperty: countingAreaNode.countingArea.groupingEnabledProperty,
         backTargetOffset: new Vector2( -5, -5 ),
         ungroupedTargetScale: NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
         groupedTargetScale: NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
@@ -87,10 +88,10 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
 
     // disable the arrow buttons when the currentNumberProperty value is at its min or max range
     const currentNumberPropertyObserver = ( currentNumber: number ) => {
-      upArrowButton.enabled = currentNumber !== playArea.sumProperty.range.max;
-      downArrowButton.enabled = currentNumber !== playArea.sumProperty.range.min;
+      upArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.max;
+      downArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.min;
     };
-    playArea.sumProperty.link( currentNumberPropertyObserver );
+    countingArea.sumProperty.link( currentNumberPropertyObserver );
   }
 }
 

@@ -50,7 +50,7 @@ class CardCreatorNode extends Node {
       iconNode = new NumberCardNode( {
         number: options.number!,
         includeDragListener: false,
-        dragBoundsProperty: screenView.objectPlayAreaBoundsProperty,
+        dragBoundsProperty: screenView.objectCountingAreaBoundsProperty,
         homePosition: Vector2.ZERO
       } );
     }

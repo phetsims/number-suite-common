@@ -31,7 +31,7 @@ import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 type SelfOptions = {
   tenFrames?: null | ObservableArray<TenFrame>;
 };
-export type CountingPlayAreaOptions = SelfOptions;
+export type CountingAreaOptions = SelfOptions;
 
 type createCountingObjectFromCreatorNodeOptions = {
   shouldAnimate?: boolean;
@@ -47,28 +47,30 @@ export type CountingObjectSerialization = {
 // constants
 const GROUP_DIVISORS = [ 2, 5, 10 ]; // specified by designer
 
-// the minimum distance that a playObject added to the play area via animation can be to another playObject in the
-// play area, in screen coordinates
+// the minimum distance that a playObject added to the countingArea via animation can be to another playObject in the
+// countingArea, in screen coordinates
 const MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS = 60;
 
-class CountingPlayArea extends CountingCommonModel {
+class CountingArea extends CountingCommonModel {
   private getCountingObjectOrigin: () => Vector2;
-  private playAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
+
+  // TODO: Should this just be boundsProperty? See https://github.com/phetsims/number-suite-common/issues/29
+  private countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   private organizedObjectSpots: Vector2[];
 
-  // true when this.getCountingObjectOrigin() and this.playAreaBoundsProperty have been set
+  // true when this.getCountingObjectOrigin() and this.countingAreaBoundsProperty have been set
   private initialized: boolean;
   private countingObjectCreatorNodeHeight: number;
 
-  // contains any ten frames that are in the play area
+  // contains any ten frames that are in the countingArea
   public readonly tenFrames: ObservableArray<TenFrame> | null;
   public readonly groupingEnabledProperty: TReadOnlyProperty<boolean>;
 
   public constructor( highestCount: number, groupingEnabledProperty: TReadOnlyProperty<boolean>, name: string,
-                      providedOptions?: CountingPlayAreaOptions ) {
+                      providedOptions?: CountingAreaOptions ) {
     super( highestCount, name );
 
-    const options = optionize<CountingPlayAreaOptions, SelfOptions>()( {
+    const options = optionize<CountingAreaOptions, SelfOptions>()( {
       tenFrames: null
     }, providedOptions );
 
@@ -77,7 +79,7 @@ class CountingPlayArea extends CountingCommonModel {
     // set later by the view
     this.getCountingObjectOrigin = () => Vector2.ZERO;
     this.countingObjectCreatorNodeHeight = 0;
-    this.playAreaBoundsProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
+    this.countingAreaBoundsProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
     this.organizedObjectSpots = [ Vector2.ZERO ];
 
     this.initialized = false;
@@ -91,13 +93,13 @@ class CountingPlayArea extends CountingCommonModel {
    * Setup the origin and bounds needed from the view
    */
   public initialize( getCountingObjectOrigin: () => Vector2, countingObjectCreatorNodeHeight: number,
-                     playAreaBoundsProperty: TReadOnlyProperty<Bounds2> ): void {
-    assert && assert( !this.initialized, 'CountingPlayArea already initialized' );
+                     countingAreaBoundsProperty: TReadOnlyProperty<Bounds2> ): void {
+    assert && assert( !this.initialized, 'CountingArea already initialized' );
 
     // use a function for getting the paper number origin because its position changes in the view
     this.getCountingObjectOrigin = getCountingObjectOrigin;
     this.countingObjectCreatorNodeHeight = countingObjectCreatorNodeHeight;
-    this.playAreaBoundsProperty = playAreaBoundsProperty;
+    this.countingAreaBoundsProperty = countingAreaBoundsProperty;
     this.initialized = true;
 
     this.organizedObjectSpots = this.calculateOrganizedObjectSpots();
@@ -142,7 +144,7 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * Creates a countingObject and animates it to a random open place in the play area.
+   * Creates a countingObject and animates it to a random open place in the countingArea.
    */
   public createCountingObjectFromCreatorNode( providedOptions?: createCountingObjectFromCreatorNodeOptions ): void {
     assert && assert( this.initialized, 'createCountingObjectFromCreatorNode called before initialization' );
@@ -168,18 +170,18 @@ class CountingPlayArea extends CountingCommonModel {
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 This is kind of a band-aid to keep the grouped objects' handles from sticking out of the top of the play
     // area since they are not yet included in countingObject.localBounds above without a view created
-    const playAreaBoundsMinY = this.groupingEnabledProperty.value ? 30 : 0;
+    const countingAreaBoundsMinY = this.groupingEnabledProperty.value ? 30 : 0;
 
-    // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the playArea
-    // bounds, see positioning in CountingPlayAreaNode
-    const playAreaBounds = this.playAreaBoundsProperty.value
-      .withMinY( this.playAreaBoundsProperty.value.minY + playAreaBoundsMinY )
-      .withMaxY( this.playAreaBoundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
-    const countingObjectOriginBounds = countingObject.getOriginBounds( playAreaBounds );
+    // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the countingArea
+    // bounds, see positioning in CountingAreaNode
+    const countingAreaBounds = this.countingAreaBoundsProperty.value
+      .withMinY( this.countingAreaBoundsProperty.value.minY + countingAreaBoundsMinY )
+      .withMaxY( this.countingAreaBoundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
+    const countingObjectOriginBounds = countingObject.getOriginBounds( countingAreaBounds );
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 this algorithm does not take into account paper numbers that are on their way to a spot, and should
     // be rewritten to be better and accommodate that constraint
-    // looks for positions that are not overlapping with other playObjects in the play area
+    // looks for positions that are not overlapping with other playObjects in the countingArea
     while ( !destinationPosition ) {
       const possibleDestinationX = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxX - countingObjectOriginBounds.minX ) +
                                    countingObjectOriginBounds.minX;
@@ -187,11 +189,11 @@ class CountingPlayArea extends CountingCommonModel {
                                    countingObjectOriginBounds.minY;
       const possibleDestinationPoint = new Vector2( possibleDestinationX, possibleDestinationY );
       let spotIsAvailable = true;
-      const numberOfCountingObjectsInPlayArea = this.countingObjects.lengthProperty.value;
+      const numberOfCountingObjectsInCountingArea = this.countingObjects.lengthProperty.value;
 
-      // compare the proposed destination to the position of every playObject in the play area. use c-style loop for
+      // compare the proposed destination to the position of every playObject in the countingArea. use c-style loop for
       // best performance, since this loop is nested
-      for ( let i = 0; i < numberOfCountingObjectsInPlayArea; i++ ) {
+      for ( let i = 0; i < numberOfCountingObjectsInCountingArea; i++ ) {
         if ( this.countingObjects[ i ].positionProperty.value.distance( possibleDestinationPoint )
              < MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS ) {
           spotIsAvailable = false;
@@ -217,7 +219,7 @@ class CountingPlayArea extends CountingCommonModel {
    * Finds the best matching countingObject or countingObjects and animates them back to the creatorNode.
    */
   public returnCountingObjectToCreatorNode( valueToReturn: number = NumberSuiteCommonConstants.PAPER_NUMBER_INITIAL_VALUE ): void {
-    assert && assert( this.getCountingObjectsIncludedInSum().length > 0, 'countingObjects should exist in play area' );
+    assert && assert( this.getCountingObjectsIncludedInSum().length > 0, 'countingObjects should exist in countingArea' );
     assert && assert( this.initialized, 'returnCountingObjectToCreatorNode called before initialization' );
 
     // Sort by not in a ten frame, then by proximity to the creatorNode.
@@ -296,12 +298,12 @@ class CountingPlayArea extends CountingCommonModel {
    * Animates the given countingObject back to its creator node.
    */
   public sendCountingObjectToCreatorNode( countingObject: CountingObject ): void {
-    assert && assert( this.countingObjects.lengthProperty.value > 0, 'countingObjects should exist in play area' );
+    assert && assert( this.countingObjects.lengthProperty.value > 0, 'countingObjects should exist in countingArea' );
     assert && assert( this.initialized, 'returnCountingObjectToCreatorNode called before initialization' );
     assert && assert( countingObject.includeInSumProperty.value, 'countingObject already removed from sum' );
 
     // Remove it from counting towards the sum and send it back to its origin. countingObjects aren't removed from the
-    // playArea until they get back to the creatorNode, but we don't want them to count towards the sum while they're on
+    // countingArea until they get back to the creatorNode, but we don't want them to count towards the sum while they're on
     // their way to the creatorNode.
     if ( countingObject.includeInSumProperty.value ) {
       countingObject.includeInSumProperty.value = false;
@@ -378,8 +380,8 @@ class CountingPlayArea extends CountingCommonModel {
     for ( let i = 0; i < numberOfRows; i++ ) {
       for ( let j = 0; j < numberOfColumns; j++ ) {
         spots.push( new Vector2(
-          this.playAreaBoundsProperty.value.minX + xMargin + ( ( objectWidth + objectMargin ) * j ),
-          this.playAreaBoundsProperty.value.minY + yMargin + ( ( objectHeight + objectMargin ) * i )
+          this.countingAreaBoundsProperty.value.minX + xMargin + ( ( objectWidth + objectMargin ) * j ),
+          this.countingAreaBoundsProperty.value.minY + yMargin + ( ( objectHeight + objectMargin ) * i )
         ) );
       }
     }
@@ -387,7 +389,7 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * Returns all countingObjects not included in the sum of this playArea.
+   * Returns all countingObjects not included in the sum of this countingArea.
    */
   public getCountingObjectsIncludedInSum(): CountingObject[] {
     return [ ...this.countingObjects ].filter( countingObject => countingObject.includeInSumProperty.value );
@@ -402,7 +404,7 @@ class CountingPlayArea extends CountingCommonModel {
 
     this.breakApartCountingObjects();
 
-    // copy the current playObjectsInPlayArea so we can mutate it
+    // copy the current playObjectsInCountingArea so we can mutate it
     let objectsToOrganize = this.getCountingObjectsIncludedInSum();
     const numberOfObjectsToOrganize = objectsToOrganize.length;
 
@@ -424,10 +426,10 @@ class CountingPlayArea extends CountingCommonModel {
   /**
    * @param countingObjectSerializations
    * @param linkStatusChangedEmitter
-   * @param areObjectsLinkedToOnes - if we want to link the play areas, or unlink them.
+   * @param areObjectsLinkedToOnes - if we want to link the countingAreas, or unlink them.
    * @param groupAndLinkType
    */
-  public matchCountingObjectsToLinkedPlayArea( countingObjectSerializations: CountingObjectSerialization[],
+  public matchCountingObjectsToLinkedCountingArea( countingObjectSerializations: CountingObjectSerialization[],
                                                linkStatusChangedEmitter: TEmitter<[ boolean ]>, areObjectsLinkedToOnes: boolean,
                                                groupAndLinkType: GroupAndLinkType ): void {
 
@@ -436,7 +438,7 @@ class CountingPlayArea extends CountingCommonModel {
     }
     else {
       // If not linking, it is without animation. This part is really simple. Just clear out all the counting objects in
-      // the objectsPlayArea, and add new ones that match the serialization from the onesPlayArea (position and numberValue
+      // the objectsCountingArea, and add new ones that match the serialization from the onesCountingArea (position and numberValue
       // matching).
 
       const objectsToOrganize = this.getCountingObjectsIncludedInSum();
@@ -460,7 +462,7 @@ class CountingPlayArea extends CountingCommonModel {
   }
 
   /**
-   * "Link" current CountingObjects to the provided serialization state (presumably from another play area). Here link
+   * "Link" current CountingObjects to the provided serialization state (presumably from another countingArea). Here link
    * means that it is matched.
    *
    * If linking, we may want to break apart so that half of a group can animate
@@ -470,9 +472,9 @@ class CountingPlayArea extends CountingCommonModel {
    *
    * NOTE: This function never combines objects when linking, but just animates cards to the same location to give the
    * illusion of combining. 2 items are assumed to ensure this behavior:
-   * 1. Because the actual "linked" state is just a mimic of the other play area, and this play area is hidden.
-   * 2. Because it assumes that when unlinking (reshowing this underlying play area, see the other half of
-   *  `matchCountingObjectsToLinkedPlayArea()`), that the state will be auto-updated (without animation) to match
+   * 1. Because the actual "linked" state is just a mimic of the other countingArea, and this countingArea is hidden.
+   * 2. Because it assumes that when unlinking (reshowing this underlying countingArea, see the other half of
+   *  `matchCountingObjectsToLinkedCountingArea()`), that the state will be auto-updated (without animation) to match
    *  the appropriate and exact county object state.
    */
   private linkToSerializedCountingObjects( targetCountingObjectSerializations: CountingObjectSerialization[],
@@ -491,7 +493,7 @@ class CountingPlayArea extends CountingCommonModel {
     const inputSerializationsSortedByValue: CountingObjectSerialization[] = _.sortBy( targetCountingObjectSerializations,
       countingObjectSerialization => countingObjectSerialization.numberValue ).reverse();
 
-    // Only animate if we are linking to the ones play area
+    // Only animate if we are linking to the onesCountingArea
     const animate = areObjectsLinkedToOnes;
 
     const countingObjectsSortedByValue = this.getCountingObjectsByValue();
@@ -641,7 +643,7 @@ class CountingPlayArea extends CountingCommonModel {
         const offsetYSegment = stack ? CountingCommonConstants.BREAK_APART_Y_OFFSET : 0;
 
         // The movable bounds with respect to positionProperty and to how much space our countingObject bounds takes up.
-        const adjustedOriginBounds = countingObject.getOriginBounds( this.playAreaBoundsProperty.value );
+        const adjustedOriginBounds = countingObject.getOriginBounds( this.countingAreaBoundsProperty.value );
 
         // Each extra single that needs to be stacked will take up extra space, so use that in the calculation of if we
         // stack up or down. Will be 0 if not stacking.
@@ -689,5 +691,5 @@ class CountingPlayArea extends CountingCommonModel {
   }
 }
 
-numberSuiteCommon.register( 'CountingPlayArea', CountingPlayArea );
-export default CountingPlayArea;
+numberSuiteCommon.register( 'CountingArea', CountingArea );
+export default CountingArea;

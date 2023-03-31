@@ -1,7 +1,7 @@
 // Copyright 2022, University of Colorado Boulder
 
 /**
- * The 3 possible states of grouping + linking in a play area
+ * The 3 possible states of grouping + linking in a countingArea
  *
  * @author Chris Klusendorf
  */

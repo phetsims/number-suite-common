@@ -1,7 +1,7 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * Play area node for counting objects. This file was copied from counting-common/common/view/CountingCommonScreenView.js and
+ * Node for counting objects. This file was copied from counting-common/common/view/CountingCommonScreenView.js and
  * make-a-ten/explore/view/MakeATenExploreScreenView.js and then modified by @chrisklus to be used in number-play.
  *
  * @author Sharfudeen Ashraf
@@ -14,7 +14,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node, NodeOptions, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
 import ClosestDragListener from '../../../../sun/js/ClosestDragListener.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import CountingPlayArea, { CountingObjectSerialization } from '../model/CountingPlayArea.js';
+import CountingArea, { CountingObjectSerialization } from '../model/CountingArea.js';
 import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
 import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
@@ -36,7 +36,7 @@ type SelfOptions = {
   returnZoneProperty?: null | TReadOnlyProperty<Bounds2>;
   countingObjectCreatorPanelOptions?: CountingObjectCreatorPanelOptions;
 };
-type CountingPlayAreaNodeOptions = SelfOptions;
+type CountingAreaNodeOptions = SelfOptions;
 
 // constants
 const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5; // empirically determined to be an appropriate length for just 10s and 1s, in screen coords
@@ -44,7 +44,7 @@ const COUNTING_OBJECT_HANDLE_OFFSET_Y = -9.5; // empirically determined to be an
 const COUNTING_OBJECT_REPEL_DISTANCE = 10; // empirically determined to look nice, in screen coords, repel this much
 const COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN = 7; // If object are closer than this, than commence repel
 
-class CountingPlayAreaNode extends Node {
+class CountingAreaNode extends Node {
 
   // called when a countingObject finishes animating, see onNumberAnimationFinished
   private readonly animationFinishedListener: ( countingObject: CountingObject ) => void;
@@ -53,13 +53,13 @@ class CountingPlayAreaNode extends Node {
   private readonly dragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
 
   // our model
-  public readonly playArea: CountingPlayArea;
+  public readonly countingArea: CountingArea;
 
   // CountingObject.id => {CountingObjectNode} - lookup map for efficiency
   private readonly countingObjectNodeMap: CountingObjectNodeMap;
 
-  // the bounds of the play area where countingObjects can be dragged
-  public readonly playAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
+  // the bounds of the countingArea where countingObjects can be dragged
+  public readonly countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly countingObjectTypeProperty: TReadOnlyProperty<CountingObjectType>;
 
   // see options.viewHasIndependentModel for doc
@@ -76,12 +76,12 @@ class CountingPlayAreaNode extends Node {
   private readonly getCountingObjectOrigin: () => Vector2 = () => Vector2.ZERO;
   private readonly returnZoneProperty: TReadOnlyProperty<Bounds2> | null;
 
-  public constructor( playArea: CountingPlayArea,
+  public constructor( countingArea: CountingArea,
                       countingObjectTypeProperty: TReadOnlyProperty<CountingObjectType>,
-                      playAreaBoundsProperty: TReadOnlyProperty<Bounds2>,
-                      providedOptions?: CountingPlayAreaNodeOptions ) {
+                      countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>,
+                      providedOptions?: CountingAreaNodeOptions ) {
 
-    const options = optionize<CountingPlayAreaNodeOptions, StrictOmit<SelfOptions, 'countingObjectCreatorPanelOptions'>, NodeOptions>()( {
+    const options = optionize<CountingAreaNodeOptions, StrictOmit<SelfOptions, 'countingObjectCreatorPanelOptions'>, NodeOptions>()( {
       countingObjectLayerNode: null,
       backgroundDragTargetNode: null,
       viewHasIndependentModel: true,
@@ -95,11 +95,11 @@ class CountingPlayAreaNode extends Node {
     this.animationFinishedListener = ( countingObject: CountingObject ) => this.onNumberAnimationFinished( countingObject );
     this.dragFinishedListener = ( countingObjectNode: CountingObjectNode ) => this.onNumberDragFinished( countingObjectNode.countingObject );
 
-    this.playArea = playArea;
+    this.countingArea = countingArea;
 
     this.countingObjectNodeMap = {};
 
-    this.playAreaBoundsProperty = playAreaBoundsProperty;
+    this.countingAreaBoundsProperty = countingAreaBoundsProperty;
     this.countingObjectTypeProperty = countingObjectTypeProperty;
 
     this.viewHasIndependentModel = options.viewHasIndependentModel;
@@ -110,7 +110,7 @@ class CountingPlayAreaNode extends Node {
       backgroundDragTargetNode = options.backgroundDragTargetNode;
     }
     else {
-      backgroundDragTargetNode = new Rectangle( playAreaBoundsProperty.value );
+      backgroundDragTargetNode = new Rectangle( countingAreaBoundsProperty.value );
       this.addChild( backgroundDragTargetNode );
     }
     backgroundDragTargetNode.addInputListener( this.closestDragListener );
@@ -119,33 +119,33 @@ class CountingPlayAreaNode extends Node {
     const countingObjectRemovedListener = this.onCountingObjectRemoved.bind( this );
 
     // Add nodes for every already-existing countingObject
-    playArea.countingObjects.forEach( countingObjectAddedListener );
+    countingArea.countingObjects.forEach( countingObjectAddedListener );
 
-    // Add and remove nodes to match the playArea
-    playArea.countingObjects.addItemAddedListener( countingObjectAddedListener );
-    playArea.countingObjects.addItemRemovedListener( countingObjectRemovedListener );
+    // Add and remove nodes to match the countingArea
+    countingArea.countingObjects.addItemAddedListener( countingObjectAddedListener );
+    countingArea.countingObjects.addItemRemovedListener( countingObjectRemovedListener );
 
     // Persistent, no need to unlink
-    this.playAreaBoundsProperty.lazyLink( () => {
+    this.countingAreaBoundsProperty.lazyLink( () => {
       this.constrainAllPositions();
     } );
 
     // create the CountingObjectCreatorPanel
-    this.countingObjectCreatorPanel = new CountingObjectCreatorPanel( playArea, this, options.countingObjectCreatorPanelOptions );
+    this.countingObjectCreatorPanel = new CountingObjectCreatorPanel( countingArea, this, options.countingObjectCreatorPanelOptions );
     if ( options.creatorPanelX ) {
       this.countingObjectCreatorPanel.centerX = options.creatorPanelX;
     }
     else {
-      this.countingObjectCreatorPanel.left = playAreaBoundsProperty.value.minX + CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+      this.countingObjectCreatorPanel.left = countingAreaBoundsProperty.value.minX + CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
     }
 
     // set the y position of the CountingObjectCreatorPanel. NOTE: It is assumed below during initialization that the
-    // CountingObjectCreatorPanel is positioned along the bottom of the playArea bounds
+    // CountingObjectCreatorPanel is positioned along the bottom of the countingArea bounds
     const updateCountingObjectCreatorPanelPosition = () => {
-      this.countingObjectCreatorPanel.bottom = playAreaBoundsProperty.value.bottom -
+      this.countingObjectCreatorPanel.bottom = countingAreaBoundsProperty.value.bottom -
                                                CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
     };
-    playAreaBoundsProperty.link( updateCountingObjectCreatorPanelPosition );
+    countingAreaBoundsProperty.link( updateCountingObjectCreatorPanelPosition );
     this.transformEmitter.addListener( updateCountingObjectCreatorPanelPosition );
 
     if ( options.includeCountingObjectCreatorPanel ) {
@@ -156,7 +156,7 @@ class CountingPlayAreaNode extends Node {
     // initialize the model with positioning information
     if ( this.viewHasIndependentModel ) {
       const countingObjectCreatorNodeHeight = options.includeCountingObjectCreatorPanel ? this.countingObjectCreatorPanel.height : 0;
-      this.playArea.initialize( this.getCountingObjectOrigin, countingObjectCreatorNodeHeight, playAreaBoundsProperty );
+      this.countingArea.initialize( this.getCountingObjectOrigin, countingObjectCreatorNodeHeight, countingAreaBoundsProperty );
     }
 
     if ( options.countingObjectLayerNode ) {
@@ -174,15 +174,15 @@ class CountingPlayAreaNode extends Node {
 
     // In the view only because of countingObjectNode.updateNumber()
     Multilink.lazyMultilink( [
-      this.playArea.groupingEnabledProperty,
+      this.countingArea.groupingEnabledProperty,
       countingObjectTypeProperty
     ], groupingEnabled => {
 
       // When grouping is turned off, break apart any object groups
-      !groupingEnabled && this.playArea.breakApartCountingObjects( true );
+      !groupingEnabled && this.countingArea.breakApartCountingObjects( true );
 
-      for ( let i = 0; i < this.playArea.countingObjects.length; i++ ) {
-        const countingObject = this.playArea.countingObjects[ i ];
+      for ( let i = 0; i < this.countingArea.countingObjects.length; i++ ) {
+        const countingObject = this.countingArea.countingObjects[ i ];
         const countingObjectNode = this.getCountingObjectNode( countingObject );
 
         // Need to call this on countingObjects that are NOT included in sum.
@@ -193,26 +193,26 @@ class CountingPlayAreaNode extends Node {
 
           // In general this should be superfluous, but the "card" around a counting object type has larger bounds
           // than the object itself, so we need to handle this.
-          countingObject.setConstrainedDestination( this.playAreaBoundsProperty.value, countingObject.positionProperty.value );
+          countingObject.setConstrainedDestination( this.countingAreaBoundsProperty.value, countingObject.positionProperty.value );
         }
       }
     } );
   }
 
   /**
-   * Add a countingObject to the playArea and immediately start dragging it with the provided event.
+   * Add a countingObject to the countingArea and immediately start dragging it with the provided event.
    *
    * @param event - The Scenery event that triggered this.
    * @param countingObject - The countingObject to add and then drag
    *
    * TODO: same as CountingCommonScreenView.addAndDragCountingObject https://github.com/phetsims/number-play/issues/119
-   * only difference is call to playArea.calculateTotal()
+   * only difference is call to countingArea.calculateTotal()
    */
   public addAndDragCountingObject( event: PressListenerEvent, countingObject: CountingObject ): void {
 
     // Add it and lookup the related node.
-    this.playArea.addCountingObject( countingObject );
-    this.playArea.calculateTotal();
+    this.countingArea.addCountingObject( countingObject );
+    this.countingArea.calculateTotal();
 
     const countingObjectNode = this.getCountingObjectNode( countingObject );
     countingObjectNode.startSyntheticDrag( event );
@@ -228,7 +228,7 @@ class CountingPlayAreaNode extends Node {
 
     const countingObjectNode = new CountingObjectNode(
       countingObject,
-      this.playAreaBoundsProperty,
+      this.countingAreaBoundsProperty,
       this.addAndDragCountingObject.bind( this ),
       this.tryToCombineCountingObjects.bind( this ), {
         countingObjectTypeProperty: this.countingObjectTypeProperty,
@@ -311,9 +311,9 @@ class CountingPlayAreaNode extends Node {
       const droppedCountingObject = droppedNode.countingObject;
 
       // if grouping is turned off, repel away
-      if ( !this.playArea.groupingEnabledProperty.value || !droppedCountingObject.groupingEnabledProperty.value ) {
+      if ( !this.countingArea.groupingEnabledProperty.value || !droppedCountingObject.groupingEnabledProperty.value ) {
         if ( draggedCountingObject.positionProperty.value.distance( droppedCountingObject.positionProperty.value ) < COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN ) {
-          this.playArea.repelAway( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject, () => {
+          this.countingArea.repelAway( this.countingAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject, () => {
             return {
               left: -COUNTING_OBJECT_REPEL_DISTANCE,
               right: COUNTING_OBJECT_REPEL_DISTANCE
@@ -324,7 +324,7 @@ class CountingPlayAreaNode extends Node {
       else {
         // TODO: duplication https://github.com/phetsims/number-play/issues/119
         // allow any two numbers to be combined
-        this.playArea.collapseNumberModels( this.playAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject );
+        this.countingArea.collapseNumberModels( this.countingAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject );
         return; // No need to re-layer or try combining with others
       }
     }
@@ -334,7 +334,7 @@ class CountingPlayAreaNode extends Node {
    * Returns if it was able to add the countingObject to the tenFrame
    */
   private tryToAddToTenFrame( droppedCountingObject: CountingObject ): boolean {
-    if ( !this.playArea.tenFrames ) {
+    if ( !this.countingArea.tenFrames ) {
       return false;
     }
 
@@ -362,7 +362,7 @@ class CountingPlayAreaNode extends Node {
         let tenFrameSharesCountingObjectType = false;
 
         if ( tenFrame.countingObjects.lengthProperty.value > 0 ) {
-          tenFrameSharesCountingObjectType = this.playArea.countingObjects.includes( tenFrame.countingObjects[ 0 ] );
+          tenFrameSharesCountingObjectType = this.countingArea.countingObjects.includes( tenFrame.countingObjects[ 0 ] );
         }
 
         // Paper number cannot be added to tenFrames anyways.
@@ -373,7 +373,7 @@ class CountingPlayAreaNode extends Node {
           tenFrame.tryToAddCountingObject( droppedCountingObject );
         }
         else {
-          tenFrame.pushAwayCountingObject( droppedCountingObject, this.playAreaBoundsProperty.value );
+          tenFrame.pushAwayCountingObject( droppedCountingObject, this.countingAreaBoundsProperty.value );
         }
       }
       return true;
@@ -388,7 +388,7 @@ class CountingPlayAreaNode extends Node {
    */
   private isCountingObjectContainedByTenFrame( countingObject: CountingObject ): boolean {
     let isContained = false;
-    this.playArea.tenFrames?.forEach( tenFrame => {
+    this.countingArea.tenFrames?.forEach( tenFrame => {
       if ( tenFrame.containsCountingObject( countingObject ) ) {
         isContained = true;
       }
@@ -428,8 +428,8 @@ class CountingPlayAreaNode extends Node {
    * TODO: Duplication, https://github.com/phetsims/number-play/issues/119
    */
   private constrainAllPositions(): void {
-    this.playArea.countingObjects.forEach( ( countingObject: CountingObject ) => {
-      countingObject.setConstrainedDestination( this.playAreaBoundsProperty.value, countingObject.positionProperty.value );
+    this.countingArea.countingObjects.forEach( ( countingObject: CountingObject ) => {
+      countingObject.setConstrainedDestination( this.countingAreaBoundsProperty.value, countingObject.positionProperty.value );
     } );
   }
 
@@ -446,18 +446,39 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
+<<<<<<< HEAD:js/common/view/CountingPlayAreaNode.ts
    * Called when a countingObject has finished animating to its destination.
+=======
+   * Called when a countingObjectNode is split.
+   */
+  private onCountingObjectNodeSplit( countingObjectNode: CountingObjectNode ): void {
+    // this.countingArea.splitCue.triggerFade();
+  }
+
+  /**
+   * Called when a counting Object node starts being interacted with.
+   */
+  private static onNumberInteractionStarted( countingObjectNode: CountingObjectNode ): void {
+    const countingObject = countingObjectNode.countingObject;
+    if ( countingObject.numberValueProperty.value > 1 ) {
+      // this.countingArea.splitCue.attachToNumber( countingObject );
+    }
+  }
+
+  /**
+   * Called when a counting Object has finished animating to its destination.
+>>>>>>> 5a0f22c (Rename PlayArea -> CountingArea, see https://github.com/phetsims/number-suite-common/issues/40):js/common/view/CountingAreaNode.ts
    */
   private onNumberAnimationFinished( countingObject: CountingObject ): void {
 
     // If it animated to the return zone, it's probably split and meant to be returned.
-    if ( this.playArea.countingObjects.includes( countingObject ) && this.isNumberInReturnZone( countingObject ) ) {
+    if ( this.countingArea.countingObjects.includes( countingObject ) && this.isNumberInReturnZone( countingObject ) ) {
       if ( countingObject.includeInSumProperty.value ) {
         this.onNumberDragFinished( countingObject );
       }
       else {
         const countingObjectValue = countingObject.numberValueProperty.value;
-        this.playArea.removeCountingObject( countingObject );
+        this.countingArea.removeCountingObject( countingObject );
 
         // see if the creator node should show any hidden targets since a counting object was just returned
         this.countingObjectCreatorPanel.countingCreatorNode.checkTargetVisibility( countingObjectValue );
@@ -483,9 +504,9 @@ class CountingPlayAreaNode extends Node {
 
     // Return it to the panel if it's been dropped in the panel.
     if ( this.isNumberInReturnZone( countingObject ) ) {
-      // console.log( `about to drop ${countingObject.numberValueProperty.value} in ${this.playArea.name} return zone` );
+      // console.log( `about to drop ${countingObject.numberValueProperty.value} in ${this.countingArea.name} return zone` );
       countingObject.includeInSumProperty.value = false;
-      this.playArea.calculateTotal();
+      this.countingArea.calculateTotal();
 
       // Set its destination to the proper target (with the offset so that it will disappear once centered).
       let targetPosition = this.countingObjectCreatorPanel.countingCreatorNode.getOriginPosition();
@@ -504,7 +525,7 @@ class CountingPlayAreaNode extends Node {
    * countingObjects.
    */
   public getSerializedCountingObjectsIncludedInSum(): CountingObjectSerialization[] {
-    const countingObjectsIncludedInSum = this.playArea.getCountingObjectsIncludedInSum();
+    const countingObjectsIncludedInSum = this.countingArea.getCountingObjectsIncludedInSum();
 
     const countingObjectPositions: CountingObjectSerialization[] = [];
     countingObjectsIncludedInSum.forEach( countingObject => {
@@ -523,5 +544,5 @@ class CountingPlayAreaNode extends Node {
   }
 }
 
-numberSuiteCommon.register( 'CountingPlayAreaNode', CountingPlayAreaNode );
-export default CountingPlayAreaNode;
+numberSuiteCommon.register( 'CountingAreaNode', CountingAreaNode );
+export default CountingAreaNode;

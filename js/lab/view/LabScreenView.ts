@@ -12,7 +12,7 @@ import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import { ManualConstraint, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
-import CountingPlayAreaNode from '../../common/view/CountingPlayAreaNode.js';
+import CountingAreaNode from '../../common/view/CountingAreaNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
 import DraggableTenFrameNode from './DraggableTenFrameNode.js';
@@ -43,14 +43,14 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   private readonly tenFrameNodes: DraggableTenFrameNode[];
   public readonly symbolCardCreatorPanel: SymbolCardCreatorPanel;
   private readonly tenFrameCreatorPanel: TenFrameCreatorPanel;
-  private readonly onesPlayAreaNode: CountingPlayAreaNode;
-  private readonly dogPlayAreaNode: CountingPlayAreaNode;
-  private readonly applePlayAreaNode: CountingPlayAreaNode;
-  private readonly butterflyPlayAreaNode: CountingPlayAreaNode;
-  private readonly ballPlayAreaNode: CountingPlayAreaNode;
-  private readonly countingObjectTypeToPlayAreaNode: Map<CountingObjectType, CountingPlayAreaNode>;
-  private readonly playAreaNodes: CountingPlayAreaNode[];
-  public readonly objectPlayAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
+  private readonly onesCountingAreaNode: CountingAreaNode;
+  private readonly dogCountingAreaNode: CountingAreaNode;
+  private readonly appleCountingAreaNode: CountingAreaNode;
+  private readonly butterflyCountingAreaNode: CountingAreaNode;
+  private readonly ballCountingAreaNode: CountingAreaNode;
+  private readonly countingObjectTypeToCountingAreaNode: Map<CountingObjectType, CountingAreaNode>;
+  private readonly countingAreaNodes: CountingAreaNode[];
+  public readonly objectCountingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly numberCardBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly symbolCardBoundsProperty: TReadOnlyProperty<Bounds2>;
 
@@ -65,7 +65,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     this.model = model;
     this.pieceLayer = new Node();
-    const backgroundDragTargetNode = new Rectangle( this.layoutBounds ); // see CountingPlayAreaNode for doc
+    const backgroundDragTargetNode = new Rectangle( this.layoutBounds ); // see CountingAreaNode for doc
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 make file constants?
     const tenFrameCreatorPanelLeft = 143;
@@ -92,7 +92,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
                                      this.numberCardCreatorCarousel.height ).withMaxY(
         visibleBounds.maxY - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN - this.tenFrameCreatorPanel.height );
     } );
-    this.objectPlayAreaBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
+    this.objectCountingAreaBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
       return visibleBounds.withMinY( visibleBounds.minY + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y +
                                      this.numberCardCreatorCarousel.height )
         .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
@@ -100,7 +100,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     this.bottomReturnZoneProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
 
-    const countingPlayAreaNodeOptions = {
+    const countingAreaNodeOptions = {
       countingObjectCreatorPanelOptions: {
         arrowButtonsVisible: false, // see https://github.com/phetsims/number-suite-common/issues/11
         xMargin: 20 // increase a bit because we're not showing arrow buttons
@@ -110,71 +110,71 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
       returnZoneProperty: this.bottomReturnZoneProperty
     };
 
-    // create and add the left ObjectsPlayAreaNode
-    this.dogPlayAreaNode = new CountingPlayAreaNode(
-      model.dogPlayArea,
+    // create and add the left ObjectsCountingAreaNode
+    this.dogCountingAreaNode = new CountingAreaNode(
+      model.dogCountingArea,
       new EnumerationProperty( CountingObjectType.DOG ),
-      this.objectPlayAreaBoundsProperty,
-      countingPlayAreaNodeOptions
+      this.objectCountingAreaBoundsProperty,
+      countingAreaNodeOptions
     );
-    this.addChild( this.dogPlayAreaNode );
+    this.addChild( this.dogCountingAreaNode );
 
-    // create and add the right ObjectsPlayAreaNode
-    this.applePlayAreaNode = new CountingPlayAreaNode(
-      model.applePlayArea,
+    // create and add the right ObjectsCountingAreaNode
+    this.appleCountingAreaNode = new CountingAreaNode(
+      model.appleCountingArea,
       new EnumerationProperty( CountingObjectType.APPLE ),
-      this.objectPlayAreaBoundsProperty,
-      countingPlayAreaNodeOptions
+      this.objectCountingAreaBoundsProperty,
+      countingAreaNodeOptions
     );
-    this.addChild( this.applePlayAreaNode );
+    this.addChild( this.appleCountingAreaNode );
 
-    // create and add the right ObjectsPlayAreaNode
-    this.butterflyPlayAreaNode = new CountingPlayAreaNode(
-      model.butterflyPlayArea,
+    // create and add the right ObjectsCountingAreaNode
+    this.butterflyCountingAreaNode = new CountingAreaNode(
+      model.butterflyCountingArea,
       new EnumerationProperty( CountingObjectType.BUTTERFLY ),
-      this.objectPlayAreaBoundsProperty,
-      countingPlayAreaNodeOptions
+      this.objectCountingAreaBoundsProperty,
+      countingAreaNodeOptions
     );
-    this.addChild( this.butterflyPlayAreaNode );
+    this.addChild( this.butterflyCountingAreaNode );
 
-    // create and add the right ObjectsPlayAreaNode
-    this.ballPlayAreaNode = new CountingPlayAreaNode(
-      model.ballPlayArea,
+    // create and add the right ObjectsCountingAreaNode
+    this.ballCountingAreaNode = new CountingAreaNode(
+      model.ballCountingArea,
       new EnumerationProperty( CountingObjectType.BALL ),
-      this.objectPlayAreaBoundsProperty,
-      countingPlayAreaNodeOptions
+      this.objectCountingAreaBoundsProperty,
+      countingAreaNodeOptions
     );
-    this.addChild( this.ballPlayAreaNode );
+    this.addChild( this.ballCountingAreaNode );
 
-    // create and add the CountingPlayAreaNode
-    this.onesPlayAreaNode = new CountingPlayAreaNode(
-      model.onesPlayArea,
+    // create and add the CountingAreaNode
+    this.onesCountingAreaNode = new CountingAreaNode(
+      model.onesCountingArea,
       new EnumerationProperty( CountingObjectType.PAPER_NUMBER ),
-      this.objectPlayAreaBoundsProperty,
-      countingPlayAreaNodeOptions
+      this.objectCountingAreaBoundsProperty,
+      countingAreaNodeOptions
     );
-    this.addChild( this.onesPlayAreaNode );
+    this.addChild( this.onesCountingAreaNode );
 
-    const hideOnesPlayAreaNodeAdjustment = this.onesPlayAreaNode.countingObjectCreatorPanel.width / 2;
+    const hideOnesCountingAreaNodeAdjustment = this.onesCountingAreaNode.countingObjectCreatorPanel.width / 2;
 
     preferences.showLabOnesProperty.link( showLabOnes => {
       if ( showLabOnes ) {
         this.tenFrameCreatorPanel.left = tenFrameCreatorPanelLeft;
       }
       else {
-        this.model.onesPlayArea.reset();
-        this.tenFrameCreatorPanel.left = tenFrameCreatorPanelLeft + hideOnesPlayAreaNodeAdjustment;
+        this.model.onesCountingArea.reset();
+        this.tenFrameCreatorPanel.left = tenFrameCreatorPanelLeft + hideOnesCountingAreaNodeAdjustment;
       }
-      this.onesPlayAreaNode.visible = showLabOnes;
+      this.onesCountingAreaNode.visible = showLabOnes;
     } );
 
-    // Note that all CountingPlayAreaNode instances are assumed to be positioned at (0,0) and therefore are in
-    // the same coordinate frame as this ScreenView. Here we reach inside those CountingPlayAreaNode instances
+    // Note that all CountingAreaNode instances are assumed to be positioned at (0,0) and therefore are in
+    // the same coordinate frame as this ScreenView. Here we reach inside those CountingAreaNode instances
     // and position their CountingObjectCreatorPanels. This made it impossible to change the layout so that
     // all counting objects are in a single panel, so we bailed on https://github.com/phetsims/number-suite-common/issues/11.
-    ManualConstraint.create( this, [ this.tenFrameCreatorPanel, this.dogPlayAreaNode.countingObjectCreatorPanel,
-        this.applePlayAreaNode.countingObjectCreatorPanel, this.butterflyPlayAreaNode.countingObjectCreatorPanel,
-        this.ballPlayAreaNode.countingObjectCreatorPanel, this.onesPlayAreaNode.countingObjectCreatorPanel ],
+    ManualConstraint.create( this, [ this.tenFrameCreatorPanel, this.dogCountingAreaNode.countingObjectCreatorPanel,
+        this.appleCountingAreaNode.countingObjectCreatorPanel, this.butterflyCountingAreaNode.countingObjectCreatorPanel,
+        this.ballCountingAreaNode.countingObjectCreatorPanel, this.onesCountingAreaNode.countingObjectCreatorPanel ],
       ( tenFrameCreatorNodeProxy, dogCreatorNodeProxy, appleCreatorNodeProxy, butterflyCreatorNodeProxy,
         ballsCreatorNodeProxy, onesCreatorNodeProxy ) => {
         dogCreatorNodeProxy.left = tenFrameCreatorNodeProxy.right + creatorNodeSpacing;
@@ -184,19 +184,19 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         onesCreatorNodeProxy.left = ballsCreatorNodeProxy.right + creatorNodeSpacing;
       } );
 
-    this.countingObjectTypeToPlayAreaNode = new Map();
-    this.countingObjectTypeToPlayAreaNode.set( CountingObjectType.DOG, this.dogPlayAreaNode );
-    this.countingObjectTypeToPlayAreaNode.set( CountingObjectType.APPLE, this.applePlayAreaNode );
-    this.countingObjectTypeToPlayAreaNode.set( CountingObjectType.BUTTERFLY, this.butterflyPlayAreaNode );
-    this.countingObjectTypeToPlayAreaNode.set( CountingObjectType.BALL, this.ballPlayAreaNode );
-    this.countingObjectTypeToPlayAreaNode.set( CountingObjectType.PAPER_NUMBER, this.onesPlayAreaNode );
+    this.countingObjectTypeToCountingAreaNode = new Map();
+    this.countingObjectTypeToCountingAreaNode.set( CountingObjectType.DOG, this.dogCountingAreaNode );
+    this.countingObjectTypeToCountingAreaNode.set( CountingObjectType.APPLE, this.appleCountingAreaNode );
+    this.countingObjectTypeToCountingAreaNode.set( CountingObjectType.BUTTERFLY, this.butterflyCountingAreaNode );
+    this.countingObjectTypeToCountingAreaNode.set( CountingObjectType.BALL, this.ballCountingAreaNode );
+    this.countingObjectTypeToCountingAreaNode.set( CountingObjectType.PAPER_NUMBER, this.onesCountingAreaNode );
 
-    this.playAreaNodes = [
-      this.dogPlayAreaNode,
-      this.applePlayAreaNode,
-      this.butterflyPlayAreaNode,
-      this.ballPlayAreaNode,
-      this.onesPlayAreaNode
+    this.countingAreaNodes = [
+      this.dogCountingAreaNode,
+      this.appleCountingAreaNode,
+      this.butterflyCountingAreaNode,
+      this.ballCountingAreaNode,
+      this.onesCountingAreaNode
     ];
 
     // position and add the symbolCardCreatorPanel later, so we have access to its bounds Property
@@ -253,15 +253,15 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         this.tenFrameCreatorPanel.bottom = bottomY;
         resetAllButton.bottom = bottomY;
 
-        const returnZoneRightBoundary = showLabOnes ? this.onesPlayAreaNode.right : this.ballPlayAreaNode.right;
+        const returnZoneRightBoundary = showLabOnes ? this.onesCountingAreaNode.right : this.ballCountingAreaNode.right;
 
         this.bottomReturnZoneProperty.value = new Bounds2( this.tenFrameCreatorPanel.left, this.tenFrameCreatorPanel.top,
           returnZoneRightBoundary, bottomY );
       } );
 
-    this.objectPlayAreaBoundsProperty.link( objectPlayAreaBounds => {
+    this.objectCountingAreaBoundsProperty.link( objectCountingAreaBounds => {
       this.symbolCardCreatorPanel.getAllSymbolNodes().forEach( symbolCardNode => {
-        symbolCardNode.setConstrainedDestination( objectPlayAreaBounds, symbolCardNode.positionProperty.value );
+        symbolCardNode.setConstrainedDestination( objectCountingAreaBounds, symbolCardNode.positionProperty.value );
       } );
     } );
   }
@@ -273,11 +273,11 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     let countingObjectType = CountingObjectType.DOG;
     let countingObjectTypeFound = false;
 
-    for ( let i = 0; i < this.playAreaNodes.length; i++ ) {
-      const playAreaNode = this.playAreaNodes[ i ];
+    for ( let i = 0; i < this.countingAreaNodes.length; i++ ) {
+      const countingAreaNode = this.countingAreaNodes[ i ];
 
-      if ( playAreaNode.playArea.countingObjects.includes( countingObject ) ) {
-        const countingObjectNode = playAreaNode.getCountingObjectNode( countingObject );
+      if ( countingAreaNode.countingArea.countingObjects.includes( countingObject ) ) {
+        const countingObjectNode = countingAreaNode.getCountingObjectNode( countingObject );
         countingObjectType = countingObjectNode.countingObjectTypeProperty.value;
         countingObjectTypeFound = true;
         break;
@@ -331,15 +331,15 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     };
 
     const tenFrameNode = new DraggableTenFrameNode( tenFrame, this.model.selectedTenFrameProperty,
-      this.objectPlayAreaBoundsProperty, {
+      this.objectCountingAreaBoundsProperty, {
         dropListener: dropListener,
         removeCountingObjectListener: countingObject => {
-          const playAreaNode = this.getCorrespondingPlayAreaNode( countingObject );
-          playAreaNode.playArea.sendCountingObjectToCreatorNode( countingObject );
+          const countingAreaNode = this.getCorrespondingCountingAreaNode( countingObject );
+          countingAreaNode.countingArea.sendCountingObjectToCreatorNode( countingObject );
         },
         getCountingObjectNode: countingObject => {
-          const playAreaNode = this.getCorrespondingPlayAreaNode( countingObject );
-          return playAreaNode.getCountingObjectNode( countingObject );
+          const countingAreaNode = this.getCorrespondingCountingAreaNode( countingObject );
+          return countingAreaNode.getCountingObjectNode( countingObject );
         }
       } );
 
@@ -372,14 +372,14 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   }
 
   /**
-   * Each type of counting object has its own play area, so when working with a counting object, we need to look up
-   * its corresponding play area in order to do an operation on it (like sending the counting object back to its origin).
+   * Each type of counting object has its own countingArea, so when working with a counting object, we need to look up
+   * its corresponding countingArea in order to do an operation on it (like sending the counting object back to its origin).
    */
-  private getCorrespondingPlayAreaNode( countingObject: CountingObject ): CountingPlayAreaNode {
+  private getCorrespondingCountingAreaNode( countingObject: CountingObject ): CountingAreaNode {
     const countingObjectType = this.getCountingObjectType( countingObject );
-    const playAreaNode = this.countingObjectTypeToPlayAreaNode.get( countingObjectType );
-    assert && assert( playAreaNode, 'playAreaNode not found for counting object type: ' + countingObjectType.name );
-    return playAreaNode!;
+    const countingAreaNode = this.countingObjectTypeToCountingAreaNode.get( countingObjectType );
+    assert && assert( countingAreaNode, 'countingAreaNode not found for counting object type: ' + countingObjectType.name );
+    return countingAreaNode!;
   }
 }
 

@@ -95,7 +95,7 @@ class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
   }
 
   /**
-   * Returns all existing cards in the play area.
+   * Returns all existing cards in the countingArea.
    */
   public getAllSymbolNodes(): SymbolCardNode[] {
     const allSymbolNodes = _.filter( this.screenView.pieceLayer.children,
