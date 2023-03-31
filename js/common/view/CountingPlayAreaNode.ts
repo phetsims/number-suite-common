@@ -46,12 +46,6 @@ const COUNTING_OBJECT_REPEL_WHEN_CLOSER_THAN = 7; // If object are closer than t
 
 class CountingPlayAreaNode extends Node {
 
-  // called when a countingObjectNode is split, see onCountingObjectNodeSplit
-  private readonly splitListener: ( countingObjectNode: CountingObjectNode ) => void;
-
-  // called when a countingObjectNode begins to be interacted with, see onNumberInteractionStarted
-  private readonly interactionListener: ( countingObjectNode: CountingObjectNode ) => void;
-
   // called when a countingObject finishes animating, see onNumberAnimationFinished
   private readonly animationFinishedListener: ( countingObject: CountingObject ) => void;
 
@@ -105,10 +99,6 @@ class CountingPlayAreaNode extends Node {
     super( options );
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 TODO-TS Get rid of this binding pattern. Update function signatures in the attributes.
-
-    this.splitListener = this.onCountingObjectNodeSplit.bind( this );
-
-    this.interactionListener = CountingPlayAreaNode.onNumberInteractionStarted.bind( this );
 
     this.animationFinishedListener = this.onNumberAnimationFinished.bind( this );
 
@@ -269,8 +259,6 @@ class CountingPlayAreaNode extends Node {
     this.closestDragListener.addDraggableItem( countingObjectNode );
 
     // add listeners
-    countingObjectNode.splitEmitter.addListener( this.splitListener );
-    countingObjectNode.interactionStartedEmitter.addListener( this.interactionListener );
     countingObject.endAnimationEmitter.addListener( this.animationFinishedListener );
     countingObjectNode.endDragEmitter.addListener( this.dragFinishedListener );
   }
@@ -287,8 +275,6 @@ class CountingPlayAreaNode extends Node {
     // Remove listeners
     countingObjectNode.endDragEmitter.removeListener( this.dragFinishedListener );
     countingObject.endAnimationEmitter.removeListener( this.animationFinishedListener );
-    countingObjectNode.interactionStartedEmitter.removeListener( this.interactionListener );
-    countingObjectNode.splitEmitter.removeListener( this.splitListener );
 
     delete this.countingObjectNodeMap[ countingObjectNode.countingObject.id ];
     this.closestDragListener.removeDraggableItem( countingObjectNode );
@@ -465,23 +451,6 @@ class CountingPlayAreaNode extends Node {
     const panelBounds = this.returnZoneProperty ? this.returnZoneProperty.value : this.countingObjectCreatorPanel.bounds;
 
     return panelBounds.intersectsBounds( parentBounds );
-  }
-
-  /**
-   * Called when a countingObjectNode is split.
-   */
-  private onCountingObjectNodeSplit( countingObjectNode: CountingObjectNode ): void {
-    // this.playArea.splitCue.triggerFade();
-  }
-
-  /**
-   * Called when a counting Object node starts being interacted with.
-   */
-  private static onNumberInteractionStarted( countingObjectNode: CountingObjectNode ): void {
-    const countingObject = countingObjectNode.countingObject;
-    if ( countingObject.numberValueProperty.value > 1 ) {
-      // this.playArea.splitCue.attachToNumber( countingObject );
-    }
   }
 
   /**
