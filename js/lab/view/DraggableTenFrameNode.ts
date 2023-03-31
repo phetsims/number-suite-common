@@ -1,7 +1,7 @@
 // Copyright 2019-2023, University of Colorado Boulder
 
 /**
- * A ten frame node that can be dragged around and hold play objects.
+ * A ten frame node that can be dragged around and hold countingObjects.
  *
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
