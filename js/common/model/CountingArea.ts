@@ -47,8 +47,8 @@ export type CountingObjectSerialization = {
 // constants
 const GROUP_DIVISORS = [ 2, 5, 10 ]; // specified by designer
 
-// the minimum distance that a playObject added to the countingArea via animation can be to another playObject in the
-// countingArea, in screen coordinates
+// the minimum distance that a countingObject added to the countingArea via animation can be to another countingObject
+// in the countingArea, in screen coordinates
 const MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS = 60;
 
 class CountingArea extends CountingCommonModel {
@@ -179,9 +179,9 @@ class CountingArea extends CountingCommonModel {
       .withMaxY( this.countingAreaBoundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
     const countingObjectOriginBounds = countingObject.getOriginBounds( countingAreaBounds );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 this algorithm does not take into account paper numbers that are on their way to a spot, and should
-    // be rewritten to be better and accommodate that constraint
-    // looks for positions that are not overlapping with other playObjects in the countingArea
+    // TODO https://github.com/phetsims/number-suite-common/issues/29 this algorithm does not take into account paper
+    //   numbers that are on their way to a spot, and should be rewritten to be better and accommodate that constraint
+    // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
       const possibleDestinationX = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxX - countingObjectOriginBounds.minX ) +
                                    countingObjectOriginBounds.minX;
@@ -191,7 +191,7 @@ class CountingArea extends CountingCommonModel {
       let spotIsAvailable = true;
       const numberOfCountingObjectsInCountingArea = this.countingObjects.lengthProperty.value;
 
-      // compare the proposed destination to the position of every playObject in the countingArea. use c-style loop for
+      // compare the proposed destination to the position of every countingObject in the countingArea. use c-style loop for
       // best performance, since this loop is nested
       for ( let i = 0; i < numberOfCountingObjectsInCountingArea; i++ ) {
         if ( this.countingObjects[ i ].positionProperty.value.distance( possibleDestinationPoint )
@@ -404,14 +404,14 @@ class CountingArea extends CountingCommonModel {
 
     this.breakApartCountingObjects();
 
-    // copy the current playObjectsInCountingArea so we can mutate it
+    // Copy the current countingObjects in the countingArea so we can mutate them.
     let objectsToOrganize = this.getCountingObjectsIncludedInSum();
     const numberOfObjectsToOrganize = objectsToOrganize.length;
 
     for ( let i = 0; i < numberOfObjectsToOrganize; i++ ) {
       const destination = this.organizedObjectSpots[ i ];
 
-      // sort the  playObjectToOrganize by closest to the destination
+      // Sort the countingObjects by closest to the destination.
       objectsToOrganize = _.sortBy( objectsToOrganize, object => {
         return object.positionProperty.value.distance( destination );
       } );

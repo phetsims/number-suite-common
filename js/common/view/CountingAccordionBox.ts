@@ -88,7 +88,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
         } );
       } );
 
-      // create and add the RectangularRadioButtonGroup, which is a control for changing the CountingObjectType of the playObjects
+      // create and add the RectangularRadioButtonGroup, which is a control for changing the CountingObjectType of the countingObjects
       radioButtonGroup = new RectangularRadioButtonGroup( countingObjectTypeProperty, buttons, {
         orientation: 'horizontal',
         spacing: 10,
