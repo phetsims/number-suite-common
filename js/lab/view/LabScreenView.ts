@@ -34,6 +34,9 @@ import type SymbolType from './SymbolType.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 
+const TEN_FRAME_CREATOR_PANEL_LEFT = 143;
+const CREATOR_NODE_SPACING = 18;
+
 class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   private readonly model: LabModel;
 
@@ -67,10 +70,6 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.pieceLayer = new Node();
     const backgroundDragTargetNode = new Rectangle( this.layoutBounds ); // see CountingAreaNode for doc
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 make file constants?
-    const tenFrameCreatorPanelLeft = 143;
-    const creatorNodeSpacing = 18;
-
     this.numberCardCreatorCarousel = new NumberCardCreatorCarousel( this );
     this.numberCardCreatorCarousel.centerX = this.layoutBounds.centerX;
     this.addChild( this.numberCardCreatorCarousel );
@@ -79,7 +78,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.symbolCardCreatorPanel = new SymbolCardCreatorPanel( model, this, symbolTypes );
 
     this.tenFrameCreatorPanel = new TenFrameCreatorPanel( model, this );
-    this.tenFrameCreatorPanel.left = tenFrameCreatorPanelLeft;
+    this.tenFrameCreatorPanel.left = TEN_FRAME_CREATOR_PANEL_LEFT;
     this.addChild( this.tenFrameCreatorPanel );
 
     this.numberCardBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
@@ -159,11 +158,11 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
 
     preferences.showLabOnesProperty.link( showLabOnes => {
       if ( showLabOnes ) {
-        this.tenFrameCreatorPanel.left = tenFrameCreatorPanelLeft;
+        this.tenFrameCreatorPanel.left = TEN_FRAME_CREATOR_PANEL_LEFT;
       }
       else {
         this.model.onesCountingArea.reset();
-        this.tenFrameCreatorPanel.left = tenFrameCreatorPanelLeft + hideOnesCountingAreaNodeAdjustment;
+        this.tenFrameCreatorPanel.left = TEN_FRAME_CREATOR_PANEL_LEFT + hideOnesCountingAreaNodeAdjustment;
       }
       this.onesCountingAreaNode.visible = showLabOnes;
     } );
@@ -177,11 +176,11 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
         this.ballCountingAreaNode.countingObjectCreatorPanel, this.onesCountingAreaNode.countingObjectCreatorPanel ],
       ( tenFrameCreatorNodeProxy, dogCreatorNodeProxy, appleCreatorNodeProxy, butterflyCreatorNodeProxy,
         ballsCreatorNodeProxy, onesCreatorNodeProxy ) => {
-        dogCreatorNodeProxy.left = tenFrameCreatorNodeProxy.right + creatorNodeSpacing;
-        appleCreatorNodeProxy.left = dogCreatorNodeProxy.right + creatorNodeSpacing;
-        butterflyCreatorNodeProxy.left = appleCreatorNodeProxy.right + creatorNodeSpacing;
-        ballsCreatorNodeProxy.left = butterflyCreatorNodeProxy.right + creatorNodeSpacing;
-        onesCreatorNodeProxy.left = ballsCreatorNodeProxy.right + creatorNodeSpacing;
+        dogCreatorNodeProxy.left = tenFrameCreatorNodeProxy.right + CREATOR_NODE_SPACING;
+        appleCreatorNodeProxy.left = dogCreatorNodeProxy.right + CREATOR_NODE_SPACING;
+        butterflyCreatorNodeProxy.left = appleCreatorNodeProxy.right + CREATOR_NODE_SPACING;
+        ballsCreatorNodeProxy.left = butterflyCreatorNodeProxy.right + CREATOR_NODE_SPACING;
+        onesCreatorNodeProxy.left = ballsCreatorNodeProxy.right + CREATOR_NODE_SPACING;
       } );
 
     this.countingObjectTypeToCountingAreaNode = new Map();
