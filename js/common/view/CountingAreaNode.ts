@@ -1,8 +1,9 @@
 // Copyright 2022-2023, University of Colorado Boulder
 
 /**
- * Node for counting objects. This file was copied from counting-common/common/view/CountingCommonScreenView.js and
- * make-a-ten/explore/view/MakeATenExploreScreenView.js and then modified by @chrisklus to be used in number-play.
+ * Node for a CountingArea. This file was copied from counting-common/common/view/CountingCommonScreenView.js and
+ * make-a-ten/explore/view/MakeATenExploreScreenView.js and then modified by @chrisklus to be used in number-suite-common.
+ * See https://github.com/phetsims/number-suite-common/issues/41.
  *
  * @author Sharfudeen Ashraf
  * @author Chris Klusendorf (PhET Interactive Simulations)

@@ -1,11 +1,8 @@
 // Copyright 2019-2023, University of Colorado Boulder
 
 /**
- * Model for the Explore screen in Make a Ten. Includes the total, cues, and adding in initial numbers. This file was
- * copied in part from make-a-ten/explore/model/MakeATenExploreModel.js
- * then modified by @chrisklus to be used in number-play.
+ * Model for managing countingObjects and tenFrames.
  *
- * @author Sharfudeen Ashraf
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
