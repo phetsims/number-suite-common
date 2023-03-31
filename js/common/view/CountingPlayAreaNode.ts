@@ -331,42 +331,49 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Returns if it was able to add the object to the tenFrame
+   * Returns if it was able to add the countingObject to the tenFrame
    */
   private tryToAddToTenFrame( droppedCountingObject: CountingObject ): boolean {
     if ( !this.playArea.tenFrames ) {
       return false;
     }
 
-    const droppedNode = this.getCountingObjectNode( droppedCountingObject );
+    const droppedCountingObjectNode = this.getCountingObjectNode( droppedCountingObject );
     const allDraggableTenFrameNodes = _.filter( this.countingObjectLayerNode.children,
       child => child instanceof DraggableTenFrameNode ) as DraggableTenFrameNode[];
 
-    const droppedNodeCountingType = droppedNode.countingObjectTypeProperty.value;
+    const droppedNodeCountingType = droppedCountingObjectNode.countingObjectTypeProperty.value;
 
     if ( !allDraggableTenFrameNodes.length ) {
       return false;
     }
 
-    const droppedTenFrameNode = this.findAttachableTenFrameNode( droppedNode, allDraggableTenFrameNodes );
+    const tenFrameNode = this.findAttachableTenFrameNode( droppedCountingObjectNode, allDraggableTenFrameNodes );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 Docs and cleanup
-    if ( droppedTenFrameNode ) {
+    // If we found a tenFrame underneath this countingObject
+    if ( tenFrameNode ) {
+
+      // If this countingObject is not already in a tenFrame
       if ( !this.isCountingObjectContainedByTenFrame( droppedCountingObject ) ) {
-        const droppedTenFrame = droppedTenFrameNode.tenFrame;
-        let matchingCountingObjectType = false;
 
-        if ( droppedTenFrame.countingObjects.lengthProperty.value ) {
-          matchingCountingObjectType = this.playArea.countingObjects.includes( droppedTenFrame.countingObjects[ 0 ] );
+        const tenFrame = tenFrameNode.tenFrame;
+
+        // If the countingObject and tenFrame have the same countingObjectType
+        let tenFrameSharesCountingObjectType = false;
+
+        if ( tenFrame.countingObjects.lengthProperty.value > 0 ) {
+          tenFrameSharesCountingObjectType = this.playArea.countingObjects.includes( tenFrame.countingObjects[ 0 ] );
         }
 
-        if ( matchingCountingObjectType ||
-             ( !droppedTenFrame.countingObjects.lengthProperty.value && droppedNodeCountingType !== CountingObjectType.PAPER_NUMBER )
-        ) {
-          droppedTenFrame.tryToAddCountingObject( droppedCountingObject );
+        // Paper number cannot be added to tenFrames anyways.
+        const noCountingObjectsInTenFrame = !tenFrame.countingObjects.lengthProperty.value &&
+                                            droppedNodeCountingType !== CountingObjectType.PAPER_NUMBER;
+
+        if ( tenFrameSharesCountingObjectType || noCountingObjectsInTenFrame ) {
+          tenFrame.tryToAddCountingObject( droppedCountingObject );
         }
         else {
-          droppedTenFrame.pushAwayCountingObject( droppedCountingObject, this.playAreaBoundsProperty.value );
+          tenFrame.pushAwayCountingObject( droppedCountingObject, this.playAreaBoundsProperty.value );
         }
       }
       return true;
@@ -392,8 +399,8 @@ class CountingPlayAreaNode extends Node {
 
   /**
    * Given the countingObjectNode and an array of DraggableTenFrameNodes, return the highest TenFrameNode that the
-   * countingObjectNode is on top of, if any. This relies on the assumption that the DraggableTenFrameNodes provided
-   * are currently children of a Node layer.
+   * countingObjectNode is on top of, if any (or null if none are found). This relies on the assumption that the
+   * DraggableTenFrameNodes provided are currently children of a Node layer.
    */
   private findAttachableTenFrameNode( countingObjectNode: CountingObjectNode,
                                       allDraggableTenFrameNodes: DraggableTenFrameNode[] ): DraggableTenFrameNode | null {
