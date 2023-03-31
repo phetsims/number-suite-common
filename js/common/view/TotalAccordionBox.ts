@@ -56,7 +56,7 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
       backgroundStroke: null
     } );
 
-    // create the arrow buttons, which add or remove counting Objects
+    // create the arrow buttons, which add or remove countingObjects
     const upArrowButton = new ArrowButton( 'up', () => {
       // console.log( 'about to add 1 with up arrow in in total accordion box' );
       playArea.createCountingObjectFromCreatorNode();

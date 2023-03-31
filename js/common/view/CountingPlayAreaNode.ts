@@ -118,7 +118,7 @@ class CountingPlayAreaNode extends Node {
     const countingObjectAddedListener = this.onCountingObjectAdded.bind( this );
     const countingObjectRemovedListener = this.onCountingObjectRemoved.bind( this );
 
-    // Add nodes for every already-existing counting Object
+    // Add nodes for every already-existing countingObject
     playArea.countingObjects.forEach( countingObjectAddedListener );
 
     // Add and remove nodes to match the playArea
@@ -277,7 +277,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * When the user drops a counting Object they were dragging, see if it can combine with any other nearby counting Objects.
+   * When the user drops a countingObject they were dragging, see if it can combine with any other nearby countingObjects.
    */
   public tryToCombineCountingObjects( draggedCountingObject: CountingObject ): void {
     //TODO https://github.com/phetsims/number-suite-common/issues/29 This seems like a weird sidestep to try tenframes first and maybe be moved
@@ -377,7 +377,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * TODO https://github.com/phetsims/number-suite-common/issues/29 document
+   * Is the provided countingObject already in a tenFrame.
    */
   private isCountingObjectContainedByTenFrame( countingObject: CountingObject ): boolean {
     let isContained = false;
@@ -417,7 +417,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Make sure all counting Objects are within the availableViewBounds
+   * Make sure all countingObjects are within the availableViewBounds
    * TODO: Duplication, https://github.com/phetsims/number-play/issues/119
    */
   private constrainAllPositions(): void {
@@ -427,7 +427,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Whether the counting Object is predominantly over the explore panel (should be collected).
+   * Whether the countingObject is predominantly over the explore panel (should be collected).
    */
   private isNumberInReturnZone( countingObject: CountingObject ): boolean {
     const parentBounds = this.getCountingObjectNode( countingObject ).bounds;
@@ -439,7 +439,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Called when a counting Object has finished animating to its destination.
+   * Called when a countingObject has finished animating to its destination.
    */
   private onNumberAnimationFinished( countingObject: CountingObject ): void {
 
@@ -458,7 +458,7 @@ class CountingPlayAreaNode extends Node {
     }
     else if ( !this.viewHasIndependentModel ) {
 
-      // if this view is running off of a shared model, then if a counting Object has already been removed from the model,
+      // if this view is running off of a shared model, then if a countingObject has already been removed from the model,
       // check if creator node should be updated
       const countingObjectValue = countingObject.numberValueProperty.value;
       this.countingObjectCreatorPanel.countingCreatorNode.checkTargetVisibility( countingObjectValue );
@@ -466,7 +466,7 @@ class CountingPlayAreaNode extends Node {
   }
 
   /**
-   * Called when a counting Object has finished being dragged.
+   * Called when a countingObject has finished being dragged.
    */
   private onNumberDragFinished( countingObject: CountingObject ): void {
 
