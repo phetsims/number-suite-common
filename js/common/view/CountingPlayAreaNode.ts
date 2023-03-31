@@ -52,12 +52,6 @@ class CountingPlayAreaNode extends Node {
   // called when a countingObjectNode finishes being dragged, see onNumberDragFinished
   private readonly dragFinishedListener: ( countingObjectNode: CountingObjectNode ) => void;
 
-  // see addAndDragCountingObject
-  private readonly addAndDragCountingObjectCallback: ( event: PressListenerEvent, countingObject: CountingObject ) => void;
-
-  // see tryToCombineCountingObjects
-  private readonly tryToCombineCountingObjectsCallback: ( draggedCountingObject: CountingObject ) => void;
-
   // our model
   public readonly playArea: CountingPlayArea;
 
@@ -98,17 +92,8 @@ class CountingPlayAreaNode extends Node {
 
     super( options );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 TODO-TS Get rid of this binding pattern. Update function signatures in the attributes.
-
-    this.animationFinishedListener = this.onNumberAnimationFinished.bind( this );
-
-    this.dragFinishedListener = ( countingObjectNode: CountingObjectNode ) => {
-      this.onNumberDragFinished( countingObjectNode.countingObject );
-    };
-
-    this.addAndDragCountingObjectCallback = this.addAndDragCountingObject.bind( this );
-
-    this.tryToCombineCountingObjectsCallback = this.tryToCombineCountingObjects.bind( this );
+    this.animationFinishedListener = ( countingObject: CountingObject ) => this.onNumberAnimationFinished( countingObject );
+    this.dragFinishedListener = ( countingObjectNode: CountingObjectNode ) => this.onNumberDragFinished( countingObjectNode.countingObject );
 
     this.playArea = playArea;
 
@@ -244,8 +229,8 @@ class CountingPlayAreaNode extends Node {
     const countingObjectNode = new CountingObjectNode(
       countingObject,
       this.playAreaBoundsProperty,
-      this.addAndDragCountingObjectCallback,
-      this.tryToCombineCountingObjectsCallback, {
+      this.addAndDragCountingObject.bind( this ),
+      this.tryToCombineCountingObjects.bind( this ), {
         countingObjectTypeProperty: this.countingObjectTypeProperty,
         baseNumberNodeOptions: {
           handleOffsetY: COUNTING_OBJECT_HANDLE_OFFSET_Y
