@@ -30,7 +30,7 @@ import Bounds2 from '../../../../dot/js/Bounds2.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import { SymbolType } from './SymbolCardNode.js';
+import type SymbolType from './SymbolType.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 

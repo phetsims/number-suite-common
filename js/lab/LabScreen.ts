@@ -17,7 +17,7 @@ import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import LabModel from './model/LabModel.js';
 import LabScreenView from './view/LabScreenView.js';
 import NumberSuiteCommonPreferences from '../common/model/NumberSuiteCommonPreferences.js';
-import { SymbolType } from './view/SymbolCardNode.js';
+import type SymbolType from './view/SymbolType.js';
 
 class LabScreen<T extends NumberSuiteCommonPreferences> extends Screen<LabModel, LabScreenView<NumberSuiteCommonPreferences>> {
 
