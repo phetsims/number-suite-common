@@ -7,7 +7,6 @@
  */
 
 import Dimension2 from '../../../../dot/js/Dimension2.js';
-import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstants.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
