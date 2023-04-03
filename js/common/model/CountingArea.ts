@@ -165,8 +165,7 @@ class CountingArea extends CountingCommonModel {
       targetScale: scale
     } );
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 This is kind of a band-aid to keep the grouped objects' handles from sticking out of the top of the play
-    // area since they are not yet included in countingObject.localBounds above without a view created
+    // TODO: https://github.com/phetsims/number-suite-common/issues/65
     const countingAreaBoundsMinY = this.groupingEnabledProperty.value ? 30 : 0;
 
     // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the countingArea
