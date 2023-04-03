@@ -51,11 +51,10 @@ const MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS = 60;
 class CountingArea extends CountingCommonModel {
   private getCountingObjectOrigin: () => Vector2;
 
-  // TODO: Should this just be boundsProperty? See https://github.com/phetsims/number-suite-common/issues/29 YES!
-  private countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
+  private boundsProperty: TReadOnlyProperty<Bounds2>;
   private organizedObjectSpots: Vector2[];
 
-  // true when this.getCountingObjectOrigin() and this.countingAreaBoundsProperty have been set
+  // true when this.getCountingObjectOrigin() and this.boundsProperty have been set
   private initialized: boolean;
   private countingObjectCreatorNodeHeight: number;
 
@@ -76,7 +75,7 @@ class CountingArea extends CountingCommonModel {
     // set later by the view
     this.getCountingObjectOrigin = () => Vector2.ZERO;
     this.countingObjectCreatorNodeHeight = 0;
-    this.countingAreaBoundsProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
+    this.boundsProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
     this.organizedObjectSpots = [ Vector2.ZERO ];
 
     this.initialized = false;
@@ -90,13 +89,13 @@ class CountingArea extends CountingCommonModel {
    * Setup the origin and bounds needed from the view
    */
   public initialize( getCountingObjectOrigin: () => Vector2, countingObjectCreatorNodeHeight: number,
-                     countingAreaBoundsProperty: TReadOnlyProperty<Bounds2> ): void {
+                     boundsProperty: TReadOnlyProperty<Bounds2> ): void {
     assert && assert( !this.initialized, 'CountingArea already initialized' );
 
     // use a function for getting the paper number origin because its position changes in the view
     this.getCountingObjectOrigin = getCountingObjectOrigin;
     this.countingObjectCreatorNodeHeight = countingObjectCreatorNodeHeight;
-    this.countingAreaBoundsProperty = countingAreaBoundsProperty;
+    this.boundsProperty = boundsProperty;
     this.initialized = true;
 
     this.organizedObjectSpots = this.calculateOrganizedObjectSpots();
@@ -170,9 +169,9 @@ class CountingArea extends CountingCommonModel {
 
     // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the countingArea
     // bounds, see positioning in CountingAreaNode
-    const countingAreaBounds = this.countingAreaBoundsProperty.value
-      .withMinY( this.countingAreaBoundsProperty.value.minY + countingAreaBoundsMinY )
-      .withMaxY( this.countingAreaBoundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
+    const countingAreaBounds = this.boundsProperty.value
+      .withMinY( this.boundsProperty.value.minY + countingAreaBoundsMinY )
+      .withMaxY( this.boundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
     const countingObjectOriginBounds = countingObject.getOriginBounds( countingAreaBounds );
 
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
@@ -375,8 +374,8 @@ class CountingArea extends CountingCommonModel {
     for ( let i = 0; i < numberOfRows; i++ ) {
       for ( let j = 0; j < numberOfColumns; j++ ) {
         spots.push( new Vector2(
-          this.countingAreaBoundsProperty.value.minX + xMargin + ( ( objectWidth + objectMargin ) * j ),
-          this.countingAreaBoundsProperty.value.minY + yMargin + ( ( objectHeight + objectMargin ) * i )
+          this.boundsProperty.value.minX + xMargin + ( ( objectWidth + objectMargin ) * j ),
+          this.boundsProperty.value.minY + yMargin + ( ( objectHeight + objectMargin ) * i )
         ) );
       }
     }
@@ -638,7 +637,7 @@ class CountingArea extends CountingCommonModel {
         const offsetYSegment = stack ? CountingCommonConstants.BREAK_APART_Y_OFFSET : 0;
 
         // The movable bounds with respect to positionProperty and to how much space our countingObject bounds takes up.
-        const adjustedOriginBounds = countingObject.getOriginBounds( this.countingAreaBoundsProperty.value );
+        const adjustedOriginBounds = countingObject.getOriginBounds( this.boundsProperty.value );
 
         // Each extra single that needs to be stacked will take up extra space, so use that in the calculation of if we
         // stack up or down. Will be 0 if not stacking.

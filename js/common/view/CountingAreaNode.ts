@@ -59,8 +59,8 @@ class CountingAreaNode extends Node {
   // CountingObject.id => {CountingObjectNode} - lookup map for efficiency
   private readonly countingObjectNodeMap: CountingObjectNodeMap;
 
-  // the bounds of the countingArea where countingObjects can be dragged
-  public readonly countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
+  // The bounds of the countingArea where countingObjects can be dragged, named so that it doesn't overwrite Node.boundsProperty
+  private readonly countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   public readonly countingObjectTypeProperty: TReadOnlyProperty<CountingObjectType>;
 
   // see options.viewHasIndependentModel for doc
