@@ -17,7 +17,6 @@ import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
 import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
-import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
@@ -36,14 +35,10 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
       sideLength: ICON_SIE_LENGTH,
       lineWidth: 0.8,
       visibleProperty: new DerivedProperty( [ model.tenFrames.lengthProperty ],
-          length => length < NumberSuiteCommonConstants.MAX_AMOUNT_OF_TEN_FRAMES )
+        length => length < NumberSuiteCommonConstants.MAX_AMOUNT_OF_TEN_FRAMES )
     } );
 
-    const creatorNodeBackground = new Rectangle( 0, 0,
-      iconNode.width,
-      //TODO https://github.com/phetsims/number-suite-common/issues/29 Factor out with CountingObjectCreatorPanel
-      CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
-    );
+    const creatorNodeBackground = new Rectangle( 0, 0, iconNode.width, NumberSuiteCommonConstants.CREATOR_ICON_HEIGHT );
     iconNode.center = creatorNodeBackground.center;
     creatorNodeBackground.addChild( iconNode );
 

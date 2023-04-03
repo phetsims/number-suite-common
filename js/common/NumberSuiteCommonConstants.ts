@@ -12,6 +12,7 @@ import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
+import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
 const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LinkableProperty<string>> = {
@@ -65,6 +66,8 @@ const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
 
 // RequireJS namespace, used for looking up translated strings
 const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
+
+const GROUPED_STORED_COUNTING_OBJECT_SCALE = 0.7;
 
 // Returns either the primaryString or the secondaryString based on isPrimaryLocale. If the secondaryString doesn't
 // exist but is desired, return the primaryString instead as a fallback. We know the primaryString will always exist
@@ -122,11 +125,13 @@ const NumberSuiteCommonConstants = {
   NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE: NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE,
 
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
-  GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,
+  GROUPED_STORED_COUNTING_OBJECT_SCALE: GROUPED_STORED_COUNTING_OBJECT_SCALE,
   COUNTING_OBJECT_SCALE: 1,
 
   // match the size of the ResetAllButton, in screen coords
   BUTTON_LENGTH: SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2,
+
+  CREATOR_ICON_HEIGHT: CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * GROUPED_STORED_COUNTING_OBJECT_SCALE + 5,
 
   // Preferences dialog controls
   PREFERENCES_FONT_SIZE: 16,

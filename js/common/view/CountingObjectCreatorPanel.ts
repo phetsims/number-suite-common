@@ -58,7 +58,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
 
     const creatorNodeBackground = new Rectangle( 0, 0,
       CountingCommonConstants.PLAY_OBJECT_SIZE.width * NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE + 8,
-      CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height * NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE + 5
+      NumberSuiteCommonConstants.CREATOR_ICON_HEIGHT
     );
 
     const countingCreatorNode = new CountingCreatorNode( 0, countingAreaNode, countingArea.sumProperty,
