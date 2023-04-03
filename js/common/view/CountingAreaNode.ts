@@ -283,7 +283,7 @@ class CountingAreaNode extends Node {
    * 2. See if there's any countingObjects underneath the dropped countingObject that should either be combined with or
    *    moved away from.
    *
-   * The implementation of checking for tenFrames first matches the current design, but new or changed design could
+   * The implementation of checking for tenFrames first matches the current design, but a new or changed design could
    * require a different order of checking.
    */
   public handleDroppedCountingObject( draggedCountingObject: CountingObject ): void {
