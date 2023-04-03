@@ -231,7 +231,7 @@ class CountingAreaNode extends Node {
       countingObject,
       this.countingAreaBoundsProperty,
       this.addAndDragCountingObject.bind( this ),
-      this.tryToCombineCountingObjects.bind( this ), {
+      this.handleDroppedCountingObject.bind( this ), {
         countingObjectTypeProperty: this.countingObjectTypeProperty,
         baseNumberNodeOptions: {
           handleOffsetY: COUNTING_OBJECT_HANDLE_OFFSET_Y
@@ -278,10 +278,15 @@ class CountingAreaNode extends Node {
   }
 
   /**
-   * When the user drops a countingObject they were dragging, see if it can combine with any other nearby countingObjects.
+   * When the user drops a countingObject they were dragging, try to do the following things in order:
+   * 1. See if there's any tenFrames underneath the dropped countingObject that should be added to.
+   * 2. See if there's any countingObjects underneath the dropped countingObject that should either be combined with or
+   *    moved away from.
+   *
+   * The implementation of checking for tenFrames first matches the current design, but new or changed design could
+   * require a different order of checking.
    */
-  public tryToCombineCountingObjects( draggedCountingObject: CountingObject ): void {
-    // TODO-TOGETHER https://github.com/phetsims/number-suite-common/issues/29 This seems like a weird sidestep to try tenframes first and maybe be moved
+  public handleDroppedCountingObject( draggedCountingObject: CountingObject ): void {
     if ( this.tryToAddToTenFrame( draggedCountingObject ) ) {
       return;
     }
@@ -332,7 +337,8 @@ class CountingAreaNode extends Node {
   }
 
   /**
-   * Returns if it was able to add the countingObject to the tenFrame
+   * Returns whether we were able to add the countingObject to a tenFrame. If true, it also adds the countingObject
+   * to the tenFrame.
    */
   private tryToAddToTenFrame( droppedCountingObject: CountingObject ): boolean {
     if ( !this.countingArea.tenFrames ) {
