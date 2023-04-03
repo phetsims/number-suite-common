@@ -488,7 +488,7 @@ class CountingAreaNode extends Node {
         this.countingArea.removeCountingObject( countingObject );
 
         // see if the creator node should show any hidden targets since a counting object was just returned
-        this.countingObjectCreatorPanel.countingCreatorNode.checkTargetVisibility( countingObjectValue );
+        this.countingObjectCreatorPanel.countingCreatorNode.validateVisibilityForTargetsForDecreasingSum( countingObjectValue );
       }
     }
     else if ( !this.viewHasIndependentModel ) {
@@ -496,7 +496,7 @@ class CountingAreaNode extends Node {
       // if this view is running off of a shared model, then if a countingObject has already been removed from the model,
       // check if creator node should be updated
       const countingObjectValue = countingObject.numberValueProperty.value;
-      this.countingObjectCreatorPanel.countingCreatorNode.checkTargetVisibility( countingObjectValue );
+      this.countingObjectCreatorPanel.countingCreatorNode.validateVisibilityForTargetsForDecreasingSum( countingObjectValue );
     }
   }
 

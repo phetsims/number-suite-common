@@ -63,7 +63,6 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
 
     const countingCreatorNode = new CountingCreatorNode( 0, countingAreaNode, countingArea.sumProperty,
       countingArea.resetEmitter, countingAreaNode.addAndDragCountingObject.bind( countingAreaNode ), {
-        updateCurrentNumber: true,
         countingObjectTypeProperty: countingAreaNode.countingObjectTypeProperty,
         groupingEnabledProperty: countingAreaNode.countingArea.groupingEnabledProperty,
         backTargetOffset: new Vector2( -5, -5 ),
