@@ -165,7 +165,6 @@ class TenFrameNode extends Node {
       .lineToRelative( 0, NUMBER_OF_Y_SQUARES * options.sideLength )
       .close();
 
-    // TODO: Why does path allow type GetTenFramePathOptions instead of just PathOptions? see https://github.com/phetsims/number-suite-common/issues/29
     return new Path( tenFrameShape, options );
   }
 }

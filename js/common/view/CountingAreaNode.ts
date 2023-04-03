@@ -281,7 +281,7 @@ class CountingAreaNode extends Node {
    * When the user drops a countingObject they were dragging, see if it can combine with any other nearby countingObjects.
    */
   public tryToCombineCountingObjects( draggedCountingObject: CountingObject ): void {
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 This seems like a weird sidestep to try tenframes first and maybe be moved
+    // TODO-TOGETHER https://github.com/phetsims/number-suite-common/issues/29 This seems like a weird sidestep to try tenframes first and maybe be moved
     if ( this.tryToAddToTenFrame( draggedCountingObject ) ) {
       return;
     }

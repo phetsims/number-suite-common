@@ -51,7 +51,7 @@ const MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS = 60;
 class CountingArea extends CountingCommonModel {
   private getCountingObjectOrigin: () => Vector2;
 
-  // TODO: Should this just be boundsProperty? See https://github.com/phetsims/number-suite-common/issues/29
+  // TODO: Should this just be boundsProperty? See https://github.com/phetsims/number-suite-common/issues/29 YES!
   private countingAreaBoundsProperty: TReadOnlyProperty<Bounds2>;
   private organizedObjectSpots: Vector2[];
 
@@ -177,6 +177,7 @@ class CountingArea extends CountingCommonModel {
 
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
+      // TODO https://github.com/phetsims/number-suite-common/issues/29 Let's iron this out a bit more.
       const possibleDestinationX = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxX - countingObjectOriginBounds.minX ) +
                                    countingObjectOriginBounds.minX;
       const possibleDestinationY = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxY - countingObjectOriginBounds.minY ) +
