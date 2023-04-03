@@ -453,28 +453,7 @@ class CountingAreaNode extends Node {
   }
 
   /**
-<<<<<<< HEAD:js/common/view/CountingPlayAreaNode.ts
    * Called when a countingObject has finished animating to its destination.
-=======
-   * Called when a countingObjectNode is split.
-   */
-  private onCountingObjectNodeSplit( countingObjectNode: CountingObjectNode ): void {
-    // this.countingArea.splitCue.triggerFade();
-  }
-
-  /**
-   * Called when a counting Object node starts being interacted with.
-   */
-  private static onNumberInteractionStarted( countingObjectNode: CountingObjectNode ): void {
-    const countingObject = countingObjectNode.countingObject;
-    if ( countingObject.numberValueProperty.value > 1 ) {
-      // this.countingArea.splitCue.attachToNumber( countingObject );
-    }
-  }
-
-  /**
-   * Called when a counting Object has finished animating to its destination.
->>>>>>> 5a0f22c (Rename PlayArea -> CountingArea, see https://github.com/phetsims/number-suite-common/issues/40):js/common/view/CountingAreaNode.ts
    */
   private onNumberAnimationFinished( countingObject: CountingObject ): void {
 
