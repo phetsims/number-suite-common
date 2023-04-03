@@ -175,8 +175,6 @@ class CountingArea extends CountingCommonModel {
       .withMaxY( this.countingAreaBoundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
     const countingObjectOriginBounds = countingObject.getOriginBounds( countingAreaBounds );
 
-    // TODO https://github.com/phetsims/number-suite-common/issues/29 this algorithm does not take into account paper
-    //   numbers that are on their way to a spot, and should be rewritten to be better and accommodate that constraint
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
       const possibleDestinationX = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxX - countingObjectOriginBounds.minX ) +
