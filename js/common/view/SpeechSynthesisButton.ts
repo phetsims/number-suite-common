@@ -20,6 +20,7 @@ import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import audioManager from '../../../../joist/js/audioManager.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 type SelfOptions = {
   comparisonSignsAndTextVisibleProperty?: TReadOnlyProperty<boolean>;
@@ -27,7 +28,7 @@ type SelfOptions = {
 export type SpeechSynthesisButtonOptions = SelfOptions;
 
 // constants
-const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the size of the ResetAllButton, in screen coords
+const SIDE_LENGTH = NumberSuiteCommonConstants.BUTTON_LENGTH;
 
 class SpeechSynthesisButton extends RectangularPushButton {
 

@@ -11,6 +11,7 @@ import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
+import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
 const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LinkableProperty<string>> = {
@@ -123,6 +124,9 @@ const NumberSuiteCommonConstants = {
   UNGROUPED_STORED_COUNTING_OBJECT_SCALE: 0.9,
   GROUPED_STORED_COUNTING_OBJECT_SCALE: 0.7,
   COUNTING_OBJECT_SCALE: 1,
+
+  // match the size of the ResetAllButton, in screen coords
+  BUTTON_LENGTH: SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2,
 
   // Preferences dialog controls
   PREFERENCES_FONT_SIZE: 16,

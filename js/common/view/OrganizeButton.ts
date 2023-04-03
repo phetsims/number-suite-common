@@ -9,12 +9,12 @@
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrameNode from './TenFrameNode.js';
-import SceneryPhetConstants from '../../../../scenery-phet/js/SceneryPhetConstants.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { TColor } from '../../../../scenery/js/imports.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 // constants
-const SIDE_LENGTH = SceneryPhetConstants.DEFAULT_BUTTON_RADIUS * 2; // match the size of the ResetAllButton, in screen coords
+const SIDE_LENGTH = NumberSuiteCommonConstants.BUTTON_LENGTH;
 
 class OrganizeButton extends RectangularPushButton {
 
