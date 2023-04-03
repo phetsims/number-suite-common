@@ -46,7 +46,7 @@ const GROUP_DIVISORS = [ 2, 5, 10 ]; // specified by designer
 
 // the minimum distance that a countingObject added to the countingArea via animation can be to another countingObject
 // in the countingArea, in screen coordinates
-const MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS = 60;
+const MIN_DISTANCE_BETWEEN_ADDED_COUNTING_OBJECTS = 60;
 
 class CountingArea extends CountingCommonModel {
   private getCountingObjectOrigin: () => Vector2;
@@ -189,7 +189,7 @@ class CountingArea extends CountingCommonModel {
       // best performance, since this loop is nested
       for ( let i = 0; i < numberOfCountingObjectsInCountingArea; i++ ) {
         if ( this.countingObjects[ i ].positionProperty.value.distance( possibleDestinationPoint )
-             < MIN_DISTANCE_BETWEEN_ADDED_PLAY_OBJECTS ) {
+             < MIN_DISTANCE_BETWEEN_ADDED_COUNTING_OBJECTS ) {
           spotIsAvailable = false;
         }
       }
@@ -367,7 +367,7 @@ class CountingArea extends CountingCommonModel {
 
     //TODO https://github.com/phetsims/number-suite-common/issues/29 figure out why math isn't working for this
     const xMargin = 88; // empirically determined to center group
-    const yMargin = CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+    const yMargin = CountingCommonConstants.COUNTING_AREA_MARGIN;
 
     const spots = [];
 
@@ -655,7 +655,7 @@ class CountingArea extends CountingCommonModel {
         let currentOffsetY = 0;
 
         let reAddedCountingObjects = 0;
-        const xShift = countingObjectValue >= NumberSuiteCommonConstants.TEN && stack ? -CountingCommonConstants.PLAY_OBJECT_SIZE.width : 0;
+        const xShift = countingObjectValue >= NumberSuiteCommonConstants.TEN && stack ? -CountingCommonConstants.COUNTING_OBJECT_SIZE.width : 0;
 
         // We are about to add a bunch of ones to equal this countingObject's value
         this.removeCountingObject( countingObject );

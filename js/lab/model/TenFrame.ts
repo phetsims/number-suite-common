@@ -152,7 +152,7 @@ class TenFrame extends Disposable {
     this.originBounds.minY = viewBounds.top - this.localBounds.top;
     this.originBounds.maxX = viewBounds.right - this.localBounds.right;
     this.originBounds.maxY = viewBounds.bottom - this.localBounds.bottom;
-    return this.originBounds.erode( CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
+    return this.originBounds.erode( CountingCommonConstants.COUNTING_AREA_MARGIN );
   }
 
   /**

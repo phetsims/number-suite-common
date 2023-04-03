@@ -57,7 +57,7 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
     } );
 
     const creatorNodeBackground = new Rectangle( 0, 0,
-      CountingCommonConstants.PLAY_OBJECT_SIZE.width * NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE + 8,
+      CountingCommonConstants.COUNTING_OBJECT_SIZE.width * NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE + 8,
       NumberSuiteCommonConstants.CREATOR_ICON_HEIGHT
     );
 

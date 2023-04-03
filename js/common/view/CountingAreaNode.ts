@@ -137,14 +137,14 @@ class CountingAreaNode extends Node {
       this.countingObjectCreatorPanel.centerX = options.creatorPanelX;
     }
     else {
-      this.countingObjectCreatorPanel.left = countingAreaBoundsProperty.value.minX + CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+      this.countingObjectCreatorPanel.left = countingAreaBoundsProperty.value.minX + CountingCommonConstants.COUNTING_AREA_MARGIN;
     }
 
     // set the y position of the CountingObjectCreatorPanel. NOTE: It is assumed below during initialization that the
     // CountingObjectCreatorPanel is positioned along the bottom of the countingArea bounds
     const updateCountingObjectCreatorPanelPosition = () => {
       this.countingObjectCreatorPanel.bottom = countingAreaBoundsProperty.value.bottom -
-                                               CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+                                               CountingCommonConstants.COUNTING_AREA_MARGIN;
     };
     countingAreaBoundsProperty.link( updateCountingObjectCreatorPanelPosition );
     this.transformEmitter.addListener( updateCountingObjectCreatorPanelPosition );

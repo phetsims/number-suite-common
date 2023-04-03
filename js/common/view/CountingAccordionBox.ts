@@ -96,8 +96,8 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
           baseColor: Color.WHITE
         }
       } );
-      radioButtonGroup.right = this.contentBoundsProperty.value.right - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
-      radioButtonGroup.bottom = this.contentBoundsProperty.value.bottom - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+      radioButtonGroup.right = this.contentBoundsProperty.value.right - CountingCommonConstants.COUNTING_AREA_MARGIN;
+      radioButtonGroup.bottom = this.contentBoundsProperty.value.bottom - CountingCommonConstants.COUNTING_AREA_MARGIN;
       this.contentNode.addChild( radioButtonGroup );
     }
 

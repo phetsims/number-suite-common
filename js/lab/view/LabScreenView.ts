@@ -84,17 +84,17 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     this.numberCardBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
       return visibleBounds.withMaxY( visibleBounds.maxY - NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y -
                                      this.tenFrameCreatorPanel.height )
-        .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
+        .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_AREA_MARGIN );
     } );
     this.symbolCardBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
       return visibleBounds.withMinY( visibleBounds.minY + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y +
                                      this.numberCardCreatorCarousel.height ).withMaxY(
-        visibleBounds.maxY - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN - this.tenFrameCreatorPanel.height );
+        visibleBounds.maxY - CountingCommonConstants.COUNTING_AREA_MARGIN - this.tenFrameCreatorPanel.height );
     } );
     this.objectCountingAreaBoundsProperty = new DerivedProperty( [ this.visibleBoundsProperty ], visibleBounds => {
       return visibleBounds.withMinY( visibleBounds.minY + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y +
                                      this.numberCardCreatorCarousel.height )
-        .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN );
+        .withMaxX( visibleBounds.maxX - this.symbolCardCreatorPanel.width - CountingCommonConstants.COUNTING_AREA_MARGIN );
     } );
 
     this.bottomReturnZoneProperty = new Property( new Bounds2( 0, 0, 0, 0 ) );
@@ -246,9 +246,9 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
       ( visibleBounds, showLabOnes ) => {
         this.numberCardCreatorCarousel.top = visibleBounds.top + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y;
 
-        this.symbolCardCreatorPanel.right = visibleBounds.right - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
-        resetAllButton.right = visibleBounds.right - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
-        const bottomY = visibleBounds.bottom - CountingCommonConstants.COUNTING_PLAY_AREA_MARGIN;
+        this.symbolCardCreatorPanel.right = visibleBounds.right - CountingCommonConstants.COUNTING_AREA_MARGIN;
+        resetAllButton.right = visibleBounds.right - CountingCommonConstants.COUNTING_AREA_MARGIN;
+        const bottomY = visibleBounds.bottom - CountingCommonConstants.COUNTING_AREA_MARGIN;
         this.tenFrameCreatorPanel.bottom = bottomY;
         resetAllButton.bottom = bottomY;
 
