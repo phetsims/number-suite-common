@@ -176,7 +176,7 @@ class CountingArea extends CountingCommonModel {
 
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
-      // TODO https://github.com/phetsims/number-suite-common/issues/29 Let's iron this out a bit more.
+      // TODO https://github.com/phetsims/number-suite-common/issues/66 Let's iron this out a bit more.
       const possibleDestinationX = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxX - countingObjectOriginBounds.minX ) +
                                    countingObjectOriginBounds.minX;
       const possibleDestinationY = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxY - countingObjectOriginBounds.minY ) +
