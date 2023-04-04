@@ -13,6 +13,7 @@ import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
 import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
 import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
 const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LinkableProperty<string>> = {
@@ -38,6 +39,9 @@ const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LinkableProperty<string>
   19: NumberSuiteCommonStrings.nineteenStringProperty,
   20: NumberSuiteCommonStrings.twentyStringProperty
 };
+
+// A list of the primary string Properties we use in the sim.
+export const NUMBER_STRING_PROPERTIES: TReadOnlyProperty<string>[] = _.values( NUMBER_TO_STRING_PROPERTY_PRIMARY );
 
 // Maps a number to the key used to look up the translated word that corresponds to the number.
 const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
