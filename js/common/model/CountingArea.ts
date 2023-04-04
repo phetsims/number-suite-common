@@ -185,13 +185,15 @@ class CountingArea extends CountingCommonModel {
                                    countingObjectOriginBounds.minY;
       const possibleDestinationPoint = new Vector2( possibleDestinationX, possibleDestinationY );
       let spotIsAvailable = true;
-      const numberOfCountingObjectsInCountingArea = this.countingObjects.lengthProperty.value;
+      const countingObjectsToCheck = this.getCountingObjectsIncludedInSum();
 
-      // compare the proposed destination to the position of every countingObject in the countingArea. use c-style loop for
+      // Compare the proposed destination to the position of every countingObject in the countingArea. use c-style loop for
       // best performance, since this loop is nested
-      for ( let i = 0; i < numberOfCountingObjectsInCountingArea; i++ ) {
-        if ( this.countingObjects[ i ].positionProperty.value.distance( possibleDestinationPoint )
-             < MIN_DISTANCE_BETWEEN_ADDED_COUNTING_OBJECTS ) {
+      for ( let i = 0; i < countingObjectsToCheck.length; i++ ) {
+        const countingObject = countingObjectsToCheck[ i ];
+        const position = countingObject.destination || countingObject.positionProperty.value;
+
+        if ( position.distance( possibleDestinationPoint ) < MIN_DISTANCE_BETWEEN_ADDED_COUNTING_OBJECTS ) {
           spotIsAvailable = false;
         }
       }
