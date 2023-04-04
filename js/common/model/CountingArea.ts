@@ -365,7 +365,7 @@ class CountingArea extends CountingCommonModel {
     const numberOfColumns = 5; // rows
     const numberOfRows = this.sumProperty.range.max / numberOfColumns;
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/29 figure out why math isn't working for this
+    //TODO https://github.com/phetsims/number-suite-common/issues/68 figure out why math isn't working for this
     const xMargin = 88; // empirically determined to center group
     const yMargin = CountingCommonConstants.COUNTING_AREA_MARGIN;
 
