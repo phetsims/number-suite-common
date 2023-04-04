@@ -181,7 +181,7 @@ class CountingArea extends CountingCommonModel {
       const possibleDestinationPoint = dotRandom.nextPointInBounds( countingObjectOriginBounds );
 
       // Initialized to no available until we check against every other countingObject.
-      let randomSpotIsAvailable = false;
+      let randomSpotIsAvailable = true;
 
       // No need to check countingObjects that are on their way back to their creator.
       const countingObjectsToCheck = this.getCountingObjectsIncludedInSum();
@@ -193,7 +193,7 @@ class CountingArea extends CountingCommonModel {
         const position = countingObject.destination || countingObject.positionProperty.value;
 
         if ( position.distance( possibleDestinationPoint ) < MIN_DISTANCE_BETWEEN_ADDED_COUNTING_OBJECTS ) {
-          randomSpotIsAvailable = true;
+          randomSpotIsAvailable = false;
         }
       }
 
