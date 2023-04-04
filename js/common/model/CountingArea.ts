@@ -43,6 +43,8 @@ export type CountingObjectSerialization = {
 
 // constants
 const GROUP_DIVISORS = [ 2, 5, 10 ]; // specified by designer
+const ORGANIZED_COUNTING_OBJECT_MARGIN = 3;
+const NUMBER_OF_ORGANIZE_ROWS = 5; // to match ten frames, which are 5x2
 
 // the minimum distance that a countingObject added to the countingArea via animation can be to another countingObject
 // in the countingArea, in screen coordinates
@@ -52,7 +54,7 @@ class CountingArea extends CountingCommonModel {
   private getCountingObjectOrigin: () => Vector2;
 
   private boundsProperty: TReadOnlyProperty<Bounds2>;
-  private organizedObjectSpots: Vector2[];
+  private organizedObjectSpots: Vector2[]; // Positions point to the top and left of the spot it should take up.
 
   // true when this.getCountingObjectOrigin() and this.boundsProperty have been set
   private initialized: boolean;
@@ -353,29 +355,32 @@ class CountingArea extends CountingCommonModel {
   }
 
   /**
-   * Calculates the spots for organized objects
+   * Calculates the spots for organized countingObjects.
    */
   private calculateOrganizedObjectSpots(): Vector2[] {
     assert && assert( this.initialized, 'calculateOrganizedObjectSpots called before initialization' );
 
-    const objectWidth = CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.width;
-    const objectHeight = CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height;
-    const objectMargin = 3;
+    const countingObjectWidth = CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.width;
+    const countingObjectHeight = CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height;
+    const numberOfRows = this.sumProperty.range.max / NUMBER_OF_ORGANIZE_ROWS;
 
-    const numberOfColumns = 5; // rows
-    const numberOfRows = this.sumProperty.range.max / numberOfColumns;
+    // N countingObjects across + margins to the right for all columns except the last one.
+    const contentWidth = NUMBER_OF_ORGANIZE_ROWS * ( countingObjectWidth + ORGANIZED_COUNTING_OBJECT_MARGIN ) -
+                         ORGANIZED_COUNTING_OBJECT_MARGIN;
 
-    //TODO https://github.com/phetsims/number-suite-common/issues/68 figure out why math isn't working for this
-    const xMargin = 88; // empirically determined to center group
+    // The calculated spots correspond to the countingObjects' top left corner, so adjust by the x-amount of the bounds
+    // to get us to the left edge. The y-position of countingObjects is already at the top.
+    const xMargin = ( this.boundsProperty.value.width - contentWidth ) / 2 -
+                    CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.minX;
     const yMargin = CountingCommonConstants.COUNTING_AREA_MARGIN;
 
     const spots = [];
 
     for ( let i = 0; i < numberOfRows; i++ ) {
-      for ( let j = 0; j < numberOfColumns; j++ ) {
+      for ( let j = 0; j < NUMBER_OF_ORGANIZE_ROWS; j++ ) {
         spots.push( new Vector2(
-          this.boundsProperty.value.minX + xMargin + ( ( objectWidth + objectMargin ) * j ),
-          this.boundsProperty.value.minY + yMargin + ( ( objectHeight + objectMargin ) * i )
+          this.boundsProperty.value.minX + xMargin + ( ( countingObjectWidth + ORGANIZED_COUNTING_OBJECT_MARGIN ) * j ),
+          this.boundsProperty.value.minY + yMargin + ( ( countingObjectHeight + ORGANIZED_COUNTING_OBJECT_MARGIN ) * i )
         ) );
       }
     }
@@ -399,22 +404,24 @@ class CountingArea extends CountingCommonModel {
     this.breakApartCountingObjects();
 
     // Copy the current countingObjects in the countingArea so we can mutate them.
-    let objectsToOrganize = this.getCountingObjectsIncludedInSum();
-    const numberOfObjectsToOrganize = objectsToOrganize.length;
+    let countingObjectsToOrganize = this.getCountingObjectsIncludedInSum();
+    const numberOfObjectsToOrganize = countingObjectsToOrganize.length;
 
     for ( let i = 0; i < numberOfObjectsToOrganize; i++ ) {
-      const destination = this.organizedObjectSpots[ i ];
+      const spot = this.organizedObjectSpots[ i ];
 
       // Sort the countingObjects by closest to the destination.
-      objectsToOrganize = _.sortBy( objectsToOrganize, object => {
-        return object.positionProperty.value.distance( destination );
+      countingObjectsToOrganize = _.sortBy( countingObjectsToOrganize, countingObject => {
+        return countingObject.positionProperty.value.distance( spot );
       } );
-      const objectToOrganize = objectsToOrganize.shift();
+      const countingObjectToOrganize = countingObjectsToOrganize.shift()!;
 
-      objectToOrganize && objectToOrganize.setDestination( destination, true, {
+      countingObjectToOrganize.setDestination( spot, true, {
         targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE
       } );
     }
+
+    assert && assert( countingObjectsToOrganize.length === 0, 'should have handled all countingObjects' );
   }
 
   /**
@@ -424,8 +431,8 @@ class CountingArea extends CountingCommonModel {
    * @param groupAndLinkType
    */
   public matchCountingObjectsToLinkedCountingArea( countingObjectSerializations: CountingObjectSerialization[],
-                                               linkStatusChangedEmitter: TEmitter<[ boolean ]>, areObjectsLinkedToOnes: boolean,
-                                               groupAndLinkType: GroupAndLinkType ): void {
+                                                   linkStatusChangedEmitter: TEmitter<[ boolean ]>, areObjectsLinkedToOnes: boolean,
+                                                   groupAndLinkType: GroupAndLinkType ): void {
 
     if ( areObjectsLinkedToOnes ) {
       this.linkToSerializedCountingObjects( countingObjectSerializations, linkStatusChangedEmitter, areObjectsLinkedToOnes );
