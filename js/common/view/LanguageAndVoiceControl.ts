@@ -8,8 +8,8 @@
  */
 
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import { HBox, HBoxOptions, Node, RichText, RichTextOptions, Text, VBox } from '../../../../scenery/js/imports.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import { HBox, HBoxOptions, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -56,8 +56,6 @@ export default class LanguageAndVoiceControl extends HBox {
       spacing: 10
     }, providedOptions );
 
-    const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageTitleStringProperty, LABEL_TEXT_OPTIONS );
-
     // Carousel for choosing a language.
     const languageCarouselItems: LanguageCarouselItem[] = localeProperty.validValues!.map(
       locale => {
@@ -74,7 +72,7 @@ export default class LanguageAndVoiceControl extends HBox {
               utteranceQueue.cancelSpeechDataSpeaking();
 
               // Read the test string in the first available voice for the new language, see https://github.com/phetsims/number-suite-common/issues/56
-               utteranceQueue.speakTestVoice( voiceProperty.value, locale );
+              utteranceQueue.speakTestVoice( voiceProperty.value, locale );
             }
           )
         };
@@ -86,13 +84,19 @@ export default class LanguageAndVoiceControl extends HBox {
     assert && assert( selectedNode );
     languageCarousel.scrollToItem( selectedNode );
 
-    // Record the width of the language carousel for use to ensure the voice column matches.
+    // Record the width of the language carousel for use to ensure the voice column matches. Width of the carousel
+    // is dependent and controlled by the size of its content (see CarouselItemNode), use that width to ensure consistent
+    // layout and content.
     const languageCarouselWidth = languageCarousel.width;
+
+    const textOptions = combineOptions<TextOptions>( { maxWidth: languageCarouselWidth }, LABEL_TEXT_OPTIONS );
+
+    const languageCarouselLabel = new Text( NumberSuiteCommonStrings.languageTitleStringProperty, textOptions );
 
     // Carousel for choosing a voice. Recreated when the language changes.
     let voiceCarousel: Node | Carousel = new Node();
-    const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, LABEL_TEXT_OPTIONS );
-    const noVoiceDescriptionNode = new NoVoiceDescriptionNode( languageCarouselWidth );
+    const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, textOptions );
+    const noVoiceDescriptionNode = new NoVoiceDescriptionNode( languageCarouselWidth, languageCarousel.height );
 
     const voiceControlVBox = new VBox( {
       children: [ voiceCarouselLabel, voiceCarousel ],
@@ -166,11 +170,11 @@ export default class LanguageAndVoiceControl extends HBox {
  */
 class NoVoiceDescriptionNode extends VBox {
 
-  public constructor( width: number ) {
+  public constructor( maxWidth: number, maxHeight: number ) {
 
     const richTextOptions: RichTextOptions = {
       font: new PhetFont( 16 ),
-      lineWrap: width
+      lineWrap: maxWidth
     };
 
     const noVoiceFoundDescriptionRichText = new RichText(
@@ -182,7 +186,8 @@ class NoVoiceDescriptionNode extends VBox {
     super( {
       children: [ noVoiceFoundDescriptionRichText, yourDeviceMaySupportDescriptionRichText ],
       spacing: 20,
-      align: 'left'
+      align: 'left',
+      maxHeight: maxHeight
     } );
   }
 }

@@ -27,14 +27,11 @@ export default class ShowOnesControl extends PreferencesControl {
 
   public constructor( showOnesProperty: Property<boolean>, providedOptions?: ShowOnesControlOptions ) {
 
-    const labelText = new Text( NumberSuiteCommonStrings.showOnesStringProperty, {
-      fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE,
-      fontWeight: 'bold'
-    } );
+    const labelText = new Text( NumberSuiteCommonStrings.showOnesStringProperty,
+      PreferencesDialogConstants.CONTROL_LABEL_OPTIONS );
 
-    const descriptionText = new Text( NumberSuiteCommonStrings.showOnesDescriptionStringProperty, {
-      fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE
-    } );
+    const descriptionText = new Text( NumberSuiteCommonStrings.showOnesDescriptionStringProperty,
+      PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS );
 
     const toggleSwitch = new ToggleSwitch( showOnesProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );

@@ -22,6 +22,7 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
+import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
@@ -37,18 +38,14 @@ export default class SecondLanguageControl extends VBox {
       // VBoxOptions
       excludeInvisibleChildrenFromBounds: false,
       align: 'left',
-      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING,
-      resize: false
+      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING
     }, providedOptions );
 
-    const labelText = new Text( NumberSuiteCommonStrings.secondLanguageStringProperty, {
-      fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE,
-      fontWeight: 'bold'
-    } );
+    const labelText = new Text( NumberSuiteCommonStrings.secondLanguageStringProperty,
+      PreferencesDialogConstants.CONTROL_LABEL_OPTIONS );
 
-    const descriptionText = new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty, {
-      fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE
-    } );
+    const descriptionText = new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty,
+      PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS );
 
     const toggleSwitch = new ToggleSwitch( preferences.showSecondLocaleProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
@@ -114,7 +111,8 @@ class AdditionalDescriptionNode extends VBox {
   public constructor( visible: boolean, allUrl: string ) {
 
     const toDisplayASecondLanguageText = new RichText( NumberSuiteCommonStrings.toDisplayASecondLanguageDescriptionStringProperty, {
-      font: new PhetFont( 12 )
+      font: new PhetFont( 12 ),
+      maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
     } );
 
     // If links are not allowed, show the URL as plain text.
@@ -123,7 +121,8 @@ class AdditionalDescriptionNode extends VBox {
     );
     const urlText = new RichText( urlStringProperty, {
       links: { url: allUrl },
-      font: new PhetFont( 12 )
+      font: new PhetFont( 12 ),
+      maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
     } );
 
     // Additional description that is visible when the Second Language control is disabled.

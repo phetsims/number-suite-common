@@ -22,9 +22,11 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 
 const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
-  font: new PhetFont( 14 )
+  font: new PhetFont( 14 ),
+  maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
 };
 
 export default class ReadAloudControl extends Node {
@@ -45,13 +47,8 @@ export default class ReadAloudControl extends Node {
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     const control = new PreferencesControl( {
-      labelNode: new Text( labelStringProperty, {
-        fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE,
-        fontWeight: 'bold'
-      } ),
-      descriptionNode: new Text( descriptionStringProperty, {
-        fontSize: NumberSuiteCommonConstants.PREFERENCES_FONT_SIZE
-      } ),
+      labelNode: new Text( labelStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
+      descriptionNode: new Text( descriptionStringProperty, PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS ),
       controlNode: toggleSwitch,
       ySpacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING
     } );
