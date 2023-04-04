@@ -178,13 +178,12 @@ class CountingArea extends CountingCommonModel {
 
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
-      // TODO https://github.com/phetsims/number-suite-common/issues/66 Let's iron this out a bit more.
-      const possibleDestinationX = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxX - countingObjectOriginBounds.minX ) +
-                                   countingObjectOriginBounds.minX;
-      const possibleDestinationY = dotRandom.nextDouble() * ( countingObjectOriginBounds.maxY - countingObjectOriginBounds.minY ) +
-                                   countingObjectOriginBounds.minY;
-      const possibleDestinationPoint = new Vector2( possibleDestinationX, possibleDestinationY );
-      let spotIsAvailable = true;
+      const possibleDestinationPoint = dotRandom.nextPointInBounds( countingObjectOriginBounds );
+
+      // Initialized to no available until we check against every other countingObject.
+      let randomSpotIsAvailable = false;
+
+      // No need to check countingObjects that are on their way back to their creator.
       const countingObjectsToCheck = this.getCountingObjectsIncludedInSum();
 
       // Compare the proposed destination to the position of every countingObject in the countingArea. use c-style loop for
@@ -194,15 +193,16 @@ class CountingArea extends CountingCommonModel {
         const position = countingObject.destination || countingObject.positionProperty.value;
 
         if ( position.distance( possibleDestinationPoint ) < MIN_DISTANCE_BETWEEN_ADDED_COUNTING_OBJECTS ) {
-          spotIsAvailable = false;
+          randomSpotIsAvailable = true;
         }
       }
 
-      // bail if taking a while to find a spot. 1000 empirically determined.
+      // Bail if taking a while to find a spot. 1000 empirically determined by printing the number of attempts when 19
+      // countingObjects are spaced pretty evenly in the countingArea.
       if ( ++findCount > 1000 ) {
-        spotIsAvailable = true;
+        randomSpotIsAvailable = true;
       }
-      destinationPosition = spotIsAvailable ? possibleDestinationPoint : null;
+      destinationPosition = randomSpotIsAvailable ? possibleDestinationPoint : null;
     }
 
     countingObject.setDestination( destinationPosition, options.shouldAnimate, {
