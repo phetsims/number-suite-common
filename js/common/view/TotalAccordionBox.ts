@@ -20,6 +20,7 @@ import CountingArea from '../model/CountingArea.js';
 import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Property from '../../../../axon/js/Property.js';
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 
 // types
 type SelfOptions = {
@@ -29,6 +30,8 @@ type SelfOptions = {
 export type TotalAccordionBoxOptions =
   SelfOptions
   & StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'>;
+
+const MAX_SUM = CountingCommonConstants.MAX_IMAGES_PER_COUNTING_OBJECT;
 
 class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
@@ -45,7 +48,7 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
     // create the NumberDisplay, which is a numerical representation of the current number. always format for numbers
     // up to twenty so the display looks consistent across screens.
-    const numberDisplay = new NumberDisplay( countingArea.sumProperty, new Range( 0, NumberSuiteCommonConstants.TWENTY ), {
+    const numberDisplay = new NumberDisplay( countingArea.sumProperty, new Range( 0, MAX_SUM ), {
       decimalPlaces: 0,
       align: 'right',
       noValueAlign: 'left',
