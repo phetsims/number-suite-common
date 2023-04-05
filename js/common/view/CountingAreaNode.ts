@@ -206,7 +206,7 @@ class CountingAreaNode extends Node {
    * @param event - The Scenery event that triggered this.
    * @param countingObject - The countingObject to add and then drag
    *
-   * TODO: same as CountingCommonScreenView.addAndDragCountingObject https://github.com/phetsims/number-play/issues/119
+   * TODO: same as CountingCommonScreenView.addAndDragCountingObject https://github.com/phetsims/number-suite-common/issues/41
    * only difference is call to countingArea.calculateTotal()
    */
   public addAndDragCountingObject( event: PressListenerEvent, countingObject: CountingObject ): void {
@@ -222,7 +222,7 @@ class CountingAreaNode extends Node {
   /**
    * Creates and adds a CountingObjectNode.
    *
-   * TODO: same work as CountingCommonScreenView.onCountingObjectAdded https://github.com/phetsims/number-play/issues/119
+   * TODO: same work as CountingCommonScreenView.onCountingObjectAdded https://github.com/phetsims/number-suite-common/issues/41
    * Add listener calls are duplicated from MakeATenExploreScreenView.onCountingObjectAdded
    */
   public onCountingObjectAdded( countingObject: CountingObject ): void {
@@ -251,11 +251,11 @@ class CountingAreaNode extends Node {
 
   /**
    * Handles removing the relevant CountingObjectNode
-   * TODO: Duplicated from CountingCommonScreenView.onCountingObjectRemoved https://github.com/phetsims/number-play/issues/119
+   * TODO: Duplicated from CountingCommonScreenView.onCountingObjectRemoved https://github.com/phetsims/number-suite-common/issues/41
    * Listener removal duplicated from MakeATenExploreScreenView.onCountingObjectRemoved
    */
   public onCountingObjectRemoved( countingObject: CountingObject ): void {
-    // TODO: same as CountingCommonScreenView.findCountingObjectNode https://github.com/phetsims/number-play/issues/119
+    // TODO: same as CountingCommonScreenView.findCountingObjectNode https://github.com/phetsims/number-suite-common/issues/41
     const countingObjectNode = this.getCountingObjectNode( countingObject );
 
     // Remove listeners
@@ -269,7 +269,7 @@ class CountingAreaNode extends Node {
 
   /**
    * Given a CountingObject, get the current view (CountingObjectNode) of it.
-   * TODO: Duplication, https://github.com/phetsims/number-play/issues/119
+   * TODO: Duplication, https://github.com/phetsims/number-suite-common/issues/41
    */
   public getCountingObjectNode( countingObject: CountingObject ): CountingObjectNode {
     const result = this.countingObjectNodeMap[ countingObject.id ];
@@ -291,10 +291,10 @@ class CountingAreaNode extends Node {
       return;
     }
 
-    // TODO: duplication https://github.com/phetsims/number-play/issues/119
+    // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
     const draggedNode = this.getCountingObjectNode( draggedCountingObject );
 
-    // TODO: semi-duplication https://github.com/phetsims/number-play/issues/119
+    // TODO: semi-duplication https://github.com/phetsims/number-suite-common/issues/41
     // remove any countingObjects that aren't included in the sum - these are already on their way back to the creatorNode and
     // should not be tried to combined with. return if no countingObjects are left or if the draggedCountingObject is not
     // included in the sum
@@ -305,10 +305,10 @@ class CountingAreaNode extends Node {
       return;
     }
 
-    // TODO: duplication https://github.com/phetsims/number-play/issues/119
+    // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
     const droppedNodes = draggedNode.findAttachableNodes( allCountingObjectNodes );
 
-    // TODO: duplication https://github.com/phetsims/number-play/issues/119
+    // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
     // Check them in reverse order (the one on the top should get more priority)
     droppedNodes.reverse();
 
@@ -328,7 +328,7 @@ class CountingAreaNode extends Node {
         }
       }
       else {
-        // TODO: duplication https://github.com/phetsims/number-play/issues/119
+        // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
         // allow any two numbers to be combined
         this.countingArea.collapseNumberModels( this.countingAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject );
         return; // No need to re-layer or try combining with others
@@ -432,7 +432,7 @@ class CountingAreaNode extends Node {
 
   /**
    * Make sure all countingObjects are within the availableViewBounds
-   * TODO: Duplication, https://github.com/phetsims/number-play/issues/119
+   * TODO: Duplication, https://github.com/phetsims/number-suite-common/issues/41
    */
   private constrainAllPositions(): void {
     this.countingArea.countingObjects.forEach( ( countingObject: CountingObject ) => {
