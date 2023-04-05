@@ -490,7 +490,6 @@ class CountingAreaNode extends Node {
 
     // Return it to the panel if it's been dropped in the panel.
     if ( this.isNumberInReturnZone( countingObject ) ) {
-      // console.log( `about to drop ${countingObject.numberValueProperty.value} in ${this.countingArea.name} return zone` );
       countingObject.includeInSumProperty.value = false;
       this.countingArea.calculateTotal();
 

@@ -44,11 +44,9 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
       visible: options.arrowButtonsVisible
     };
     const upArrowButton = new ArrowButton( 'up', () => {
-      // console.log( `about to add 1 with up arrow in in ${countingArea.name}` );
       countingArea.createCountingObjectFromCreatorNode();
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: -3 }, arrowButtonOptions ) );
     const downArrowButton = new ArrowButton( 'down', () => {
-      // console.log( `about to remove 1 with up arrow in in ${countingArea.name}` );
       countingArea.returnCountingObjectToCreatorNode();
     }, optionize<ArrowButtonOptions, EmptySelfOptions>()( { touchAreaYShift: 3 }, arrowButtonOptions ) );
     const arrowButtons = new VBox( {

@@ -36,32 +36,27 @@ class LabModel implements TModel {
     // create five different kinds of countingAreas
     this.dogCountingArea = new CountingArea(
       HIGHEST_COUNT,
-      new BooleanProperty( false ),
-      'dogCountingArea', {
+      new BooleanProperty( false ), {
         tenFrames: this.tenFrames
       } );
     this.appleCountingArea = new CountingArea(
       HIGHEST_COUNT,
-      new BooleanProperty( false ),
-      'appleCountingArea', {
+      new BooleanProperty( false ), {
         tenFrames: this.tenFrames
       } );
     this.butterflyCountingArea = new CountingArea(
       HIGHEST_COUNT,
-      new BooleanProperty( false ),
-      'butterflyCountingArea', {
+      new BooleanProperty( false ), {
         tenFrames: this.tenFrames
       } );
     this.ballCountingArea = new CountingArea(
       HIGHEST_COUNT,
-      new BooleanProperty( false ),
-      'ballCountingArea', {
+      new BooleanProperty( false ), {
         tenFrames: this.tenFrames
       } );
     this.onesCountingArea = new CountingArea(
       HIGHEST_COUNT,
-      new BooleanProperty( true ),
-      'onesCountingArea', {
+      new BooleanProperty( true ), {
         tenFrames: this.tenFrames
       } );
 

@@ -64,9 +64,10 @@ class CountingArea extends CountingCommonModel {
   public readonly tenFrames: ObservableArray<TenFrame> | null;
   public readonly groupingEnabledProperty: TReadOnlyProperty<boolean>;
 
-  public constructor( highestCount: number, groupingEnabledProperty: TReadOnlyProperty<boolean>, name: string,
+  public constructor( highestCount: number,
+                      groupingEnabledProperty: TReadOnlyProperty<boolean>,
                       providedOptions?: CountingAreaOptions ) {
-    super( highestCount, name );
+    super( highestCount );
 
     const options = optionize<CountingAreaOptions, SelfOptions>()( {
       tenFrames: null

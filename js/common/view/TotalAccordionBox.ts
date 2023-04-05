@@ -58,11 +58,9 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
 
     // create the arrow buttons, which add or remove countingObjects
     const upArrowButton = new ArrowButton( 'up', () => {
-      // console.log( 'about to add 1 with up arrow in in total accordion box' );
       countingArea.createCountingObjectFromCreatorNode();
     }, options.arrowButtonOptions );
     const downArrowButton = new ArrowButton( 'down', () => {
-      // console.log( 'about to remove 1 with up arrow in in total accordion box' );
       countingArea.returnCountingObjectToCreatorNode();
     }, options.arrowButtonOptions );
     const arrowButtons = new VBox( {
