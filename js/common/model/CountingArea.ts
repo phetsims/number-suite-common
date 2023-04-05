@@ -167,19 +167,21 @@ class CountingArea extends CountingCommonModel {
       targetScale: scale
     } );
 
-    // TODO: https://github.com/phetsims/number-suite-common/issues/65
-    const countingAreaBoundsMinY = this.groupingEnabledProperty.value ? 30 : 0;
+    // Add the new countingObject BEFORE calculating the countingObjectOriginBounds so the bounds of the countingObject
+    // match the view state of whether grouping is enabled or not, which changes the countingObject's bounds.
+    this.addCountingObject( countingObject );
 
-    // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the countingArea
-    // bounds, see positioning in CountingAreaNode
-    const countingAreaBounds = this.boundsProperty.value
-      .withMinY( this.boundsProperty.value.minY + countingAreaBoundsMinY )
-      .withMaxY( this.boundsProperty.value.maxY - this.countingObjectCreatorNodeHeight );
+    // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the
+    // countingArea bounds, see positioning in CountingAreaNode.
+    const countingAreaBounds = this.boundsProperty.value.withMaxY(
+      this.boundsProperty.value.maxY - this.countingObjectCreatorNodeHeight - CountingCommonConstants.COUNTING_AREA_MARGIN );
     const countingObjectOriginBounds = countingObject.getOriginBounds( countingAreaBounds );
 
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
-      const possibleDestinationPoint = dotRandom.nextPointInBounds( countingObjectOriginBounds );
+
+      // const possibleDestinationPoint = dotRandom.nextPointInBounds( countingAreaBounds );
+      const possibleDestinationPoint = new Vector2( countingObjectOriginBounds.minX, countingObjectOriginBounds.maxY );
 
       // Initialized to no available until we check against every other countingObject.
       let randomSpotIsAvailable = true;
@@ -209,7 +211,6 @@ class CountingArea extends CountingCommonModel {
     countingObject.setDestination( destinationPosition, options.shouldAnimate, {
       targetScale: NumberSuiteCommonConstants.COUNTING_OBJECT_SCALE
     } );
-    this.addCountingObject( countingObject );
 
     this.calculateTotal();
   }
