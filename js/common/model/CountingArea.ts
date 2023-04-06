@@ -171,7 +171,8 @@ class CountingArea extends CountingCommonModel {
     // match the view state of whether grouping is enabled or not, which changes the countingObject's bounds.
     this.addCountingObject( countingObject );
 
-    // NOTE: The calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the
+    // The bounds of the countingArea, adjusted so remove space where created countingOObject should not go. NOTE: The
+    // calculation below assumes that the countingObjectCreatorNode is positioned along the bottom of the
     // countingArea bounds, see positioning in CountingAreaNode.
     const countingAreaBounds = this.boundsProperty.value.withMaxY(
       this.boundsProperty.value.maxY - this.countingObjectCreatorNodeHeight - CountingCommonConstants.COUNTING_AREA_MARGIN );
@@ -179,9 +180,7 @@ class CountingArea extends CountingCommonModel {
 
     // Looks for positions that are not overlapping with other countingObjects in the countingArea
     while ( !destinationPosition ) {
-
-      // const possibleDestinationPoint = dotRandom.nextPointInBounds( countingAreaBounds );
-      const possibleDestinationPoint = new Vector2( countingObjectOriginBounds.minX, countingObjectOriginBounds.maxY );
+      const possibleDestinationPoint = dotRandom.nextPointInBounds( countingObjectOriginBounds );
 
       // Initialized to no available until we check against every other countingObject.
       let randomSpotIsAvailable = true;
