@@ -87,7 +87,7 @@ export default class SecondLanguageControl extends VBox {
       if ( !showSecondLocale ) {
         preferences.isPrimaryLocaleProperty.value = true;
 
-        // When we turn off the second locale and switch back to the primary locale, if readAloud is on, the speechData
+        // When we turn off the second locale and switch back to the primary locale, if autoHear is on, the speechData
         // is spoken in NumberCompare because it changed from a language change. For consistency with Number Play,
         // cancel the speech instead.
         utteranceQueue.cancelSpeechDataSpeaking();

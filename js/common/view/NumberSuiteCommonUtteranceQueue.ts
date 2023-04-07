@@ -43,13 +43,13 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   private readonly isPrimaryLocaleProperty: TReadOnlyProperty<boolean>;
   private readonly primaryLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>;
   private readonly secondLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>;
-  private readonly readAloudProperty: TReadOnlyProperty<boolean>;
+  private readonly autoHearEnabledProperty: TReadOnlyProperty<boolean>;
 
   protected constructor( numberSuiteCommonAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
                          isPrimaryLocaleProperty: TReadOnlyProperty<boolean>,
                          primaryLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>,
                          secondLocaleProperty: TReadOnlyProperty<SpeechSynthesisVoice | null>,
-                         readAloudProperty: TReadOnlyProperty<boolean>
+                         autoHearEnabledProperty: TReadOnlyProperty<boolean>
   ) {
     super( numberSuiteCommonAnnouncer );
 
@@ -62,7 +62,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     this.isPrimaryLocaleProperty = isPrimaryLocaleProperty;
     this.primaryLocaleProperty = primaryLocaleProperty;
     this.secondLocaleProperty = secondLocaleProperty;
-    this.readAloudProperty = readAloudProperty;
+    this.autoHearEnabledProperty = autoHearEnabledProperty;
   }
 
   /**
@@ -130,10 +130,10 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     this.speechDataProperty = speechDataProperty;
 
-    // Speak the speechData if readAloud is turned on or the speechData changes. Also check that the announcer has a
+    // Speak the speechData if autoHear is turned on or the speechData changes. Also check that the announcer has a
     // voice because even if the voiceProperty is set to null, the browser still speaks with a default voice.
     Multilink.lazyMultilink(
-      [ this.readAloudProperty, this.speechDataProperty ], readAloud => readAloud && this.speakSpeechData()
+      [ this.autoHearEnabledProperty, this.speechDataProperty ], autoHearEnabled => autoHearEnabled && this.speakSpeechData()
     );
 
     this.initialized = true;

@@ -34,7 +34,7 @@ class NumberSuiteCommonPreferences {
   public readonly showLabOnesProperty: Property<boolean>;
 
   // whether the sim speaks the model value of screens that use speech synthesis when the data or voice changes
-  public readonly readAloudProperty: Property<boolean>;
+  public readonly autoHearEnabledProperty: Property<boolean>;
 
   // whether the sim is using its primary locale or a second locale on screens that support two locales
   public readonly isPrimaryLocaleProperty: Property<boolean>;
@@ -65,7 +65,7 @@ class NumberSuiteCommonPreferences {
 
     this.showLabOnesProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.showLabOnes );
 
-    this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.autoHear );
+    this.autoHearEnabledProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.autoHear );
 
     this.isPrimaryLocaleProperty = new BooleanProperty( true );
 

@@ -43,7 +43,7 @@ export default class ReadAloudControl extends Node {
       visible: visible
     } );
 
-    const toggleSwitch = new ToggleSwitch( preferences.readAloudProperty, false, true,
+    const toggleSwitch = new ToggleSwitch( preferences.autoHearEnabledProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     const control = new PreferencesControl( {
@@ -79,9 +79,9 @@ export default class ReadAloudControl extends Node {
       spacing: 14,
       align: 'center',
       visibleProperty: new DerivedProperty( [
-          preferences.readAloudProperty,
+          preferences.autoHearEnabledProperty,
           speechSynthesisAnnouncer.hasVoiceProperty
-        ], ( readAloud, hasVoice ) => readAloud && !hasVoice
+        ], ( autoHearEnabled, hasVoice ) => autoHearEnabled && !hasVoice
       )
     } );
     this.addChild( missingVoiceWarningNode );
