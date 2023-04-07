@@ -29,7 +29,7 @@ const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
   maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
 };
 
-export default class ReadAloudControl extends Node {
+export default class AutoHearControl extends Node {
 
   public constructor(
     preferences: NumberSuiteCommonPreferences,
@@ -91,4 +91,4 @@ export default class ReadAloudControl extends Node {
   }
 }
 
-numberSuiteCommon.register( 'ReadAloudControl', ReadAloudControl );
+numberSuiteCommon.register( 'AutoHearControl', AutoHearControl );
