@@ -95,7 +95,7 @@ class CardCreatorNode extends Node {
       };
 
       const cardNodeOptions = {
-        dragBoundsProperty: screenView.symbolCardBoundsProperty,
+        dragBoundsProperty: screenView.numberCardBoundsProperty,
         dropListener: dropListener,
         homePosition: globalOrigin
       };
