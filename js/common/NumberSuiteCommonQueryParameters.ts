@@ -11,8 +11,8 @@ import numberSuiteCommon from '../numberSuiteCommon.js';
 const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
 
   // whether the current number on the 'Ten' and 'Twenty' screens or the compare statement on the 'Compare' screen
-  // should be read out loud whenever their value changes
-  readAloud: {
+  // should be spoken aloud when their value changes.
+  autoHear: {
     public: true,
     type: 'flag'
   },

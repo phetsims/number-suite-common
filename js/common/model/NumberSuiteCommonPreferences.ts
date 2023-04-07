@@ -65,7 +65,7 @@ class NumberSuiteCommonPreferences {
 
     this.showLabOnesProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.showLabOnes );
 
-    this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.readAloud );
+    this.readAloudProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.autoHear );
 
     this.isPrimaryLocaleProperty = new BooleanProperty( true );
 
