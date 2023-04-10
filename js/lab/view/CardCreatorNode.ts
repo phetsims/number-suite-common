@@ -95,7 +95,6 @@ class CardCreatorNode extends Node {
       };
 
       const cardNodeOptions = {
-        dragBoundsProperty: screenView.numberCardBoundsProperty,
         dropListener: dropListener,
         homePosition: globalOrigin
       };
@@ -107,7 +106,8 @@ class CardCreatorNode extends Node {
         assert && assert( countProperty, 'countProperty for inequality symbol not found: ' + options.symbolType );
 
         cardNode = new SymbolCardNode( combineOptions<SymbolCardNodeOptions>( {
-          symbolType: options.symbolType
+          symbolType: options.symbolType,
+          dragBoundsProperty: screenView.symbolCardBoundsProperty
         }, cardNodeOptions ) );
       }
       else {
@@ -116,7 +116,8 @@ class CardCreatorNode extends Node {
         countProperty = contentToCountPropertyMap.get( options.number! )!;
 
         cardNode = new NumberCardNode( combineOptions<NumberCardNodeOptions>( {
-          number: options.number!
+          number: options.number!,
+          dragBoundsProperty: screenView.numberCardBoundsProperty
         }, cardNodeOptions ) );
       }
 
