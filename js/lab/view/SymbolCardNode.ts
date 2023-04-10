@@ -12,8 +12,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CardNode, { CardNodeOptions } from './CardNode.js';
+import SymbolType from './SymbolType.js';
 
-export type SymbolType = '<' | '=' | '>' | '+' | '-';
 type SelfOptions = {
   symbolType: SymbolType;
 };

@@ -11,11 +11,12 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
 import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
-import SymbolCardNode, { SymbolType } from './SymbolCardNode.js';
+import SymbolCardNode from './SymbolCardNode.js';
 import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import CardCreatorNode from './CardCreatorNode.js';
 import Property from '../../../../axon/js/Property.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import SymbolType from './SymbolType.js';
 
 // constants
 const MAX_SYMBOL_PIECE_COUNT = 10;

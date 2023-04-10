@@ -10,7 +10,7 @@
 
 import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import SymbolCardNode, { SymbolCardNodeOptions, SymbolType } from './SymbolCardNode.js';
+import SymbolCardNode, { SymbolCardNodeOptions } from './SymbolCardNode.js';
 import LabScreenView from './LabScreenView.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import Animation from '../../../../twixt/js/Animation.js';
@@ -21,6 +21,7 @@ import NumberCardNode, { NumberCardNodeOptions } from './NumberCardNode.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import SymbolType from './SymbolType.js';
 
 type SelfOptions = {
   symbolType?: SymbolType | null;
