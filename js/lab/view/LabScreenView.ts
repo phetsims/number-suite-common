@@ -241,7 +241,7 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     } );
     this.addChild( resetAllButton );
 
-    // update the y-position of panels when the visible bounds change so everything floats to the top or bottom
+    // Update the position of panels when the visible bounds change so everything floats to an edge of the window.
     Multilink.multilink( [ this.visibleBoundsProperty, preferences.showLabOnesProperty ],
       ( visibleBounds, showLabOnes ) => {
         this.numberCardCreatorCarousel.top = visibleBounds.top + NumberSuiteCommonConstants.SCREEN_VIEW_PADDING_Y;
@@ -258,9 +258,17 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
           returnZoneRightBoundary, bottomY );
       } );
 
-    this.objectCountingAreaBoundsProperty.link( objectCountingAreaBounds => {
+    // Constrain the position of the numberCards when the bounds change.
+    this.numberCardBoundsProperty.link( numberCardBounds => {
+      this.numberCardCreatorCarousel.getAllNumberCardNodes().forEach( numberCardNode => {
+        numberCardNode.setConstrainedDestination( numberCardBounds, numberCardNode.positionProperty.value );
+      } );
+    } );
+
+    // Constrain the position of the symbolCards when the bounds change.
+    this.symbolCardBoundsProperty.link( symbolCardBounds => {
       this.symbolCardCreatorPanel.getAllSymbolNodes().forEach( symbolCardNode => {
-        symbolCardNode.setConstrainedDestination( objectCountingAreaBounds, symbolCardNode.positionProperty.value );
+        symbolCardNode.setConstrainedDestination( symbolCardBounds, symbolCardNode.positionProperty.value );
       } );
     } );
   }
