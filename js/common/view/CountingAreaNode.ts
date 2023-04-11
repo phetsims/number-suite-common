@@ -376,8 +376,12 @@ class CountingAreaNode extends Node {
         const noCountingObjectsInTenFrame = !tenFrame.countingObjects.lengthProperty.value &&
                                             droppedNodeCountingType !== CountingObjectType.PAPER_NUMBER;
 
-        if ( tenFrameSharesCountingObjectType || noCountingObjectsInTenFrame ) {
-          tenFrame.tryToAddCountingObject( droppedCountingObject );
+        // Add only similar object types, or non paper-numbers if tenFrame is empty
+        const shouldAdd = tenFrameSharesCountingObjectType || noCountingObjectsInTenFrame;
+
+        // Push away objects when the tenFrame is full
+        if ( !tenFrame.isFull() && shouldAdd ) {
+          tenFrame.addCountingObject( droppedCountingObject );
         }
         else {
           tenFrame.pushAwayCountingObject( droppedCountingObject, this.countingAreaBoundsProperty.value );
