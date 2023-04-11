@@ -28,16 +28,16 @@ NumberSuiteCommonStrings.oneTwoThreeStringProperty;
 export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQueue<NumberSuiteCommonSpeechSynthesisAnnouncer> {
 
   // Data that can be spoken to the user. The data comes from the screen that is currently being interacted with.
-  private speechDataProperty: TReadOnlyProperty<string | null> | null;
+  private speechDataProperty!: TReadOnlyProperty<string | null>;
 
   // Whether this class has been initialized.
-  private initialized: boolean;
+  private initialized = false;
 
   // The Utterance used for speaking speechData.
-  private readonly speechDataUtterance: Utterance;
+  private readonly speechDataUtterance = new Utterance();
 
   // The Utterance used for speaking when the user is testing a voice in Preferences.
-  private readonly testVoiceUtterance: Utterance;
+  private readonly testVoiceUtterance = new Utterance();
 
   // See doc in NumberSuiteCommonPreferences.
   private readonly isPrimaryLocaleProperty: TReadOnlyProperty<boolean>;
@@ -53,12 +53,6 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
   ) {
     super( numberSuiteCommonAnnouncer );
 
-    this.speechDataProperty = null;
-    this.initialized = false;
-
-    this.speechDataUtterance = new Utterance();
-    this.testVoiceUtterance = new Utterance();
-
     this.isPrimaryLocaleProperty = isPrimaryLocaleProperty;
     this.primaryLocaleProperty = primaryLocaleProperty;
     this.secondLocaleProperty = secondLocaleProperty;
@@ -70,7 +64,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
    */
   public speakSpeechData(): void {
     assert && assert( this.initialized && this.speechDataProperty, 'Cannot speak before initialization' );
-    const speechData = this.speechDataProperty!.value;
+    const speechData = this.speechDataProperty.value;
 
     // determine which voice to use based on isPrimaryLocaleProperty
     const voice = this.isPrimaryLocaleProperty.value ? this.primaryLocaleProperty.value : this.secondLocaleProperty.value;
@@ -132,8 +126,9 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
     // Speak the speechData if autoHear is turned on or the speechData changes. Also check that the announcer has a
     // voice because even if the voiceProperty is set to null, the browser still speaks with a default voice.
-    Multilink.lazyMultilink(
-      [ this.autoHearEnabledProperty, this.speechDataProperty ], autoHearEnabled => autoHearEnabled && this.speakSpeechData()
+    Multilink.lazyMultilink( [
+        this.autoHearEnabledProperty, this.speechDataProperty
+      ], autoHearEnabled => autoHearEnabled && this.speakSpeechData()
     );
 
     this.initialized = true;
