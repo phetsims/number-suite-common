@@ -58,12 +58,14 @@ class TenFrame extends Disposable {
     this.originBounds = new Bounds2( 0, 0, 0, 0 );
   }
 
-  public tryToAddCountingObject( countingObject: CountingObject ): void {
-    assert && assert( !this.containsCountingObject( countingObject ) );
+  public isFull(): boolean {
+    return this.countingObjects.length === NUMBER_OF_SPOTS;
+  }
 
-    if ( this.countingObjects.length < NUMBER_OF_SPOTS ) {
-      this.countingObjects.add( countingObject );
-    }
+  public addCountingObject( countingObject: CountingObject ): void {
+    assert && assert( !this.containsCountingObject( countingObject ) );
+    assert && assert( this.countingObjects.length < NUMBER_OF_SPOTS, 'cannot add countingObject to full tenFrame' );
+    this.countingObjects.add( countingObject );
   }
 
   /**
