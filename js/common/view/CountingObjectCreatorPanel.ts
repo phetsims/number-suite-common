@@ -66,9 +66,9 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
         backTargetOffset: new Vector2( -5, -5 ),
         ungroupedTargetScale: NumberSuiteCommonConstants.UNGROUPED_STORED_COUNTING_OBJECT_SCALE,
         groupedTargetScale: NumberSuiteCommonConstants.GROUPED_STORED_COUNTING_OBJECT_SCALE,
-        touchAreaXDilation: 6.5,
-        touchAreaYDilation: 5,
-        touchAreaXShift: 3,
+        pointerAreaXDilation: 6.5,
+        pointerAreaYDilation: 5,
+        pointerAreaXShift: 3,
         center: creatorNodeBackground.selfBounds.center
       } );
     creatorNodeBackground.addChild( countingCreatorNode );
