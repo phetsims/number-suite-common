@@ -60,10 +60,6 @@ class CardCreatorNode extends Node {
 
     iconNode.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
 
-      // Calculate the icon's origin.
-      const trail = screenView.getUniqueLeafTrailTo( iconNode ).slice( 1 );
-      const globalOrigin = trail.localToGlobalPoint( iconNode.localBounds.center );
-
       let cardNode: CardNode;
       let countProperty: TProperty<number>;
 
@@ -73,7 +69,19 @@ class CardCreatorNode extends Node {
         if ( cardNode.bounds.intersectsBounds( homeNodeBounds ) ) {
           cardNode.inputEnabled = false;
 
-          const distance = cardNode.positionProperty.value.distance( cardNode.homePosition );
+          // Calculate the icon's origin.
+          const trail = screenView.getUniqueLeafTrailTo( iconNode ).slice( 1 );
+          const globalOrigin = trail.localToGlobalPoint( iconNode.localBounds.center );
+
+          // If returning to a different page, clamp destination at edge.
+          if ( globalOrigin.x < homeNodeBounds.left ) {
+            globalOrigin.x = homeNodeBounds.left;
+          }
+          else if ( globalOrigin.x > homeNodeBounds.right ) {
+            globalOrigin.x = homeNodeBounds.right;
+          }
+
+          const distance = cardNode.positionProperty.value.distance( globalOrigin );
           const duration =
             CountingCommonConstants.ANIMATION_TIME_RANGE.constrainValue( distance / CountingCommonConstants.ANIMATION_SPEED );
 
@@ -82,7 +90,7 @@ class CardCreatorNode extends Node {
             targets: [ {
               property: cardNode.positionProperty,
               easing: Easing.CUBIC_IN_OUT,
-              to: cardNode.homePosition
+              to: globalOrigin
             } ]
           } );
 
@@ -96,8 +104,7 @@ class CardCreatorNode extends Node {
       };
 
       const cardNodeOptions = {
-        dropListener: dropListener,
-        homePosition: globalOrigin
+        dropListener: dropListener
       };
 
       if ( options.symbolType ) {
