@@ -8,7 +8,7 @@
  */
 
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import { HBox, HBoxOptions, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Property from '../../../../axon/js/Property.js';
@@ -21,6 +21,8 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import PageControl from '../../../../sun/js/PageControl.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 
 const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',
@@ -98,6 +100,19 @@ export default class LanguageAndVoiceControl extends HBox {
     const voiceCarouselLabel = new Text( NumberSuiteCommonStrings.voiceStringProperty, textOptions );
     const noVoiceDescriptionNode = new NoVoiceDescriptionNode( languageCarouselWidth, languageCarousel.height );
 
+    const pageControl = new PageControl( languageCarousel.pageNumberProperty, languageCarousel.numberOfPagesProperty, {
+      orientation: 'vertical',
+      pageFill: Color.WHITE,
+      pageStroke: Color.BLACK,
+      currentPageStroke: Color.BLACK,
+      interactive: true,
+      dotTouchAreaDilation: 5,
+      dotMouseAreaDilation: 5,
+
+      // Hide pageControl if there's only one page.
+      visibleProperty: new DerivedProperty( [ languageCarousel.numberOfPagesProperty ], numberOfPages => numberOfPages > 1 )
+    } );
+
     const voiceControlVBox = new VBox( {
       children: [ voiceCarouselLabel, voiceCarousel ],
       spacing: LABEL_Y_SPACING,
@@ -107,16 +122,28 @@ export default class LanguageAndVoiceControl extends HBox {
       }
     } );
 
+    const languageControlVBox = new VBox( {
+      children: [ languageCarouselLabel, languageCarousel ],
+      spacing: LABEL_Y_SPACING,
+      align: 'left'
+    } );
+
     options.children = [
-      new VBox( {
-        children: [ languageCarouselLabel, languageCarousel ],
-        spacing: LABEL_Y_SPACING,
-        align: 'left'
-      } ),
+
+      // Add an extra Node layer so we can move the pageControl with a ManualConstraint below and not create an infinite
+      // loop with the alignment layout of this HBox.
+      new Node( { children: [ pageControl ] } ),
+
+      languageControlVBox,
       voiceControlVBox
     ];
 
     super( options );
+
+    // Keep the pageControl vertically centered next to the languageCarousel.
+    ManualConstraint.create( this, [ languageCarousel, pageControl ], ( languageCarouselProxy, pageControlProxy ) => {
+      pageControlProxy.centerY = languageCarouselProxy.centerY;
+    } );
 
     // Rebuild the voiceCarousel with the available voices when the locale changes or when voices become available
     Multilink.multilink(
