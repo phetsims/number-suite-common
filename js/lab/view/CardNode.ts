@@ -68,6 +68,9 @@ class CardNode extends Node {
     if ( options.includeDragListener ) {
       this.dragListener = new DragListener( {
         targetNode: this,
+        start: ( event: PressListenerEvent, listener: DragListener ) => {
+          this.moveToFront();
+        },
         drag: ( event: PressListenerEvent, listener: DragListener ) => {
           this.setConstrainedDestination( options.dragBoundsProperty.value, listener.parentPoint );
         },
@@ -75,11 +78,7 @@ class CardNode extends Node {
           options.dropListener();
         }
       } );
-
-      this.addInputListener( DragListener.createForwardingListener( ( event: PressListenerEvent ) => {
-        this.dragListener!.press( event, this );
-        this.moveToFront();
-      } ) );
+      this.addInputListener( this.dragListener );
     }
     else {
       this.dragListener = null;
