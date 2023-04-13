@@ -70,6 +70,7 @@ class CardNode extends Node {
         targetNode: this,
         start: ( event: PressListenerEvent, listener: DragListener ) => {
           this.moveToFront();
+          this.setConstrainedDestination( options.dragBoundsProperty.value, listener.parentPoint );
         },
         drag: ( event: PressListenerEvent, listener: DragListener ) => {
           this.setConstrainedDestination( options.dragBoundsProperty.value, listener.parentPoint );
