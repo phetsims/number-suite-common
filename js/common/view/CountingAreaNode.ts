@@ -13,7 +13,7 @@ import CountingObject from '../../../../counting-common/js/common/model/Counting
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import { Node, NodeOptions, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
-import ClosestDragListener from '../../../../sun/js/ClosestDragListener.js';
+import ClosestDragForwardingListener from '../../../../sun/js/ClosestDragForwardingListener.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingArea, { CountingObjectSerialization } from '../model/CountingArea.js';
 import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
@@ -67,7 +67,7 @@ class CountingAreaNode extends Node {
   private readonly viewHasIndependentModel: boolean;
 
   // handle touches nearby to the countingObjects, and interpret those as the proper drag.
-  private readonly closestDragListener: ClosestDragListener;
+  private readonly closestDragForwardingListener: ClosestDragForwardingListener;
 
   // Node parent for all CountingObjectNode instances, created if not provided.
   private readonly countingObjectLayerNode: Node;
@@ -105,7 +105,7 @@ class CountingAreaNode extends Node {
 
     this.viewHasIndependentModel = options.viewHasIndependentModel;
 
-    this.closestDragListener = new ClosestDragListener( 30, 0 );
+    this.closestDragForwardingListener = new ClosestDragForwardingListener( 30, 0 );
     let backgroundDragTargetNode = null;
     if ( options.backgroundDragTargetNode ) {
       backgroundDragTargetNode = options.backgroundDragTargetNode;
@@ -114,7 +114,7 @@ class CountingAreaNode extends Node {
       backgroundDragTargetNode = new Rectangle( countingAreaBoundsProperty.value );
       this.addChild( backgroundDragTargetNode );
     }
-    backgroundDragTargetNode.addInputListener( this.closestDragListener );
+    backgroundDragTargetNode.addInputListener( this.closestDragForwardingListener );
 
     const countingObjectAddedListener = this.onCountingObjectAdded.bind( this );
     const countingObjectRemovedListener = this.onCountingObjectRemoved.bind( this );
@@ -242,7 +242,7 @@ class CountingAreaNode extends Node {
     this.countingObjectLayerNode.addChild( countingObjectNode );
     countingObjectNode.attachListeners();
 
-    this.closestDragListener.addDraggableItem( countingObjectNode );
+    this.closestDragForwardingListener.addDraggableItem( countingObjectNode );
 
     // add listeners
     countingObject.endAnimationEmitter.addListener( this.animationFinishedListener );
@@ -263,7 +263,7 @@ class CountingAreaNode extends Node {
     countingObject.endAnimationEmitter.removeListener( this.animationFinishedListener );
 
     delete this.countingObjectNodeMap[ countingObjectNode.countingObject.id ];
-    this.closestDragListener.removeDraggableItem( countingObjectNode );
+    this.closestDragForwardingListener.removeDraggableItem( countingObjectNode );
     countingObjectNode.dispose();
   }
 
