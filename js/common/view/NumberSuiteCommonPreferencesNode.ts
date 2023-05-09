@@ -11,7 +11,6 @@ import { HBox, HBoxOptions, Node, VBox } from '../../../../scenery/js/imports.js
 import optionize from '../../../../phet-core/js/optionize.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
-import { AnyScreen } from '../../../../joist/js/Screen.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import SecondLanguageControl from './SecondLanguageControl.js';
@@ -65,7 +64,7 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
   /**
    * Determines whether the sim is running with a screen of the specified type.
    */
-  public static hasScreenType( constructor: new ( ...args: IntentionalAny[] ) => AnyScreen ): boolean {
+  public static hasScreenType( constructor: new ( ...args: IntentionalAny[] ) => unknown ): boolean {
     return ( _.find( phet.joist.sim.screens, screen => screen instanceof constructor ) !== undefined );
   }
 }
