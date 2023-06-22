@@ -7,6 +7,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import Disposable from '../../../../axon/js/Disposable.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
@@ -186,7 +187,7 @@ export default class LanguageAndVoiceControl extends HBox {
   }
 
   public override dispose(): void {
-    assert && assert( false, 'dispose is not supported, exists for the lifetime of the sim' );
+    Disposable.assertNotDisposable();
     super.dispose();
   }
 }

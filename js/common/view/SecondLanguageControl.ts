@@ -7,6 +7,7 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import Disposable from '../../../../axon/js/Disposable.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import { allowLinksProperty, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
@@ -96,7 +97,7 @@ export default class SecondLanguageControl extends VBox {
   }
 
   public override dispose(): void {
-    assert && assert( false, 'dispose is not supported, exists for the lifetime of the sim' );
+    Disposable.assertNotDisposable();
     super.dispose();
   }
 }
@@ -135,7 +136,7 @@ class AdditionalDescriptionNode extends VBox {
   }
 
   public override dispose(): void {
-    assert && assert( false, 'dispose is not supported, exists for the lifetime of the sim' );
+    Disposable.assertNotDisposable();
     super.dispose();
   }
 }
