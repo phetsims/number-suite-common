@@ -11,11 +11,11 @@ import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TRe
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
-import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
 import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
+import UndoButton from '../../../../scenery-phet/js/buttons/UndoButton.js';
 
 const RETURN_BUTTON_MARGIN = 5;
 
@@ -42,9 +42,11 @@ class DraggableTenFrameNode extends Node {
     } );
     this.addChild( tenFrameNode );
 
-    const returnButton = new ReturnButton( () => {
-      tenFrame.removeCountingObject();
-    }, {
+    const returnButton = new UndoButton( {
+      listener: () => {
+        tenFrame.removeCountingObject();
+      },
+      iconOptions: { scale: 0.7 },
       visible: false
     } );
 
