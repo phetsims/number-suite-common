@@ -16,9 +16,9 @@ The **Game** screen contains two games: the 'Counting' game and the 'Subitize' g
 * Level 1 for each game type is the left column of buttons, Level 2 is the right column of buttons.
 
 A challenge in each game displays a random number of objects to the user and a range of numbered buttons that can be
-pressed to indicate
-the user's choice of the number of objects. A challenge is incomplete until the user presses the button with
-the number that matches the number of objects. When the correct answer button is pressed, the 'New Challenge' button
+pressed to indicate the user's choice of the number of objects. A challenge is incomplete until the user presses the
+button with the number that matches the number of objects. When the correct answer button is pressed, the 'New
+Challenge' button
 (rectangular right arrow button) appears that loads a new challenge when pressed.
 
 ### Counting
@@ -29,11 +29,11 @@ representations, and allow the user to move the objects around. The game also us
 the **Ten** and **Twenty** screens. Both levels show a representation of a number by alternating between objects in a
 counting area and a ten frame.
 
-In Level 1, objects in the counting area are shown in the "ungrouped" state, where they do not
-have card backgrounds and cannot be combined with other objects.
+In Level 1, objects in the counting area are shown in the "ungrouped" state, where they do not have card backgrounds and
+cannot be combined with other objects.
 
-In Level 2, the objects are shown in the "grouped" state. The size of each group is randomly chosen from the divisors
-2, 5, and 10, and the remainder is placed on an additional card.
+In Level 2, the objects are shown in the "grouped" state. The size of each group is randomly chosen from the divisors 2,
+5, and 10, and the remainder is placed on an additional card.
 
 ### Subitize
 
@@ -51,14 +51,14 @@ In Level 2, the objects are grouped in a structured, grid-like arrangement that 
 
 Here is a summary of the ranges of each game and level:
 
- Game     | Level | Minimum Number | Maximum Number |
-----------|-------|----------------|----------------|
- Counting | 1     | 1              | 10             |
- Counting | 2     | 11             | 20             |
- Subitize | 1     | 1              | 5              |
- Subitize | 2     | 6              | 10             |
+| Game     | Level | Minimum Number | Maximum Number |
+|----------|-------|----------------|----------------|
+| Counting | 1     | 1              | 10             |
+| Counting | 2     | 11             | 20             |
+| Subitize | 1     | 1              | 5              |
+| Subitize | 2     | 6              | 10             |
 
-Since the challenges in both levels of each game are randomly generated, all levels can be played endlessly.
-One star is awarded per challenge that is successfully completed on the first try. On the 'Subitize' game,
-pressing the 'Reveal' button does not disqualify the user from getting a first-try star.
+Since the challenges in both levels of each game are randomly generated, all levels can be played endlessly. One star is
+awarded per challenge that is successfully completed on the first try. On the 'Subitize' game, pressing the 'Reveal'
+button does not disqualify the user from getting a first-try star.
 
