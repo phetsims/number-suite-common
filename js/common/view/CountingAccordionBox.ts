@@ -25,13 +25,13 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import Property from '../../../../axon/js/Property.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
-import TEmitter from '../../../../axon/js/TEmitter.js';
+import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 
 // types
 type SelfOptions = {
   countingObjectTypes?: CountingObjectType[] | null;
   linkedCountingArea?: CountingArea | null;
-  linkStatusChangedEmitter?: TEmitter<[ boolean ]> | null;
+  linkStatusChangedEmitter?: TReadOnlyEmitter<[ boolean ]> | null;
 };
 export type CountingAccordionBoxOptions = SelfOptions &
   StrictOmit<NumberSuiteCommonAccordionBoxOptions, 'titleStringProperty'> &
