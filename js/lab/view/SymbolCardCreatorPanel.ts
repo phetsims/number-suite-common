@@ -6,7 +6,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import { Rectangle, VBox, Node } from '../../../../scenery/js/imports.js';
+import { Node, Rectangle, VBox } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import LabScreenView from './LabScreenView.js';
