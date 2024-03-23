@@ -1,4 +1,4 @@
-// Copyright 2023, University of Colorado Boulder
+// Copyright 2023-2024, University of Colorado Boulder
 
 /**
  * A subclass of UtteranceQueue that is used for voicing specific to Number Suite sims. This is needed because

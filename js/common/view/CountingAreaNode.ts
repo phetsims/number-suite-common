@@ -1,4 +1,4 @@
-// Copyright 2022-2023, University of Colorado Boulder
+// Copyright 2022-2024, University of Colorado Boulder
 
 /**
  * Node for a CountingArea. This file was copied from counting-common/common/view/CountingCommonScreenView.js and
