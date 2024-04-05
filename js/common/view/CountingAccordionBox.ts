@@ -84,7 +84,7 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
 
         buttons.push( {
           value: countingObjectType,
-          createNode: () => iconNode!
+          createNode: () => iconNode
         } );
       } );
 
