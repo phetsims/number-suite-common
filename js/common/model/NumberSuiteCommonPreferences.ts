@@ -59,7 +59,7 @@ class NumberSuiteCommonPreferences {
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
 
     // if a secondLocale was provided via a query parameter, use that, otherwise default to the primaryLocale
-    this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale as Locale || localeProperty.value, {
+    this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale || localeProperty.value, {
       validValues: availableRuntimeLocales
     } );
 
