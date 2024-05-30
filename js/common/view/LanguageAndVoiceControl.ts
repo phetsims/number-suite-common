@@ -58,8 +58,18 @@ export default class LanguageAndVoiceControl extends HBox {
       spacing: 10
     }, providedOptions );
 
+    const locales = localeProperty.validValues!;
+
+    // Sort these properly by their localized name (without using _.sortBy, since string comparison does not provide
+    // a good sorting experience). See https://github.com/phetsims/joist/issues/965
+    const sortedLocalizedNameLocales = locales.slice().sort( ( a, b ) => {
+      const lowerCaseA = StringUtils.localeToLocalizedName( a ).toLowerCase();
+      const lowerCaseB = StringUtils.localeToLocalizedName( b ).toLowerCase();
+      return lowerCaseA.localeCompare( lowerCaseB, 'en-US', { sensitivity: 'base' } );
+    } );
+
     // Carousel for choosing a language.
-    const languageCarouselItems: LanguageCarouselItem[] = localeProperty.validValues!.map(
+    const languageCarouselItems: LanguageCarouselItem[] = sortedLocalizedNameLocales.map(
       locale => {
         return {
           locale: locale,
