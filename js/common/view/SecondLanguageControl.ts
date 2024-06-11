@@ -17,7 +17,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import { availableRuntimeLocales } from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
@@ -56,7 +56,7 @@ export default class SecondLanguageControl extends VBox {
       labelNode: labelText,
       descriptionNode: descriptionText,
       controlNode: toggleSwitch,
-      enabled: ( availableRuntimeLocales.length > 1 ), // disabled if we do not have multiple locales available
+      enabled: ( localeProperty.availableRuntimeLocales.length > 1 ), // disabled if we do not have multiple locales available
       ySpacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING
     } );
 

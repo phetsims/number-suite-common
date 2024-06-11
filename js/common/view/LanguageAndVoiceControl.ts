@@ -11,8 +11,7 @@ import Disposable from '../../../../axon/js/Disposable.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
-import Property from '../../../../axon/js/Property.js';
+import { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
 import TProperty from '../../../../axon/js/TProperty.js';
@@ -45,7 +44,7 @@ type VoiceCarouselItem = { voice: SpeechSynthesisVoice } & CarouselItem;
 
 export default class LanguageAndVoiceControl extends HBox {
 
-  public constructor( localeProperty: Property<Locale>,
+  public constructor( localeProperty: LocaleProperty,
                       voiceProperty: TProperty<SpeechSynthesisVoice | null>,
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions?: LanguageAndVoiceControlOptions ) {
@@ -60,7 +59,7 @@ export default class LanguageAndVoiceControl extends HBox {
     }, providedOptions );
 
     // Carousel for choosing a language.
-    const languageCarouselItems: LanguageCarouselItem[] = localeProperty.validValues!.map(
+    const languageCarouselItems: LanguageCarouselItem[] = localeProperty.availableRuntimeLocales.map(
       locale => {
         return {
           locale: locale,

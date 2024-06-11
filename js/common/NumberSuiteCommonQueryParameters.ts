@@ -19,6 +19,7 @@ const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
 
   // specifies a second locale to make available on the 'Ten', 'Twenty', and 'Compare' screens. Values are specified
   // with a locale code, e.g. "en" or "zh_CN".
+  // TODO: Use checkAndRemapLocales to support this one too, https://github.com/phetsims/joist/issues/970
   secondLocale: {
     public: true,
     type: 'string',

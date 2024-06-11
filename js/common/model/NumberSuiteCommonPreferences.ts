@@ -14,7 +14,7 @@ import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameter
 import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import localeProperty, { availableRuntimeLocales, Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty, { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
 
 //TODO https://github.com/phetsims/number-suite-common/issues/18 type string map, perhaps getStringModule.TStringModule?
 //TODO https://github.com/phetsims/number-suite-common/issues/18 replace any
@@ -29,7 +29,7 @@ class NumberSuiteCommonPreferences {
   public readonly showSecondLocaleProperty: Property<boolean>;
 
   // the second locale
-  public readonly secondLocaleProperty: Property<Locale>;
+  public readonly secondLocaleProperty: LocaleProperty;
 
   // whether the Ones are included on the 'Lab' Screen
   public readonly showLabOnesProperty: Property<boolean>;
@@ -60,9 +60,7 @@ class NumberSuiteCommonPreferences {
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
 
     // if a secondLocale was provided via a query parameter, use that, otherwise default to the primaryLocale
-    this.secondLocaleProperty = new Property<Locale>( NumberSuiteCommonQueryParameters.secondLocale as Locale || localeProperty.value, {
-      validValues: availableRuntimeLocales
-    } );
+    this.secondLocaleProperty = new LocaleProperty( NumberSuiteCommonQueryParameters.secondLocale as Locale || localeProperty.value );
 
     this.showLabOnesProperty = new BooleanProperty( NumberSuiteCommonQueryParameters.showLabOnes );
 
