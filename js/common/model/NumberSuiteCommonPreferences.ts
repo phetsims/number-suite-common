@@ -1,4 +1,4 @@
-// Copyright 2022-2023, University of Colorado Boulder
+// Copyright 2022-2024, University of Colorado Boulder
 
 /**
  * NumberSuiteCommonPreferences is the model for sim-specific preferences for all Number Suite sims, accessed via the
