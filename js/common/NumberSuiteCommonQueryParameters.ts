@@ -19,15 +19,9 @@ const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
 
   // specifies a second locale to make available on the 'Ten', 'Twenty', and 'Compare' screens. Values are specified
   // with a locale code, e.g. "en" or "zh_CN".
-  // TODO: Use checkAndRemapLocales to support this one too, https://github.com/phetsims/joist/issues/970
   secondLocale: {
     public: true,
     type: 'string',
-    isValidValue: locale => locale === null || // default value
-                            ( !!locale && phet.chipper.strings.hasOwnProperty( locale ) &&
-
-                              // This part is valuable if you tried this query parameter on the _en.html version
-                              Object.keys( phet.chipper.strings ).length > 1 ),
     defaultValue: null
   },
 
@@ -38,6 +32,12 @@ const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
     defaultValue: true
   }
 } );
+
+if ( NumberSuiteCommonQueryParameters.secondLocale !== null ) {
+  // Use the logic found in initialize-globals for `checkAndRemapLocale()` to support same schema for secondLocale.
+  const remappedLocale = phet.chipper.remapLocale( NumberSuiteCommonQueryParameters.secondLocale, false );
+  NumberSuiteCommonQueryParameters.secondLocale = phet.chipper.getValidRuntimeLocale( remappedLocale );
+}
 
 numberSuiteCommon.register( 'NumberSuiteCommonQueryParameters', NumberSuiteCommonQueryParameters );
 export default NumberSuiteCommonQueryParameters;

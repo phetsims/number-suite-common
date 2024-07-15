@@ -56,7 +56,7 @@ export default class SecondLanguageControl extends VBox {
       labelNode: labelText,
       descriptionNode: descriptionText,
       controlNode: toggleSwitch,
-      enabled: ( localeProperty.availableRuntimeLocales.length > 1 ), // disabled if we do not have multiple locales available
+      enabled: localeProperty.supportsDynamicLocale, // disabled if we do not have multiple locales available
       ySpacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING
     } );
 
