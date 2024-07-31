@@ -7,6 +7,8 @@
  */
 
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
+
+// eslint-disable-next-line no-view-imported-from-model
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
