@@ -100,7 +100,7 @@ class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
    */
   public getAllSymbolNodes(): SymbolCardNode[] {
     const allSymbolNodes = _.filter( this.screenView.pieceLayer.children,
-      child => child instanceof SymbolCardNode ) as SymbolCardNode[];
+      child => child instanceof SymbolCardNode );
     return allSymbolNodes;
   }
 }

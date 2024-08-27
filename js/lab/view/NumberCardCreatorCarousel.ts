@@ -87,7 +87,7 @@ class NumberCardCreatorCarousel extends Carousel {
 
   public getAllNumberCardNodes(): NumberCardNode[] {
     const allNumberCardNodes = _.filter( this.screenView.pieceLayer.children,
-      child => child instanceof NumberCardNode ) as NumberCardNode[];
+      child => child instanceof NumberCardNode );
     return allNumberCardNodes;
   }
 }

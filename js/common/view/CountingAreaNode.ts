@@ -347,7 +347,7 @@ class CountingAreaNode extends Node {
 
     const droppedCountingObjectNode = this.getCountingObjectNode( droppedCountingObject );
     const allDraggableTenFrameNodes = _.filter( this.countingObjectLayerNode.children,
-      child => child instanceof DraggableTenFrameNode ) as DraggableTenFrameNode[];
+      child => child instanceof DraggableTenFrameNode );
 
     const droppedNodeCountingType = droppedCountingObjectNode.countingObjectTypeProperty.value;
 
