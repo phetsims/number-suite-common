@@ -29,7 +29,7 @@
         ],
         "parserOptions": {
           "project": [
-            "../number-suite-common/tsconfig.json"
+            "../chipper/tsconfig/eslint-all/tsconfig.json"
           ]
         }
       }
