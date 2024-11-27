@@ -9,14 +9,14 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import Range from '../../../../dot/js/Range.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { Shape } from '../../../../kite/js/imports.js';
+import optionize from '../../../../phet-core/js/optionize.js';
 import { Circle, HBox, Node, Path, PathOptions } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Range from '../../../../dot/js/Range.js';
-import optionize from '../../../../phet-core/js/optionize.js';
 
 // types
 type GetSpotCentersOptions = {

@@ -8,15 +8,15 @@
  */
 
 import Disposable from '../../../../axon/js/Disposable.js';
-import { Text } from '../../../../scenery/js/imports.js';
 import Property from '../../../../axon/js/Property.js';
 import PreferencesControl, { PreferencesControlOptions } from '../../../../joist/js/preferences/PreferencesControl.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import { Text } from '../../../../scenery/js/imports.js';
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 type SelfOptions = EmptySelfOptions;

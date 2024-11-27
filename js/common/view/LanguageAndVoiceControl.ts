@@ -7,22 +7,22 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import Disposable from '../../../../axon/js/Disposable.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
-import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
-import TProperty from '../../../../axon/js/TProperty.js';
-import CarouselItemNode from './CarouselItemNode.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
-import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
-import Multilink from '../../../../axon/js/Multilink.js';
-import PageControl from '../../../../sun/js/PageControl.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
+import Multilink from '../../../../axon/js/Multilink.js';
+import TProperty from '../../../../axon/js/TProperty.js';
+import { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
+import PageControl from '../../../../sun/js/PageControl.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import CarouselItemNode from './CarouselItemNode.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 const LABEL_TEXT_OPTIONS = {
   fontWeight: 'bold',

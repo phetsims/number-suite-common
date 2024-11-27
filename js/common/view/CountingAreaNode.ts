@@ -9,24 +9,24 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import Multilink from '../../../../axon/js/Multilink.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
+import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
+import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import { Node, NodeOptions, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
 import ClosestDragForwardingListener from '../../../../sun/js/ClosestDragForwardingListener.js';
+import DraggableTenFrameNode from '../../lab/view/DraggableTenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingArea, { CountingObjectSerialization } from '../model/CountingArea.js';
-import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
-import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
-import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import DraggableTenFrameNode from '../../lab/view/DraggableTenFrameNode.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import Multilink from '../../../../axon/js/Multilink.js';
+import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
 
 type SelfOptions = {
   countingObjectLayerNode?: null | Node;

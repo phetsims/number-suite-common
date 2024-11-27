@@ -8,13 +8,13 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
+import optionize from '../../../../phet-core/js/optionize.js';
 import { NodeTranslationOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import SpeechSynthesisButton, { SpeechSynthesisButtonOptions } from './SpeechSynthesisButton.js';
 import NoVoiceWarningButton from './NoVoiceWarningButton.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
-import optionize from '../../../../phet-core/js/optionize.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
+import SpeechSynthesisButton, { SpeechSynthesisButtonOptions } from './SpeechSynthesisButton.js';
 
 type SelfOptions = {
 

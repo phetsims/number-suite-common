@@ -7,17 +7,17 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import { HBox, HBoxOptions, Node, VBox } from '../../../../scenery/js/imports.js';
 import optionize from '../../../../phet-core/js/optionize.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import IntentionalAny from '../../../../phet-core/js/types/IntentionalAny.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import { HBox, HBoxOptions, Node, VBox } from '../../../../scenery/js/imports.js';
+import LabScreen from '../../lab/LabScreen.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import SecondLanguageControl from './SecondLanguageControl.js';
 import ShowOnesControl from './ShowOnesControl.js';
-import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import LabScreen from '../../lab/LabScreen.js';
-import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 type SelfOptions = {
   secondLanguageControlEnabled?: boolean; // should the 'Second Language' control be enabled?

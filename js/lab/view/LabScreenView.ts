@@ -6,33 +6,33 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import Animation from '../../../../twixt/js/Animation.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import Multilink from '../../../../axon/js/Multilink.js';
+import Property from '../../../../axon/js/Property.js';
+import TProperty from '../../../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
+import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
 import ScreenView from '../../../../joist/js/ScreenView.js';
 import ResetAllButton from '../../../../scenery-phet/js/buttons/ResetAllButton.js';
 import { ManualConstraint, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+import Animation from '../../../../twixt/js/Animation.js';
+import Easing from '../../../../twixt/js/Easing.js';
+import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import CountingAreaNode from '../../common/view/CountingAreaNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
+import LabModel from '../model/LabModel.js';
 import TenFrame from '../model/TenFrame.js';
 import DraggableTenFrameNode from './DraggableTenFrameNode.js';
 import NumberCardCreatorCarousel from './NumberCardCreatorCarousel.js';
-import LabModel from '../model/LabModel.js';
-import Tandem from '../../../../tandem/js/Tandem.js';
-import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
 import SymbolCardCreatorPanel from './SymbolCardCreatorPanel.js';
-import TenFrameCreatorPanel from './TenFrameCreatorPanel.js';
-import Easing from '../../../../twixt/js/Easing.js';
-import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
-import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import Property from '../../../../axon/js/Property.js';
-import TProperty from '../../../../axon/js/TProperty.js';
 import type SymbolType from './SymbolType.js';
-import Multilink from '../../../../axon/js/Multilink.js';
-import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import TenFrameCreatorPanel from './TenFrameCreatorPanel.js';
 
 const TEN_FRAME_CREATOR_PANEL_LEFT = 143;
 const CREATOR_NODE_SPACING = 18;

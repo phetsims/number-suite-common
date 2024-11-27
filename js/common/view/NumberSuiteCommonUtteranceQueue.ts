@@ -7,15 +7,15 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
-import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import Utterance from '../../../../utterance-queue/js/Utterance.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
-import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import Utterance from '../../../../utterance-queue/js/Utterance.js';
+import UtteranceQueue from '../../../../utterance-queue/js/UtteranceQueue.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 
 // constants
 const ONE_TWO_THREE_STRING_KEY = `${NumberSuiteCommonConstants.NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/oneTwoThree`;

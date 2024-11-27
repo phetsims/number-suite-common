@@ -8,17 +8,17 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import { DragListener, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import TenFrameNode from '../../common/view/TenFrameNode.js';
-import TenFrame from '../model/TenFrame.js';
-import LabModel from '../model/LabModel.js';
-import LabScreenView from './LabScreenView.js';
-import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
-import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
+import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
+import TenFrameNode from '../../common/view/TenFrameNode.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import LabModel from '../model/LabModel.js';
+import TenFrame from '../model/TenFrame.js';
+import LabScreenView from './LabScreenView.js';
 
 const ICON_SIE_LENGTH = 20;
 

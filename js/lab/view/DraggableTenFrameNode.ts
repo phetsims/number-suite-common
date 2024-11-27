@@ -11,11 +11,11 @@ import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TRe
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
 import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
-import ReturnButton from '../../../../scenery-phet/js/buttons/ReturnButton.js';
 
 const RETURN_BUTTON_MARGIN = 5;
 

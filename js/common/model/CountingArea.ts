@@ -6,24 +6,24 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import TEmitter from '../../../../axon/js/TEmitter.js';
+import TProperty from '../../../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import CountingCommonModel from '../../../../counting-common/js/common/model/CountingCommonModel.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import dotRandom from '../../../../dot/js/dotRandom.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import { ObservableArray } from '../../../../axon/js/createObservableArray.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import TenFrame from '../../lab/model/TenFrame.js';
-import Property from '../../../../axon/js/Property.js';
-import TEmitter from '../../../../axon/js/TEmitter.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import GroupAndLinkType from './GroupAndLinkType.js';
-import TProperty from '../../../../axon/js/TProperty.js';
-import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 
 type SelfOptions = {
   tenFrames?: null | ObservableArray<TenFrame>;

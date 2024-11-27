@@ -9,20 +9,20 @@
  * @author Marla Schulz (PhET Interactive Simulations)
  */
 
-import { Color, Node, Path, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
-import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
-import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
-import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { Color, Node, Path, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
+import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 
 const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
   font: new PhetFont( 14 ),

@@ -6,7 +6,6 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import Animation from '../../../../twixt/js/Animation.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
@@ -15,6 +14,7 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import { Color, DragListener, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
+import Animation from '../../../../twixt/js/Animation.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 // constants

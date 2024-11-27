@@ -8,24 +8,24 @@
  */
 
 import EnumerationProperty from '../../../../axon/js/EnumerationProperty.js';
+import Property from '../../../../axon/js/Property.js';
+import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import BaseNumber from '../../../../counting-common/js/common/model/BaseNumber.js';
 import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
+import BaseNumberNode from '../../../../counting-common/js/common/view/BaseNumberNode.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import { Color, Image, Node } from '../../../../scenery/js/imports.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupItem } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import CountingArea from '../model/CountingArea.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import CountingAreaNode from './CountingAreaNode.js';
-import CountingArea from '../model/CountingArea.js';
-import BaseNumberNode from '../../../../counting-common/js/common/view/BaseNumberNode.js';
-import BaseNumber from '../../../../counting-common/js/common/model/BaseNumber.js';
 import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import Property from '../../../../axon/js/Property.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
-import { TReadOnlyEmitter } from '../../../../axon/js/TEmitter.js';
 
 // types
 type SelfOptions = {

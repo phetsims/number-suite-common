@@ -8,19 +8,19 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import SymbolCardNode, { SymbolCardNodeOptions } from './SymbolCardNode.js';
-import LabScreenView from './LabScreenView.js';
-import Easing from '../../../../twixt/js/Easing.js';
-import Animation from '../../../../twixt/js/Animation.js';
-import CardNode from './CardNode.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import NumberCardNode, { NumberCardNodeOptions } from './NumberCardNode.js';
-import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import { combineOptions } from '../../../../phet-core/js/optionize.js';
+import { DragListener, Node, PressListenerEvent } from '../../../../scenery/js/imports.js';
+import Animation from '../../../../twixt/js/Animation.js';
+import Easing from '../../../../twixt/js/Easing.js';
+import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import CardNode from './CardNode.js';
+import LabScreenView from './LabScreenView.js';
+import NumberCardNode, { NumberCardNodeOptions } from './NumberCardNode.js';
+import SymbolCardNode, { SymbolCardNodeOptions } from './SymbolCardNode.js';
 import SymbolType from './SymbolType.js';
 
 type SelfOptions = {

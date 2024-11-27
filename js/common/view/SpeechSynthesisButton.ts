@@ -6,20 +6,20 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
+import audioManager from '../../../../joist/js/audioManager.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import optionize from '../../../../phet-core/js/optionize.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
-import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
-import audioManager from '../../../../joist/js/audioManager.js';
-import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
+import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 
 type SelfOptions = {
   comparisonSignsAndTextVisibleProperty?: TReadOnlyProperty<boolean>;

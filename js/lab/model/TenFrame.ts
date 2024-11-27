@@ -6,19 +6,19 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
+import Disposable from '../../../../axon/js/Disposable.js';
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
+import Bounds2 from '../../../../dot/js/Bounds2.js';
+import Range from '../../../../dot/js/Range.js';
+import Vector2 from '../../../../dot/js/Vector2.js';
 import Vector2Property from '../../../../dot/js/Vector2Property.js';
 
 // eslint-disable-next-line phet/no-view-imported-from-model
 import TenFrameNode from '../../common/view/TenFrameNode.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import Vector2 from '../../../../dot/js/Vector2.js';
-import Bounds2 from '../../../../dot/js/Bounds2.js';
-import Range from '../../../../dot/js/Range.js';
-import createObservableArray, { ObservableArray } from '../../../../axon/js/createObservableArray.js';
-import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
-import Disposable from '../../../../axon/js/Disposable.js';
 
 // constants
 const SQUARE_SIDE_LENGTH = 60;

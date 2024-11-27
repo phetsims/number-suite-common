@@ -10,13 +10,13 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import SpeechSynthesisAnnouncer from '../../../../utterance-queue/js/SpeechSynthesisAnnouncer.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
+import SpeechSynthesisAnnouncer from '../../../../utterance-queue/js/SpeechSynthesisAnnouncer.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 

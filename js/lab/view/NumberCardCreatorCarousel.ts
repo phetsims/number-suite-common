@@ -6,16 +6,16 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import { Node } from '../../../../scenery/js/imports.js';
 import Carousel from '../../../../sun/js/Carousel.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import LabScreenView from './LabScreenView.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
-import CardCreatorNode from './CardCreatorNode.js';
-import NumberCardNode from './NumberCardNode.js';
-import Property from '../../../../axon/js/Property.js';
-import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
+import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import CardCreatorNode from './CardCreatorNode.js';
+import LabScreenView from './LabScreenView.js';
+import NumberCardNode from './NumberCardNode.js';
 
 // constants
 const MAX_NUMBER_PIECE_COUNT = 20;

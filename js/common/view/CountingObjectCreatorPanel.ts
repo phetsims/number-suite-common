@@ -8,16 +8,16 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import CountingCreatorNode from '../../../../counting-common/js/common/view/CountingCreatorNode.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import { HBox, Rectangle, VBox } from '../../../../scenery/js/imports.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingArea from '../model/CountingArea.js';
-import CountingAreaNode from './CountingAreaNode.js';
-import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import CountingAreaNode from './CountingAreaNode.js';
 import NumberSuiteCommonPanel, { NumberSuiteCommonPanelOptions } from './NumberSuiteCommonPanel.js';
 
 type SelfOptions = {

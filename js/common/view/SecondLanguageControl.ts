@@ -7,23 +7,23 @@
  * @author Chris Malley (PixelZoom, Inc.)
  */
 
-import Disposable from '../../../../axon/js/Disposable.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import { allowLinksProperty, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
-import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
 import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
+import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
+import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
+import { allowLinksProperty, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
+import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;

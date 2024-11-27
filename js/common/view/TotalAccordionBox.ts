@@ -7,20 +7,20 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import Property from '../../../../axon/js/Property.js';
+import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import Range from '../../../../dot/js/Range.js';
+import optionize from '../../../../phet-core/js/optionize.js';
+import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import NumberDisplay from '../../../../scenery-phet/js/NumberDisplay.js';
 import { HBox, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
-import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import Range from '../../../../dot/js/Range.js';
-import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
-import optionize from '../../../../phet-core/js/optionize.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import CountingArea from '../model/CountingArea.js';
-import PickRequired from '../../../../phet-core/js/types/PickRequired.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
-import Property from '../../../../axon/js/Property.js';
-import CountingCommonConstants from '../../../../counting-common/js/common/CountingCommonConstants.js';
+import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import NumberSuiteCommonAccordionBox, { NumberSuiteCommonAccordionBoxOptions } from './NumberSuiteCommonAccordionBox.js';
 
 // types
 type SelfOptions = {

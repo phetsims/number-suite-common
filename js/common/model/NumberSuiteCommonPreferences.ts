@@ -7,14 +7,14 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import Disposable from '../../../../axon/js/Disposable.js';
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameters.js';
-import Property from '../../../../axon/js/Property.js';
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import Disposable from '../../../../axon/js/Disposable.js';
+import Property from '../../../../axon/js/Property.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import localeProperty, { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameters.js';
 
 //TODO https://github.com/phetsims/number-suite-common/issues/18 type string map, perhaps getStringModule.TStringModule?
 //TODO https://github.com/phetsims/number-suite-common/issues/18 replace any

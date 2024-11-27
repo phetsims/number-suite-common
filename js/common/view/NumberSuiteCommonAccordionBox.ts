@@ -6,16 +6,16 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import Property from '../../../../axon/js/Property.js';
+import TProperty from '../../../../axon/js/TProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
+import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import { Rectangle, Text, TextOptions } from '../../../../scenery/js/imports.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import optionize, { combineOptions } from '../../../../phet-core/js/optionize.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import TProperty from '../../../../axon/js/TProperty.js';
-import Property from '../../../../axon/js/Property.js';
-import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {
   titleStringProperty: TReadOnlyProperty<string>;

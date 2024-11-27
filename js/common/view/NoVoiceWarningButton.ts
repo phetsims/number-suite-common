@@ -6,15 +6,15 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
+import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
-import NoVoiceWarningDialog from './NoVoiceWarningDialog.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
+import NoVoiceWarningDialog from './NoVoiceWarningDialog.js';
 
 // constants
 const SIDE_LENGTH = NumberSuiteCommonConstants.BUTTON_LENGTH;

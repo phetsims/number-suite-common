@@ -6,14 +6,14 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import PhetioProperty from '../../../axon/js/PhetioProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
+import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
-import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
-import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
-import PhetioProperty from '../../../axon/js/PhetioProperty.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
 const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, PhetioProperty<string>> = {

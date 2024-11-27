@@ -6,16 +6,16 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import NumberProperty from '../../../../axon/js/NumberProperty.js';
+import Property from '../../../../axon/js/Property.js';
 import { Node, Rectangle, VBox } from '../../../../scenery/js/imports.js';
+import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
-import LabScreenView from './LabScreenView.js';
-import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
-import SymbolCardNode from './SymbolCardNode.js';
-import NumberProperty from '../../../../axon/js/NumberProperty.js';
 import CardCreatorNode from './CardCreatorNode.js';
-import Property from '../../../../axon/js/Property.js';
-import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
+import LabScreenView from './LabScreenView.js';
+import SymbolCardNode from './SymbolCardNode.js';
 import SymbolType from './SymbolType.js';
 
 // constants
