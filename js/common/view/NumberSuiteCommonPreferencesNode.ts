@@ -1,4 +1,4 @@
-// Copyright 2022-2023, University of Colorado Boulder
+// Copyright 2022-2024, University of Colorado Boulder
 
 /**
  * NumberSuiteCommonPreferencesNode is the user interface for sim-specific preferences for all Number suite sims,
