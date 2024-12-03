@@ -52,9 +52,9 @@ class NumberSuiteCommonPreferences {
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
 
   // URL to the {REPO}_all.html file for this simulation.
-  public readonly allUrl: string;
+  public readonly allURL: string;
 
-  public constructor( allUrl: string ) {
+  public constructor( allURL: string ) {
 
     // if a valid second locale was provided via a query parameter, display the second locale on sim startup
     this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
@@ -76,7 +76,7 @@ class NumberSuiteCommonPreferences {
       return phet.chipper.strings[ secondLocale ];
     } );
 
-    this.allUrl = allUrl;
+    this.allURL = allURL;
   }
 
   public dispose(): void {

@@ -39,12 +39,12 @@ export default class SecondLanguageControl extends VBox {
 
   /**
    * @param secondLanguageProperties
-   * @param allUrl - URL to the {REPO}_all.html file for this simulation.
+   * @param allURL - URL to the {REPO}_all.html file for this simulation.
    * @param utteranceQueue
    * @param [providedOptions]
    */
   public constructor( secondLanguageProperties: SecondLanguageProperties,
-                      allUrl: string,
+                      allURL: string,
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions?: SecondLanguageControlOptions ) {
 
@@ -75,7 +75,7 @@ export default class SecondLanguageControl extends VBox {
     } );
 
     // Additional description that is visible when the Second Language control is disabled.
-    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, allUrl );
+    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, allURL );
 
     // Control for choosing a second language and associated voice
     const languageAndVoiceControl = new LanguageAndVoiceControl(
@@ -125,9 +125,9 @@ class AdditionalDescriptionNode extends VBox {
 
   /**
    * @param visible
-   * @param allUrl - URL to the {REPO}_all.html file for this simulation.
+   * @param allURL - URL to the {REPO}_all.html file for this simulation.
    */
-  public constructor( visible: boolean, allUrl: string ) {
+  public constructor( visible: boolean, allURL: string ) {
 
     const toDisplayASecondLanguageText = new RichText( NumberSuiteCommonStrings.toDisplayASecondLanguageDescriptionStringProperty, {
       font: new PhetFont( 12 ),
@@ -136,10 +136,10 @@ class AdditionalDescriptionNode extends VBox {
 
     // If links are not allowed, show the URL as plain text.
     const urlStringProperty = new DerivedProperty( [ allowLinksProperty ],
-      allowLinks => allowLinks ? `<a href="{{url}}">${allUrl}</a>` : allUrl
+      allowLinks => allowLinks ? `<a href="{{url}}">${allURL}</a>` : allURL
     );
     const urlText = new RichText( urlStringProperty, {
-      links: { url: allUrl },
+      links: { url: allURL },
       font: new PhetFont( 12 ),
       maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
     } );
