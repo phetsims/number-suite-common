@@ -42,7 +42,7 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
       align: 'top'
     }, providedOptions );
 
-    const secondLanguageControl = new SecondLanguageControl( preferences, utteranceQueue, {
+    const secondLanguageControl = new SecondLanguageControl( preferences, preferences.allUrl, utteranceQueue, {
       visible: options.secondLanguageControlEnabled
     } );
 

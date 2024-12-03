@@ -9,7 +9,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Disposable from '../../../../axon/js/Disposable.js';
-import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
+import localeProperty, { LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
@@ -20,17 +20,25 @@ import { allowLinksProperty, RichText, Text, VBox, VBoxOptions } from '../../../
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
+import Property from '../../../../axon/js/Property.js';
 
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
 
+type SecondLanguageProperties = {
+  showSecondLocaleProperty: Property<boolean>;
+  isPrimaryLocaleProperty: Property<boolean>;
+  secondLocaleProperty: LocaleProperty;
+  secondVoiceProperty: Property<SpeechSynthesisVoice | null>;
+};
+
 export default class SecondLanguageControl extends VBox {
 
-  public constructor( preferences: NumberSuiteCommonPreferences,
+  public constructor( secondLanguageProperties: SecondLanguageProperties,
+                      allUrl: string,
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions?: SecondLanguageControlOptions ) {
 
@@ -48,7 +56,7 @@ export default class SecondLanguageControl extends VBox {
     const descriptionText = new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty,
       PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS );
 
-    const toggleSwitch = new ToggleSwitch( preferences.showSecondLocaleProperty, false, true,
+    const toggleSwitch = new ToggleSwitch( secondLanguageProperties.showSecondLocaleProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     // Control for showing or hiding the languageAndVoiceControl
@@ -61,14 +69,14 @@ export default class SecondLanguageControl extends VBox {
     } );
 
     // Additional description that is visible when the Second Language control is disabled.
-    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, preferences.allUrl );
+    const additionalDescriptionNode = new AdditionalDescriptionNode( !preferencesControl.enabled, allUrl );
 
     // Control for choosing a second language and associated voice
     const languageAndVoiceControl = new LanguageAndVoiceControl(
-      preferences.secondLocaleProperty,
-      preferences.secondVoiceProperty,
+      secondLanguageProperties.secondLocaleProperty,
+      secondLanguageProperties.secondVoiceProperty,
       utteranceQueue, {
-        visibleProperty: preferences.showSecondLocaleProperty
+        visibleProperty: secondLanguageProperties.showSecondLocaleProperty
       }
     );
 
@@ -84,9 +92,9 @@ export default class SecondLanguageControl extends VBox {
     super( options );
 
     // If we turn off the secondLocale, switch back to the primary locale.
-    preferences.showSecondLocaleProperty.lazyLink( showSecondLocale => {
+    secondLanguageProperties.showSecondLocaleProperty.lazyLink( showSecondLocale => {
       if ( !showSecondLocale ) {
-        preferences.isPrimaryLocaleProperty.value = true;
+        secondLanguageProperties.isPrimaryLocaleProperty.value = true;
 
         // When we turn off the second locale and switch back to the primary locale, if autoHear is on, the speechData
         // is spoken in NumberCompare because it changed from a language change. For consistency with Number Play,
