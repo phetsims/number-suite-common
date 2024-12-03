@@ -37,6 +37,12 @@ type SecondLanguageProperties = {
 
 export default class SecondLanguageControl extends VBox {
 
+  /**
+   * @param secondLanguageProperties
+   * @param allUrl - URL to the {REPO}_all.html file for this simulation.
+   * @param utteranceQueue
+   * @param [providedOptions]
+   */
   public constructor( secondLanguageProperties: SecondLanguageProperties,
                       allUrl: string,
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
@@ -117,6 +123,10 @@ export default class SecondLanguageControl extends VBox {
  */
 class AdditionalDescriptionNode extends VBox {
 
+  /**
+   * @param visible
+   * @param allUrl - URL to the {REPO}_all.html file for this simulation.
+   */
   public constructor( visible: boolean, allUrl: string ) {
 
     const toDisplayASecondLanguageText = new RichText( NumberSuiteCommonStrings.toDisplayASecondLanguageDescriptionStringProperty, {

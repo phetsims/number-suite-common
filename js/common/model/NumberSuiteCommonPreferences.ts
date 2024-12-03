@@ -51,7 +51,7 @@ class NumberSuiteCommonPreferences {
   // the set of sim strings for the current secondLocale
   public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
 
-  // the 'all' link of this simulation
+  // URL to the {REPO}_all.html file for this simulation.
   public readonly allUrl: string;
 
   public constructor( allUrl: string ) {
