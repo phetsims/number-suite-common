@@ -39,7 +39,8 @@ export default class AutoHearControl extends Node {
   ) {
 
     super( {
-      visible: visible
+      visible: visible,
+      isDisposable: false
     } );
 
     const toggleSwitch = new ToggleSwitch( autoHearEnabledProperty, false, true,

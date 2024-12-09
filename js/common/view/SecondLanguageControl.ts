@@ -41,6 +41,7 @@ export default class SecondLanguageControl extends VBox {
     const options = optionize<SecondLanguageControlOptions, SelfOptions, VBoxOptions>()( {
 
       // VBoxOptions
+      isDisposable: false,
       excludeInvisibleChildrenFromBounds: false,
       align: 'left',
       spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING
@@ -94,11 +95,6 @@ export default class SecondLanguageControl extends VBox {
         utteranceQueue.cancelSpeechDataSpeaking();
       }
     } );
-  }
-
-  public override dispose(): void {
-    Disposable.assertNotDisposable();
-    super.dispose();
   }
 }
 

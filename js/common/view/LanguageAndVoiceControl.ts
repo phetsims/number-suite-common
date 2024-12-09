@@ -8,7 +8,6 @@
  */
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
-import Disposable from '../../../../axon/js/Disposable.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
@@ -52,6 +51,7 @@ export default class LanguageAndVoiceControl extends HBox {
     const options = optionize<LanguageAndVoiceControlOptions, SelfOptions, HBoxOptions>()( {
 
       // HBoxOptions
+      isDisposable: false,
       excludeInvisibleChildrenFromBounds: false,
       align: 'top',
       justify: 'left',
@@ -183,11 +183,6 @@ export default class LanguageAndVoiceControl extends HBox {
           }
         }
       } );
-  }
-
-  public override dispose(): void {
-    Disposable.assertNotDisposable();
-    super.dispose();
   }
 }
 
