@@ -20,9 +20,9 @@ import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/e
 import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
-import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
+import Property from '../../../../axon/js/Property.js';
 
 const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
   font: new PhetFont( 14 ),
@@ -32,7 +32,7 @@ const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
 export default class AutoHearControl extends Node {
 
   public constructor(
-    preferences: NumberSuiteCommonPreferences,
+    autoHearEnabledProperty: Property<boolean>,
     speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
     labelStringProperty: TReadOnlyProperty<string>,
     descriptionStringProperty: TReadOnlyProperty<string>,
@@ -43,7 +43,7 @@ export default class AutoHearControl extends Node {
       visible: visible
     } );
 
-    const toggleSwitch = new ToggleSwitch( preferences.autoHearEnabledProperty, false, true,
+    const toggleSwitch = new ToggleSwitch( autoHearEnabledProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     const control = new PreferencesControl( {
@@ -78,10 +78,9 @@ export default class AutoHearControl extends Node {
       children: [ warningIcon, missingVoiceWarningMessage ],
       spacing: 14,
       align: 'center',
-      visibleProperty: new DerivedProperty( [
-          preferences.autoHearEnabledProperty,
-          speechSynthesisAnnouncer.hasVoiceProperty
-        ], ( autoHearEnabled, hasVoice ) => autoHearEnabled && !hasVoice
+      visibleProperty: new DerivedProperty(
+        [ autoHearEnabledProperty, speechSynthesisAnnouncer.hasVoiceProperty ],
+        ( autoHearEnabled, hasVoice ) => autoHearEnabled && !hasVoice
       )
     } );
     this.addChild( missingVoiceWarningNode );
