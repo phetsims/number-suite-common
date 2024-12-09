@@ -42,9 +42,15 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
       align: 'top'
     }, providedOptions );
 
-    const secondLanguageControl = new SecondLanguageControl( preferences, preferences.allURL, utteranceQueue, {
-      visible: options.secondLanguageControlEnabled
-    } );
+    const secondLanguageControl = new SecondLanguageControl(
+      preferences.secondLocaleProperty,
+      preferences.secondVoiceProperty,
+      preferences.showSecondLocaleProperty,
+      preferences.isPrimaryLocaleProperty,
+      preferences.allURL,
+      utteranceQueue, {
+        visible: options.secondLanguageControlEnabled
+      } );
 
     const showOnesControl = new ShowOnesControl( preferences.showLabOnesProperty, {
       visible: NumberSuiteCommonPreferencesNode.hasScreenType( LabScreen )
