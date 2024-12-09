@@ -21,7 +21,6 @@ import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
-import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import Property from '../../../../axon/js/Property.js';
 
 const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
@@ -33,7 +32,7 @@ export default class AutoHearControl extends Node {
 
   public constructor(
     autoHearEnabledProperty: Property<boolean>,
-    speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
+    hasVoiceProperty: TReadOnlyProperty<boolean>,
     labelStringProperty: TReadOnlyProperty<string>,
     descriptionStringProperty: TReadOnlyProperty<string>,
     visible = true
@@ -79,7 +78,7 @@ export default class AutoHearControl extends Node {
       spacing: 14,
       align: 'center',
       visibleProperty: new DerivedProperty(
-        [ autoHearEnabledProperty, speechSynthesisAnnouncer.hasVoiceProperty ],
+        [ autoHearEnabledProperty, hasVoiceProperty ],
         ( autoHearEnabled, hasVoice ) => autoHearEnabled && !hasVoice
       )
     } );
