@@ -36,7 +36,7 @@ export default class AutoHearControl extends Node {
     speechSynthesisAnnouncer: NumberSuiteCommonSpeechSynthesisAnnouncer,
     labelStringProperty: TReadOnlyProperty<string>,
     descriptionStringProperty: TReadOnlyProperty<string>,
-    visible: boolean
+    visible = true
   ) {
 
     super( {

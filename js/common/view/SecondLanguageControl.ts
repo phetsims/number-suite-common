@@ -28,7 +28,7 @@ import Property from '../../../../axon/js/Property.js';
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
 
-type SecondLanguageProperties = {
+export type SecondLanguageProperties = {
   showSecondLocaleProperty: Property<boolean>;
   isPrimaryLocaleProperty: Property<boolean>;
   secondLocaleProperty: LocaleProperty;
