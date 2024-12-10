@@ -32,7 +32,7 @@ export default class SecondLanguageControl extends VBox {
 
   public constructor( secondLocaleProperty: LocaleProperty,
                       secondVoiceProperty: Property<SpeechSynthesisVoice | null>,
-                      showSecondLocaleProperty: Property<boolean>,
+                      secondLocaleEnabledProperty: Property<boolean>,
                       isPrimaryLocaleProperty: Property<boolean>,
                       allURL: string, // URL to the {REPO}_all.html file for this simulation.
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
@@ -53,7 +53,7 @@ export default class SecondLanguageControl extends VBox {
     const descriptionText = new Text( NumberSuiteCommonStrings.secondLanguageDescriptionStringProperty,
       PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS );
 
-    const toggleSwitch = new ToggleSwitch( showSecondLocaleProperty, false, true,
+    const toggleSwitch = new ToggleSwitch( secondLocaleEnabledProperty, false, true,
       PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
 
     // Control for showing or hiding the languageAndVoiceControl
@@ -70,7 +70,7 @@ export default class SecondLanguageControl extends VBox {
 
     // Control for choosing a second language and associated voice
     const languageAndVoiceControl = new LanguageAndVoiceControl( secondLocaleProperty, secondVoiceProperty, utteranceQueue, {
-      visibleProperty: showSecondLocaleProperty
+      visibleProperty: secondLocaleEnabledProperty
     } );
 
     options.children = [
@@ -85,7 +85,7 @@ export default class SecondLanguageControl extends VBox {
     super( options );
 
     // If we turn off the secondLocale, switch back to the primary locale.
-    showSecondLocaleProperty.lazyLink( showSecondLocale => {
+    secondLocaleEnabledProperty.lazyLink( showSecondLocale => {
       if ( !showSecondLocale ) {
         isPrimaryLocaleProperty.value = true;
 
