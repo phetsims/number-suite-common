@@ -13,17 +13,18 @@ import localeProperty, { LocaleProperty } from '../../../../joist/js/i18n/locale
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { allowLinksProperty, RichText, Text, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
-import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
+import ToggleSwitch, { ToggleSwitchOptions } from '../../../../sun/js/ToggleSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import Property from '../../../../axon/js/Property.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 type SelfOptions = EmptySelfOptions;
 type SecondLanguageControlOptions = SelfOptions & StrictOmit<VBoxOptions, 'children'>;
@@ -44,7 +45,8 @@ export default class SecondLanguageControl extends VBox {
       isDisposable: false,
       excludeInvisibleChildrenFromBounds: false,
       align: 'left',
-      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING
+      spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING,
+      tandem: Tandem.OPT_OUT
     }, providedOptions );
 
     const labelText = new Text( NumberSuiteCommonStrings.secondLanguageStringProperty,
@@ -54,7 +56,9 @@ export default class SecondLanguageControl extends VBox {
       PreferencesDialogConstants.CONTROL_DESCRIPTION_OPTIONS );
 
     const toggleSwitch = new ToggleSwitch( secondLocaleEnabledProperty, false, true,
-      PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
+      combineOptions<ToggleSwitchOptions>( {}, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS, {
+        tandem: options.tandem.createTandem( 'toggleSwitch' )
+      } ) );
 
     // Control for showing or hiding the languageAndVoiceControl
     const preferencesControl = new PreferencesControl( {
@@ -70,7 +74,8 @@ export default class SecondLanguageControl extends VBox {
 
     // Control for choosing a second language and associated voice
     const languageAndVoiceControl = new LanguageAndVoiceControl( secondLocaleProperty, secondVoiceProperty, utteranceQueue, {
-      visibleProperty: secondLocaleEnabledProperty
+      visibleProperty: secondLocaleEnabledProperty,
+      tandem: Tandem.OPT_OUT
     } );
 
     options.children = [

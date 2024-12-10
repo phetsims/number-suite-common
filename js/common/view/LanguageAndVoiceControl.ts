@@ -18,6 +18,7 @@ import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
 import PageControl from '../../../../sun/js/PageControl.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import CarouselItemNode from './CarouselItemNode.js';
@@ -31,7 +32,8 @@ const CAROUSEL_OPTIONS: CarouselOptions = {
   itemsPerPage: 10,
   spacing: 6,
   margin: 5,
-  orientation: 'vertical'
+  orientation: 'vertical',
+  tandem: Tandem.OPT_OUT
 };
 const LABEL_Y_SPACING = 10;
 
@@ -110,7 +112,8 @@ export default class LanguageAndVoiceControl extends HBox {
       dotMouseAreaDilation: 5,
 
       // Hide pageControl if there's only one page.
-      visibleProperty: new DerivedProperty( [ languageCarousel.numberOfPagesProperty ], numberOfPages => numberOfPages > 1 )
+      visibleProperty: new DerivedProperty( [ languageCarousel.numberOfPagesProperty ], numberOfPages => numberOfPages > 1 ),
+      tandem: Tandem.OPT_OUT
     } );
 
     const voiceControlVBox = new VBox( {

@@ -15,18 +15,24 @@ import PreferencesControl from '../../../../joist/js/preferences/PreferencesCont
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, Node, Path, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { Color, Node, NodeOptions, Path, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
-import ToggleSwitch from '../../../../sun/js/ToggleSwitch.js';
+import ToggleSwitch, { ToggleSwitchOptions } from '../../../../sun/js/ToggleSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import Property from '../../../../axon/js/Property.js';
+import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
   font: new PhetFont( 14 ),
   maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
 };
+
+type SelfOptions = EmptySelfOptions;
+
+type AutoHearControlOptions = SelfOptions & NodeOptions;
 
 export default class AutoHearControl extends Node {
 
@@ -35,16 +41,22 @@ export default class AutoHearControl extends Node {
     hasVoiceProperty: TReadOnlyProperty<boolean>,
     labelStringProperty: TReadOnlyProperty<string>,
     descriptionStringProperty: TReadOnlyProperty<string>,
-    visible = true
+    providedOptions?: AutoHearControlOptions
   ) {
 
-    super( {
-      visible: visible,
-      isDisposable: false
-    } );
+    const options = optionize<AutoHearControlOptions, SelfOptions, NodeOptions>()( {
+
+      // NodeOptions
+      isDisposable: false,
+      tandem: Tandem.OPT_OUT
+    }, providedOptions );
+
+    super( options );
 
     const toggleSwitch = new ToggleSwitch( autoHearEnabledProperty, false, true,
-      PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS );
+      combineOptions<ToggleSwitchOptions>( {}, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS, {
+        tandem: options.tandem.createTandem( 'toggleSwitch' )
+      } ) );
 
     const control = new PreferencesControl( {
       labelNode: new Text( labelStringProperty, PreferencesDialogConstants.CONTROL_LABEL_OPTIONS ),
