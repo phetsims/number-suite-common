@@ -15,16 +15,17 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
-import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 
 type SelfOptions = {
   comparisonSignsAndTextVisibleProperty?: TReadOnlyProperty<boolean>;
 };
-export type SpeechSynthesisButtonOptions = SelfOptions;
+export type SpeechSynthesisButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'listener' | 'enabledProperty' | 'content'>;
 
 // constants
 const SIDE_LENGTH = NumberSuiteCommonConstants.BUTTON_LENGTH;
@@ -36,7 +37,7 @@ class SpeechSynthesisButton extends RectangularPushButton {
     utteranceQueue: NumberSuiteCommonUtteranceQueue,
     providedOptions?: SpeechSynthesisButtonOptions ) {
 
-    const options = optionize<SpeechSynthesisButtonOptions, SelfOptions>()( {
+    const options = optionize<SpeechSynthesisButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
       comparisonSignsAndTextVisibleProperty: new BooleanProperty( true )
     }, providedOptions );
 
