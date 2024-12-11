@@ -21,6 +21,7 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
 
 type SelfOptions = {
   comparisonSignsAndTextVisibleProperty?: TReadOnlyProperty<boolean>;
@@ -38,10 +39,7 @@ class SpeechSynthesisButton extends RectangularPushButton {
     providedOptions?: SpeechSynthesisButtonOptions ) {
 
     const options = optionize<SpeechSynthesisButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
-      comparisonSignsAndTextVisibleProperty: new BooleanProperty( true )
-    }, providedOptions );
-
-    super( {
+      comparisonSignsAndTextVisibleProperty: new BooleanProperty( true ),
       content: new Path( bullhornSolidShape, {
         fill: Color.BLACK
       } ),
@@ -50,11 +48,14 @@ class SpeechSynthesisButton extends RectangularPushButton {
       listener: () => utteranceQueue.speakSpeechData(),
       enabledProperty: new DerivedProperty( [
         audioManager.audioEnabledProperty,
-        options.comparisonSignsAndTextVisibleProperty,
+        providedOptions?.comparisonSignsAndTextVisibleProperty || new BooleanProperty( true ),
         speechSynthesisAnnouncer.hasVoiceProperty
       ], ( audioEnabled, comparisonSignsAndTextVisible, hasVoice ) =>
-        audioEnabled && comparisonSignsAndTextVisible && hasVoice )
-    } );
+        audioEnabled && comparisonSignsAndTextVisible && hasVoice ),
+      tandem: Tandem.OPTIONAL
+    }, providedOptions );
+
+    super( options );
   }
 }
 

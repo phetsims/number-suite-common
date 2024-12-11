@@ -9,20 +9,24 @@
  */
 
 import optionize from '../../../../phet-core/js/optionize.js';
-import { NodeTranslationOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import { NodeOptions, NodeTranslationOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import NoVoiceWarningButton from './NoVoiceWarningButton.js';
+import NoVoiceWarningButton, { NoVoiceWarningButtonOptions } from './NoVoiceWarningButton.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import SpeechSynthesisButton, { SpeechSynthesisButtonOptions } from './SpeechSynthesisButton.js';
+import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 
 type SelfOptions = {
 
   // options propagated to (and required by) SpeechSynthesisButton
   speechSynthesisButtonOptions?: SpeechSynthesisButtonOptions;
+
+  // options propagated to (and required by) NoVoiceWarningButton
+  noVoiceWarningButtonOptions?: NoVoiceWarningButtonOptions;
 };
 
-type SpeechSynthesisControlOptions = SelfOptions & NodeTranslationOptions;
+type SpeechSynthesisControlOptions = SelfOptions & NodeTranslationOptions & PickOptional<NodeOptions, 'tandem'>;
 
 export default class SpeechSynthesisControl extends VBox {
 
@@ -31,7 +35,12 @@ export default class SpeechSynthesisControl extends VBox {
                       providedOptions: SpeechSynthesisControlOptions ) {
 
     const options = optionize<SpeechSynthesisControlOptions, SelfOptions, VBoxOptions>()( {
-      speechSynthesisButtonOptions: {},
+      speechSynthesisButtonOptions: {
+        tandem: providedOptions.tandem?.createTandem( 'speechSynthesisButton' )
+      },
+      noVoiceWarningButtonOptions: {
+        tandem: providedOptions.tandem?.createTandem( 'noVoiceWarningButton' )
+      },
 
       // VBoxOptions
       align: 'center',
@@ -44,7 +53,10 @@ export default class SpeechSynthesisControl extends VBox {
       options.speechSynthesisButtonOptions
     );
 
-    const noVoiceWarningButton = new NoVoiceWarningButton( speechSynthesisAnnouncer.hasVoiceProperty );
+    const noVoiceWarningButton = new NoVoiceWarningButton(
+      speechSynthesisAnnouncer.hasVoiceProperty,
+      options.noVoiceWarningButtonOptions
+    );
 
     options.children = [ speechSynthesisButton, noVoiceWarningButton ];
 

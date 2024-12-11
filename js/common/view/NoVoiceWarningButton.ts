@@ -11,29 +11,37 @@ import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import Dimension2 from '../../../../dot/js/Dimension2.js';
 import { Color, Path } from '../../../../scenery/js/imports.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
-import RectangularPushButton from '../../../../sun/js/buttons/RectangularPushButton.js';
+import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NoVoiceWarningDialog from './NoVoiceWarningDialog.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
+import Tandem from '../../../../tandem/js/Tandem.js';
+
+type SelfOptions = EmptySelfOptions;
+export type NoVoiceWarningButtonOptions = SelfOptions & StrictOmit<RectangularPushButtonOptions, 'content' | 'listener' | 'visibleProperty'>;
 
 // constants
 const SIDE_LENGTH = NumberSuiteCommonConstants.BUTTON_LENGTH;
 
 class NoVoiceWarningButton extends RectangularPushButton {
 
-  public constructor( hasVoiceProperty: TReadOnlyProperty<boolean> ) {
+  public constructor( hasVoiceProperty: TReadOnlyProperty<boolean>, providedOptions?: NoVoiceWarningButtonOptions ) {
 
-    const warningDialog = new NoVoiceWarningDialog();
+    const warningDialog = new NoVoiceWarningDialog( { tandem: providedOptions?.tandem?.createTandem( 'warningDialog' ) } );
 
-    super( {
+    const options = optionize<NoVoiceWarningButtonOptions, SelfOptions, RectangularPushButtonOptions>()( {
       content: new Path( exclamationTriangleSolidShape, {
         fill: new Color( 240, 79, 79 )
       } ),
       size: new Dimension2( SIDE_LENGTH, SIDE_LENGTH ),
       baseColor: Color.WHITE,
       listener: () => warningDialog.show(),
-      visibleProperty: new DerivedProperty( [ hasVoiceProperty ], hasVoice => !hasVoice )
-    } );
+      visibleProperty: new DerivedProperty( [ hasVoiceProperty ], hasVoice => !hasVoice ),
+      tandem: Tandem.OPTIONAL
+    }, providedOptions );
+    super( options );
   }
 }
 
