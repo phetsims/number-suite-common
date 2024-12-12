@@ -26,7 +26,7 @@ class NumberSuiteCommonPreferences {
   // preference Properties directly controlled by UI
 
   // whether a second locale should be shown. A toggle switch is added on screens that support two locales when true.
-  public readonly showSecondLocaleProperty: Property<boolean>;
+  public readonly secondLocaleEnabledProperty: Property<boolean>;
 
   // the second locale
   public readonly secondLocaleProperty: LocaleProperty;
@@ -57,7 +57,7 @@ class NumberSuiteCommonPreferences {
   public constructor( allURL: string ) {
 
     // if a valid second locale was provided via a query parameter, display the second locale on sim startup
-    this.showSecondLocaleProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
+    this.secondLocaleEnabledProperty = new BooleanProperty( !!NumberSuiteCommonQueryParameters.secondLocale );
 
     // if a secondLocale was provided via a query parameter, use that, otherwise default to the primaryLocale
     this.secondLocaleProperty = new LocaleProperty( NumberSuiteCommonQueryParameters.secondLocale as Locale || localeProperty.value );

@@ -14,8 +14,12 @@ import NumberSuiteCommonUtteranceQueue from '../../../../number-suite-common/js/
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
-import ABSwitch from '../../../../sun/js/ABSwitch.js';
+import ABSwitch, { ABSwitchOptions } from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
+
+type SelfOptions = EmptySelfOptions;
+type LocaleSwitchOptions = SelfOptions & ABSwitchOptions;
 
 // constants
 const TOGGLE_SWITCH_SIZE = new Dimension2( 40, 20 );
@@ -27,9 +31,10 @@ const TEXT_OPTIONS = {
 export default class LocaleSwitch extends ABSwitch<boolean> {
 
   public constructor(
-    preferences: NumberSuiteCommonPreferences,
+    preferences: Pick<NumberSuiteCommonPreferences, 'secondLocaleProperty' | 'secondLocaleEnabledProperty' | 'isPrimaryLocaleProperty' | 'autoHearEnabledProperty'>,
     utteranceQueue: NumberSuiteCommonUtteranceQueue,
-    maxWidth: number
+    maxWidth: number,
+    providedOptions?: LocaleSwitchOptions
   ) {
 
     const firstLanguageStringProperty = new DerivedProperty( [ localeProperty ], StringUtils.localeToLocalizedName );
@@ -40,15 +45,17 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
     const firstLanguageText = new Text( firstLanguageStringProperty, TEXT_OPTIONS );
     const secondLanguageText = new Text( secondLanguageStringProperty, TEXT_OPTIONS );
 
+    const options = optionize<LocaleSwitchOptions, SelfOptions, ABSwitchOptions>()( {
+      spacing: SPACING,
+        toggleSwitchOptions: {
+      size: TOGGLE_SWITCH_SIZE
+    },
+      visibleProperty: new DerivedProperty( [ preferences.secondLocaleEnabledProperty ], showSecondLocale => showSecondLocale )
+    }, providedOptions );
     super( preferences.isPrimaryLocaleProperty,
       true, firstLanguageText,
-      false, secondLanguageText, {
-        spacing: SPACING,
-        toggleSwitchOptions: {
-          size: TOGGLE_SWITCH_SIZE
-        },
-        visibleProperty: new DerivedProperty( [ preferences.showSecondLocaleProperty ], showSecondLocale => showSecondLocale )
-      }
+      false, secondLanguageText,
+      options
     );
 
     // Speak speechData if autoHear is turned on.

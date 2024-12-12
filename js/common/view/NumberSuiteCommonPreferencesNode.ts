@@ -45,7 +45,7 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
     const secondLanguageControl = new SecondLanguageControl(
       preferences.secondLocaleProperty,
       preferences.secondVoiceProperty,
-      preferences.showSecondLocaleProperty,
+      preferences.secondLocaleEnabledProperty,
       preferences.isPrimaryLocaleProperty,
       preferences.allURL,
       utteranceQueue, {
