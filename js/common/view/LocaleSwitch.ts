@@ -15,7 +15,7 @@ import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
 import { Text } from '../../../../scenery/js/imports.js';
 import ABSwitch from '../../../../sun/js/ABSwitch.js';
-import numberPlay from '../../numberPlay.js';
+import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 // constants
 const TOGGLE_SWITCH_SIZE = new Dimension2( 40, 20 );
@@ -75,4 +75,4 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
   }
 }
 
-numberPlay.register( 'LocaleSwitch', LocaleSwitch );
+numberSuiteCommon.register( 'LocaleSwitch', LocaleSwitch );
