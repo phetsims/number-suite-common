@@ -15,7 +15,7 @@ import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-co
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Color, HBox, HBoxOptions, ManualConstraint, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
+import { Color, HBox, HBoxOptions, Node, RichText, RichTextOptions, Text, TextOptions, VBox } from '../../../../scenery/js/imports.js';
 import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
 import PageControl from '../../../../sun/js/PageControl.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
@@ -116,8 +116,24 @@ export default class LanguageAndVoiceControl extends HBox {
       tandem: Tandem.OPT_OUT
     } );
 
-    const voiceControlVBox = new VBox( {
-      children: [ voiceCarouselLabel, voiceCarousel ],
+    const languageVBox = new VBox( {
+      children: [
+        languageCarouselLabel,
+        new HBox( {
+          children: [ pageControl, languageCarousel ],
+          align: 'center', // Keep pageControl vertically centered on languageCarousel.
+          spacing: 10
+        } )
+      ],
+      spacing: LABEL_Y_SPACING,
+      align: 'left'
+    } );
+
+    const voiceVBox = new VBox( {
+      children: [
+        voiceCarouselLabel,
+        voiceCarousel
+      ],
       spacing: LABEL_Y_SPACING,
       align: 'left',
       layoutOptions: {
@@ -125,28 +141,9 @@ export default class LanguageAndVoiceControl extends HBox {
       }
     } );
 
-    const languageControlVBox = new VBox( {
-      children: [ languageCarouselLabel, languageCarousel ],
-      spacing: LABEL_Y_SPACING,
-      align: 'left'
-    } );
-
-    options.children = [
-
-      // Add an extra Node layer so we can move the pageControl with a ManualConstraint below and not create an infinite
-      // loop with the alignment layout of this HBox.
-      new Node( { children: [ pageControl ] } ),
-
-      languageControlVBox,
-      voiceControlVBox
-    ];
+    options.children = [ languageVBox, voiceVBox ];
 
     super( options );
-
-    // Keep the pageControl vertically centered next to the languageCarousel.
-    ManualConstraint.create( this, [ languageCarousel, pageControl ], ( languageCarouselProxy, pageControlProxy ) => {
-      pageControlProxy.centerY = languageCarouselProxy.centerY;
-    } );
 
     // Rebuild the voiceCarousel with the available voices when the locale changes or when voices become available
     Multilink.multilink(
@@ -177,12 +174,12 @@ export default class LanguageAndVoiceControl extends HBox {
             voiceCarousel = new Carousel( voiceCarouselItems, CAROUSEL_OPTIONS );
 
             // Set the children so the new carousel is visible.
-            voiceControlVBox.children = [ voiceCarouselLabel, voiceCarousel ];
+            voiceVBox.children = [ voiceCarouselLabel, voiceCarousel ];
           }
           else {
 
             // No available voices, so set the children so the noVoicesFoundDescriptionNode is visible instead of the voices.
-            voiceControlVBox.children = [ voiceCarouselLabel, noVoiceDescriptionNode ];
+            voiceVBox.children = [ voiceCarouselLabel, noVoiceDescriptionNode ];
           }
         }
       } );
