@@ -61,25 +61,6 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
 
     // Speak speechData if autoHear is turned on.
     this.onInputEmitter.addListener( () => preferences.autoHearEnabledProperty.value && utteranceQueue.speakSpeechData() );
-
-    // const availableTextSpace = maxWidth - TOGGLE_SWITCH_SIZE.width - SPACING * 2;
-    // let isAdjusting = false; // to prevent recursion that will exceed maximum call stack size
-    // this.boundsProperty.link( () => {
-    //   if ( !isAdjusting ) {
-    //     isAdjusting = true;
-    //
-    //     // Assume that neither label needs to be scaled.
-    //     firstLanguageText.maxWidth = null;
-    //     secondLanguageText.maxWidth = null;
-    //
-    //     // If there's not enough space for both full-size labels, give each Text label half of the available space.
-    //     if ( firstLanguageText.width + secondLanguageText.width > availableTextSpace ) {
-    //       firstLanguageText.maxWidth = availableTextSpace / 2;
-    //       secondLanguageText.maxWidth = availableTextSpace / 2;
-    //     }
-    //     isAdjusting = false;
-    //   }
-    // } );
   }
 }
 
