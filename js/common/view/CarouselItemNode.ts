@@ -12,7 +12,11 @@
 import TProperty from '../../../../axon/js/TProperty.js';
 import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
-import { Color, FireListener, HighlightOverlay, Rectangle, Text } from '../../../../scenery/js/imports.js';
+import FireListener from '../../../../scenery/js/listeners/FireListener.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
+import Text from '../../../../scenery/js/nodes/Text.js';
+import HighlightOverlay from '../../../../scenery/js/overlays/HighlightOverlay.js';
+import Color from '../../../../scenery/js/util/Color.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 

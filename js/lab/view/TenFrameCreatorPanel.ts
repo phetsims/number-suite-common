@@ -10,7 +10,10 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
-import { DragListener, Node, PressListenerEvent, Rectangle } from '../../../../scenery/js/imports.js';
+import DragListener from '../../../../scenery/js/listeners/DragListener.js';
+import { PressListenerEvent } from '../../../../scenery/js/listeners/PressListener.js';
+import Node from '../../../../scenery/js/nodes/Node.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';

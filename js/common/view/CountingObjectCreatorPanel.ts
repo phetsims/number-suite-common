@@ -12,7 +12,9 @@ import CountingCommonConstants from '../../../../counting-common/js/common/Count
 import CountingCreatorNode from '../../../../counting-common/js/common/view/CountingCreatorNode.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
-import { HBox, Rectangle, VBox } from '../../../../scenery/js/imports.js';
+import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
+import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
+import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingArea from '../model/CountingArea.js';

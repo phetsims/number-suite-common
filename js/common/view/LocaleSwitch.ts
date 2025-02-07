@@ -11,12 +11,12 @@ import Dimension2 from '../../../../dot/js/Dimension2.js';
 import localeProperty from '../../../../joist/js/i18n/localeProperty.js';
 import NumberSuiteCommonPreferences from '../../../../number-suite-common/js/common/model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonUtteranceQueue from '../../../../number-suite-common/js/common/view/NumberSuiteCommonUtteranceQueue.js';
+import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StringUtils from '../../../../phetcommon/js/util/StringUtils.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
-import { Text, TextOptions } from '../../../../scenery/js/imports.js';
+import Text, { TextOptions } from '../../../../scenery/js/nodes/Text.js';
 import ABSwitch, { ABSwitchOptions } from '../../../../sun/js/ABSwitch.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
-import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 
 type SelfOptions = EmptySelfOptions;
 type LocaleSwitchOptions = SelfOptions & ABSwitchOptions;

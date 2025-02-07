@@ -9,13 +9,14 @@
  */
 
 import optionize from '../../../../phet-core/js/optionize.js';
-import { NodeOptions, NodeTranslationOptions, VBox, VBoxOptions } from '../../../../scenery/js/imports.js';
+import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
+import VBox, { VBoxOptions } from '../../../../scenery/js/layout/nodes/VBox.js';
+import { NodeOptions, NodeTranslationOptions } from '../../../../scenery/js/nodes/Node.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NoVoiceWarningButton, { NoVoiceWarningButtonOptions } from './NoVoiceWarningButton.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
 import SpeechSynthesisButton, { SpeechSynthesisButtonOptions } from './SpeechSynthesisButton.js';
-import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 
 type SelfOptions = {
 
