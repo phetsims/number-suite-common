@@ -1,4 +1,4 @@
-// Copyright 2023, University of Colorado Boulder
+// Copyright 2023-2025, University of Colorado Boulder
 
 /**
  * Class for named items of a Carousel. Text is wrapped in a Rectangle for highlighting and input listeners.

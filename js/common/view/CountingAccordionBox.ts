@@ -1,4 +1,4 @@
-// Copyright 2019-2024, University of Colorado Boulder
+// Copyright 2019-2025, University of Colorado Boulder
 
 /**
  * Class for the 'Objects' accordion box, which is the panel in the lower right corner of the sim that displays an
