@@ -40,7 +40,8 @@ export default class SpeechSynthesisControl extends VBox {
         tandem: providedOptions.tandem?.createTandem( 'speechSynthesisButton' )
       },
       noVoiceWarningButtonOptions: {
-        tandem: providedOptions.tandem?.createTandem( 'noVoiceWarningButton' )
+        tandem: providedOptions.tandem?.createTandem( 'noVoiceWarningButton' ),
+        phetioReadOnly: true
       },
 
       // VBoxOptions
