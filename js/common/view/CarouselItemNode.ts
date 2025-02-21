@@ -10,7 +10,7 @@
  */
 
 import TProperty from '../../../../axon/js/TProperty.js';
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
+import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
 import FireListener from '../../../../scenery/js/listeners/FireListener.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
@@ -38,7 +38,7 @@ export default class CarouselItemNode<T> extends Rectangle {
     const string = phet.chipper.queryParameters.dev ? `${name} (${devName})` : name;
 
     const text = new Text( string, {
-      font: PreferencesDialog.CONTENT_FONT,
+      font: PreferencesDialogConstants.CONTENT_FONT,
       maxWidth: WIDTH - PADDING * 2
     } );
 

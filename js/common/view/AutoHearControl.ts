@@ -13,7 +13,6 @@ import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Property from '../../../../axon/js/Property.js';
 import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import PhetFont from '../../../../scenery-phet/js/PhetFont.js';
@@ -31,7 +30,7 @@ import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 const MISSING_VOICE_WARNING_TEXT_OPTIONS: TextOptions = {
   font: new PhetFont( 14 ),
-  maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
+  maxWidth: PreferencesDialogConstants.CONTENT_MAX_WIDTH
 };
 
 type SelfOptions = EmptySelfOptions;

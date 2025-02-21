@@ -12,7 +12,6 @@ import Disposable from '../../../../axon/js/Disposable.js';
 import Property from '../../../../axon/js/Property.js';
 import localeProperty, { LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
 import PreferencesControl from '../../../../joist/js/preferences/PreferencesControl.js';
-import PreferencesDialog from '../../../../joist/js/preferences/PreferencesDialog.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
@@ -121,7 +120,7 @@ class AdditionalDescriptionNode extends VBox {
 
     const toDisplayASecondLanguageText = new RichText( NumberSuiteCommonStrings.toDisplayASecondLanguageDescriptionStringProperty, {
       font: new PhetFont( 12 ),
-      maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
+      maxWidth: PreferencesDialogConstants.CONTENT_MAX_WIDTH
     } );
 
     // If links are not allowed, show the URL as plain text.
@@ -131,7 +130,7 @@ class AdditionalDescriptionNode extends VBox {
     const urlText = new RichText( urlStringProperty, {
       links: { url: allURL },
       font: new PhetFont( 12 ),
-      maxWidth: PreferencesDialog.CONTENT_MAX_WIDTH
+      maxWidth: PreferencesDialogConstants.CONTENT_MAX_WIDTH
     } );
 
     // Additional description that is visible when the Second Language control is disabled.
