@@ -37,10 +37,13 @@ export default class SpeechSynthesisControl extends VBox {
 
     const options = optionize<SpeechSynthesisControlOptions, SelfOptions, VBoxOptions>()( {
       speechSynthesisButtonOptions: {
-        tandem: providedOptions.tandem?.createTandem( 'speechSynthesisButton' )
+        tandem: providedOptions.tandem?.createTandem( 'speechSynthesisButton' ),
+        phetioVisiblePropertyInstrumented: false
       },
       noVoiceWarningButtonOptions: {
         tandem: providedOptions.tandem?.createTandem( 'noVoiceWarningButton' ),
+        phetioVisiblePropertyInstrumented: false,
+        phetioDocumentation: 'This button is only available when the second language is turned on, and a compatible voice is not available.',
         phetioReadOnly: true
       },
 
