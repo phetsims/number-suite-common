@@ -48,7 +48,10 @@ export default class SecondLanguageControl extends VBox {
       excludeInvisibleChildrenFromBounds: false,
       align: 'left',
       spacing: NumberSuiteCommonConstants.PREFERENCES_VBOX_SPACING,
-      tandem: Tandem.OPT_OUT
+      tandem: Tandem.OPT_OUT,
+      layoutOptions: {
+        stretch: true
+      }
     }, providedOptions );
 
     const labelText = new Text( NumberSuiteCommonStrings.secondLanguageStringProperty,
@@ -84,7 +87,10 @@ export default class SecondLanguageControl extends VBox {
       new VBox( {
         children: [ preferencesControl, additionalDescriptionNode ],
         spacing: NumberSuiteCommonConstants.PREFERENCES_DESCRIPTION_Y_SPACING,
-        align: 'left'
+        align: 'left',
+        layoutOptions: {
+          stretch: true
+        }
       } ),
       languageAndVoiceControl
     ];
