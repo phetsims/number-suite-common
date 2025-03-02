@@ -35,12 +35,17 @@ export default class SpeechSynthesisControl extends VBox {
                       utteranceQueue: NumberSuiteCommonUtteranceQueue,
                       providedOptions: SpeechSynthesisControlOptions ) {
 
+    const vBoxSpacing = 12;
     const options = optionize<SpeechSynthesisControlOptions, SelfOptions, VBoxOptions>()( {
       speechSynthesisButtonOptions: {
         tandem: providedOptions.tandem?.createTandem( 'speechSynthesisButton' ),
+        touchAreaXDilation: vBoxSpacing / 2,
+        touchAreaYDilation: vBoxSpacing / 2,
         phetioVisiblePropertyInstrumented: false
       },
       noVoiceWarningButtonOptions: {
+        touchAreaXDilation: vBoxSpacing / 2,
+        touchAreaYDilation: vBoxSpacing / 2,
         tandem: providedOptions.tandem?.createTandem( 'noVoiceWarningButton' ),
         phetioVisiblePropertyInstrumented: false,
         phetioDocumentation: 'This button is only available when the second language is turned on, and a compatible voice is not available.',
@@ -49,7 +54,7 @@ export default class SpeechSynthesisControl extends VBox {
 
       // VBoxOptions
       align: 'center',
-      spacing: 12
+      spacing: vBoxSpacing
     }, providedOptions );
 
     const speechSynthesisButton = new SpeechSynthesisButton(
