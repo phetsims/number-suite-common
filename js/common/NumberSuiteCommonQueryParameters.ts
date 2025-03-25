@@ -6,6 +6,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 
 const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
