@@ -152,9 +152,9 @@ export default class LanguageAndVoiceControl extends HBox {
 
     // Rebuild the voiceCarousel with the available voices when the locale changes or when voices become available
     Multilink.multilink(
-      [ localeProperty, utteranceQueue.announcer.voicesProperty ],
-      ( locale, voices ) => {
-        if ( voices.length ) {
+      [ localeProperty, utteranceQueue.announcer.voicesProperty, utteranceQueue.announcer.isInitializedProperty ],
+      ( locale, voices, isInitialized ) => {
+        if ( voices.length && isInitialized ) {
           utteranceQueue.announcer.setFirstAvailableVoiceForLocale( locale, voiceProperty );
 
           const availableVoicesForLocale = utteranceQueue.announcer.getPrioritizedVoicesForLocale( locale );
