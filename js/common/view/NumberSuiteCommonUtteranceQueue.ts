@@ -16,6 +16,7 @@ import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
+import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
 
 // constants
 const ONE_TWO_THREE_STRING_KEY = `${NumberSuiteCommonConstants.NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/oneTwoThree`;
@@ -128,7 +129,7 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     // voice because even if the voiceProperty is set to null, the browser still speaks with a default voice.
     Multilink.lazyMultilink( [
         this.autoHearEnabledProperty, this.speechDataProperty
-      ], autoHearEnabled => autoHearEnabled && this.speakSpeechData()
+      ], autoHearEnabled => autoHearEnabled && !isSettingPhetioStateProperty.value && this.speakSpeechData()
     );
 
     this.initialized = true;
