@@ -54,7 +54,10 @@ export default class SpeechSynthesisControl extends VBox {
 
       // VBoxOptions
       align: 'center',
-      spacing: vBoxSpacing
+      spacing: vBoxSpacing,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, providedOptions );
 
     const speechSynthesisButton = new SpeechSynthesisButton(

@@ -48,10 +48,19 @@ export default class LocaleSwitch extends ABSwitch<boolean> {
 
     const options = optionize<LocaleSwitchOptions, SelfOptions, ABSwitchOptions>()( {
       spacing: SPACING,
-        toggleSwitchOptions: {
-      size: TOGGLE_SWITCH_SIZE
-    },
-      visibleProperty: new DerivedProperty( [ preferences.secondLocaleEnabledProperty ], showSecondLocale => showSecondLocale )
+      toggleSwitchOptions: {
+        size: TOGGLE_SWITCH_SIZE,
+        enabledPropertyOptions: {
+          phetioFeatured: true
+        },
+        visiblePropertyOptions: {
+          phetioFeatured: false
+        }
+      },
+      visibleProperty: new DerivedProperty( [ preferences.secondLocaleEnabledProperty ], showSecondLocale => showSecondLocale ),
+      enabledPropertyOptions: {
+        phetioFeatured: false
+      }
     }, providedOptions );
     super( preferences.isPrimaryLocaleProperty,
       true, firstLanguageText,
