@@ -56,7 +56,7 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   public setFirstAvailableVoiceForLocale( locale: Locale, voiceProperty: TProperty<SpeechSynthesisVoice | null> ): void {
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
-    if ( this.initialized && this.voicesProperty.value.length > 0 ) {
+    if ( this.initialized && this.voicesProperty.value.length > 0 && ( !voiceProperty.value || !this.voicesProperty.value.includes( voiceProperty.value ) ) ) {
       const translatedVoices = this.getPrioritizedVoicesForLocale( locale );
       if ( translatedVoices.length > 0 ) {
         voiceProperty.value = translatedVoices[ 0 ];
