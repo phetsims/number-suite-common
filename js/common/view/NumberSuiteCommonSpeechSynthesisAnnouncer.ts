@@ -52,7 +52,6 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
   /**
    * Set the provided voiceProperty to the first available voice for the provided locale.
-   * TODO: Why is SpeechSynthesisVoice === SpeechSynthesisVoice not truthy? https://github.com/phetsims/number-pairs/issues/149
    */
   public setFirstAvailableVoiceForLocale( locale: Locale, voiceProperty: TProperty<SpeechSynthesisVoice | null> ): void {
 
