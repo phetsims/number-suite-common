@@ -52,16 +52,21 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
 
   /**
    * Set the provided voiceProperty to the first available voice for the provided locale.
+   * TODO: Why is SpeechSynthesisVoice === SpeechSynthesisVoice not truthy? https://github.com/phetsims/number-pairs/issues/149
    */
   public setFirstAvailableVoiceForLocale( locale: Locale, voiceProperty: TProperty<SpeechSynthesisVoice | null> ): void {
 
     // in case we don't have any voices yet, wait until the voicesProperty is populated
-    if ( this.initialized && this.voicesProperty.value.length > 0 && ( !voiceProperty.value || !this.voicesProperty.value.includes( voiceProperty.value ) ) ) {
+    if ( this.initialized && this.voicesProperty.value.length > 0 ) {
       const translatedVoices = this.getPrioritizedVoicesForLocale( locale );
-      if ( translatedVoices.length > 0 ) {
+      let inTranslatedVoices = false;
+      translatedVoices.forEach( voice => {
+        voice.voiceURI === voiceProperty.value?.voiceURI && ( inTranslatedVoices = true );
+      } );
+      if ( translatedVoices.length > 0 && ( !voiceProperty.value || !inTranslatedVoices ) ) {
         voiceProperty.value = translatedVoices[ 0 ];
       }
-      else {
+      else if ( translatedVoices.length === 0 ) {
         voiceProperty.value = null;
       }
     }
