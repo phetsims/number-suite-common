@@ -8,18 +8,11 @@
  */
 
 import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
-import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Disposable from '../../../../axon/js/Disposable.js';
 import Property from '../../../../axon/js/Property.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
 import localeProperty, { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameters.js';
-
-//TODO https://github.com/phetsims/number-suite-common/issues/18 type string map, perhaps getStringModule.TStringModule?
-//TODO https://github.com/phetsims/number-suite-common/issues/18 replace any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type SecondLocaleStrings = any;
 
 class NumberSuiteCommonPreferences {
 
@@ -48,9 +41,6 @@ class NumberSuiteCommonPreferences {
 
   // helper Properties derived from preference Properties
 
-  // the set of sim strings for the current secondLocale
-  public readonly secondLocaleStringsProperty: TReadOnlyProperty<SecondLocaleStrings>;
-
   // URL to the {REPO}_all.html file for this simulation.
   public readonly allURL: string;
 
@@ -71,10 +61,6 @@ class NumberSuiteCommonPreferences {
     this.primaryVoiceProperty = new Property<SpeechSynthesisVoice | null>( null );
 
     this.secondVoiceProperty = new Property<SpeechSynthesisVoice | null>( null );
-
-    this.secondLocaleStringsProperty = new DerivedProperty( [ this.secondLocaleProperty ], secondLocale => {
-      return phet.chipper.strings[ secondLocale ];
-    } );
 
     this.allURL = allURL;
   }

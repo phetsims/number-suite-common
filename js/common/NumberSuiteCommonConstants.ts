@@ -6,17 +6,17 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import PhetioProperty from '../../../axon/js/PhetioProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import LocalizedStringProperty from '../../../chipper/js/browser/LocalizedStringProperty.js';
 import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
-import { SecondLocaleStrings } from './model/NumberSuiteCommonPreferences.js';
+import { Locale } from '../../../joist/js/i18n/localeProperty.js';
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
-const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, PhetioProperty<string>> = {
+const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LocalizedStringProperty> = {
   0: NumberSuiteCommonStrings.zeroStringProperty,
   1: NumberSuiteCommonStrings.oneStringProperty,
   2: NumberSuiteCommonStrings.twoStringProperty,
@@ -41,48 +41,12 @@ const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, PhetioProperty<string>> 
 };
 
 // A list of the primary string Properties we use in the sim.
-export const NUMBER_STRING_PROPERTIES: TReadOnlyProperty<string>[] = _.values( NUMBER_TO_STRING_PROPERTY_PRIMARY );
-
-// Maps a number to the key used to look up the translated word that corresponds to the number.
-const NUMBER_TO_STRING_KEY_SECONDARY: Record<number, string> = {
-  0: 'zero',
-  1: 'one',
-  2: 'two',
-  3: 'three',
-  4: 'four',
-  5: 'five',
-  6: 'six',
-  7: 'seven',
-  8: 'eight',
-  9: 'nine',
-  10: 'ten',
-  11: 'eleven',
-  12: 'twelve',
-  13: 'thirteen',
-  14: 'fourteen',
-  15: 'fifteen',
-  16: 'sixteen',
-  17: 'seventeen',
-  18: 'eighteen',
-  19: 'nineteen',
-  20: 'twenty'
-} as Record<number, string>;
+export const NUMBER_STRING_PROPERTIES: LocalizedStringProperty[] = _.values( NUMBER_TO_STRING_PROPERTY_PRIMARY );
 
 // RequireJS namespace, used for looking up translated strings
 const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
 
 const GROUPED_STORED_COUNTING_OBJECT_SCALE = 0.7;
-
-// Returns either the primaryString or the secondaryString based on isPrimaryLocale. If the secondaryString doesn't
-// exist but is desired, return the primaryString instead as a fallback. We know the primaryString will always exist
-// because if there is a missing string in that locale, the String library will fall back to the English string instead.
-// This function should be used whenever the sim needs a secondaryLocale string so that it is guarded with a fallback.
-const getString = ( primaryString: string, secondaryString: string | undefined, stringKey: string,
-                    isPrimaryLocale: boolean ): string => {
-  const string = ( !isPrimaryLocale && secondaryString ) ? secondaryString : primaryString;
-  assert && assert( string, `no string found for stringKey=${stringKey}` );
-  return string;
-};
 
 const NumberSuiteCommonConstants = {
 
@@ -107,23 +71,12 @@ const NumberSuiteCommonConstants = {
   // options for all AccordionBox instances
   ACCORDION_BOX_TITLE_FONT: new PhetFont( 16 ),
 
-  /**
-   * Maps an integer to the translated word for that integer.
-   */
-  numberToWord: ( numberPlaySecondaryStrings: SecondLocaleStrings, number: number, isPrimaryLocale: boolean ): string => {
+  // Maps an integer to the translated word string Property for that integer.
+  numberToWordProperty: ( locale: Locale, number: number, isPrimaryLocale: boolean ): TReadOnlyProperty<string> => {
+    const stringProperty = NUMBER_TO_STRING_PROPERTY_PRIMARY[ number ];
 
-    // The word for number in the primary language
-    const primaryString = NUMBER_TO_STRING_PROPERTY_PRIMARY[ number ].value;
-
-    // The word for number in the secondary language
-    const stringKey = `${NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/${NUMBER_TO_STRING_KEY_SECONDARY[ number ]}`;
-    const secondaryString = numberPlaySecondaryStrings[ stringKey ];
-
-    // Fallback to primaryString if there is no secondary translation.
-    return getString( primaryString, secondaryString, stringKey, isPrimaryLocale );
+    return isPrimaryLocale ? stringProperty : stringProperty.getTranslatedStringProperty( locale );
   },
-
-  getString: getString,
 
   NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE: NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE,
 
