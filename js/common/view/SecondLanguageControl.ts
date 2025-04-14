@@ -62,6 +62,7 @@ export default class SecondLanguageControl extends VBox {
 
     const toggleSwitch = new ToggleSwitch( secondLocaleEnabledProperty, false, true,
       combineOptions<ToggleSwitchOptions>( {}, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS, {
+        accessibleName: NumberSuiteCommonStrings.secondLanguageStringProperty,
         tandem: options.tandem.createTandem( 'toggleSwitch' )
       } ) );
 
