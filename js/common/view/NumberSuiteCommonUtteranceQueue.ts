@@ -17,6 +17,7 @@ import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import isSettingPhetioStateProperty from '../../../../tandem/js/isSettingPhetioStateProperty.js';
+import isResettingAllProperty from '../../../../scenery-phet/js/isResettingAllProperty.js';
 
 // constants
 const ONE_TWO_THREE_STRING_KEY = `${NumberSuiteCommonConstants.NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE}/oneTwoThree`;
@@ -30,6 +31,11 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
 
   // Data that can be spoken to the user. The data comes from the screen that is currently being interacted with.
   private speechDataProperty!: TReadOnlyProperty<string | null>;
+
+  // We need to know when PhET-iO state setting is coming from reset vs a standard PhET-iO wrapper, state wrapper,
+  // playback, etc. so that we can handle speech synthesis correctly for the different scenarios.
+  // For more info: https://github.com/phetsims/number-pairs/issues/172
+  private comingFromReset: boolean;
 
   // Whether this class has been initialized.
   private initialized = false;
@@ -58,6 +64,18 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     this.primaryLocaleProperty = primaryLocaleProperty;
     this.secondLocaleProperty = secondLocaleProperty;
     this.autoHearEnabledProperty = autoHearEnabledProperty;
+    this.comingFromReset = false;
+
+    isSettingPhetioStateProperty.link( isSettingPhetioState => {
+      if ( !isSettingPhetioState ) {
+        this.comingFromReset = false;
+      }
+    } );
+    isResettingAllProperty.link( isResettingAll => {
+      if ( isResettingAll ) {
+        this.comingFromReset = true;
+      }
+    } );
   }
 
   /**
@@ -129,7 +147,9 @@ export default abstract class NumberSuiteCommonUtteranceQueue extends UtteranceQ
     // voice because even if the voiceProperty is set to null, the browser still speaks with a default voice.
     Multilink.lazyMultilink( [
         this.autoHearEnabledProperty, this.speechDataProperty
-      ], autoHearEnabled => autoHearEnabled && !isSettingPhetioStateProperty.value && this.speakSpeechData()
+      ], autoHearEnabled => {
+        autoHearEnabled && ( this.comingFromReset || !isSettingPhetioStateProperty.value ) && this.speakSpeechData();
+      }
     );
 
     this.initialized = true;
