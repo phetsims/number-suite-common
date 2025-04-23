@@ -58,6 +58,8 @@ export default class AutoHearControl extends Node {
 
     const toggleSwitch = new ToggleSwitch( autoHearEnabledProperty, false, true,
       combineOptions<ToggleSwitchOptions>( {}, PreferencesDialogConstants.TOGGLE_SWITCH_OPTIONS, {
+        accessibleName: labelStringProperty,
+        accessibleHelpText: descriptionStringProperty,
         tandem: options.tandem.createTandem( 'toggleSwitch' )
       } ) );
 
