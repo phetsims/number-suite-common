@@ -51,7 +51,10 @@ export default class AutoHearControl extends Node {
 
       // NodeOptions
       isDisposable: false,
-      tandem: Tandem.OPT_OUT
+      tandem: Tandem.OPT_OUT,
+      visiblePropertyOptions: {
+        phetioFeatured: true
+      }
     }, providedOptions );
 
     super( options );
