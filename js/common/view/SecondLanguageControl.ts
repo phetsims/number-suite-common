@@ -51,6 +51,9 @@ export default class SecondLanguageControl extends VBox {
       tandem: Tandem.OPT_OUT,
       layoutOptions: {
         stretch: true
+      },
+      visiblePropertyOptions: {
+        phetioFeatured: true
       }
     }, providedOptions );
 
