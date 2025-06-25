@@ -6,14 +6,14 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 import LocalizedStringProperty from '../../../chipper/js/browser/LocalizedStringProperty.js';
 import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
+import { Locale } from '../../../joist/js/i18n/localeProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
 import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
-import { Locale } from '../../../joist/js/i18n/localeProperty.js';
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
 const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LocalizedStringProperty> = {
@@ -41,7 +41,7 @@ const NUMBER_TO_STRING_PROPERTY_PRIMARY: Record<number, LocalizedStringProperty>
 };
 
 // A list of the primary string Properties we use in the sim.
-export const NUMBER_STRING_PROPERTIES: LocalizedStringProperty[] = _.values( NUMBER_TO_STRING_PROPERTY_PRIMARY );
+export const NUMBER_STRING_PROPERTIES: TReadOnlyProperty<string>[] = _.values( NUMBER_TO_STRING_PROPERTY_PRIMARY );
 
 // RequireJS namespace, used for looking up translated strings
 const NUMBER_SUITE_COMMON_REQUIREJS_NAMESPACE = 'NUMBER_SUITE_COMMON';
