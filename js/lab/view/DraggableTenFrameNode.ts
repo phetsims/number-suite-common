@@ -7,7 +7,7 @@
  */
 
 import TProperty from '../../../../axon/js/TProperty.js';
-import TReadOnlyProperty, { PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty, PropertyLinkListener } from '../../../../axon/js/TReadOnlyProperty.js';
 import CountingObject from '../../../../counting-common/js/common/model/CountingObject.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';

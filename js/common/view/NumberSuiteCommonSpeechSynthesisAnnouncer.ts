@@ -13,7 +13,7 @@
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
 import TProperty from '../../../../axon/js/TProperty.js';
-import TReadOnlyProperty from '../../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import SpeechSynthesisAnnouncer, { SpeechSynthesisAnnouncerOptions } from '../../../../utterance-queue/js/SpeechSynthesisAnnouncer.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';

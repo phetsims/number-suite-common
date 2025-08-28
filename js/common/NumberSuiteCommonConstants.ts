@@ -6,7 +6,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
-import TReadOnlyProperty from '../../../axon/js/TReadOnlyProperty.js';
+import { TReadOnlyProperty } from '../../../axon/js/TReadOnlyProperty.js';
 import LocalizedStringProperty from '../../../chipper/js/browser/LocalizedStringProperty.js';
 import CountingCommonConstants from '../../../counting-common/js/common/CountingCommonConstants.js';
 import { Locale } from '../../../joist/js/i18n/localeProperty.js';
