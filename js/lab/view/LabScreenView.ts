@@ -234,7 +234,6 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
     // create and add the ResetAllButton
     const resetAllButton = new ResetAllButton( {
       listener: () => {
-        this.interruptSubtreeInput(); // cancel interactions that may be in progress
         model.reset();
         this.numberCardCreatorCarousel.reset();
         this.symbolCardCreatorPanel.reset();
