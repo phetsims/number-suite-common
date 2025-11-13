@@ -100,5 +100,12 @@
   },
   "oneTwoThree": {
     "value": "1 2 3"
+  },
+  "a11y": {
+    "carouselItemNode": {
+      "accessibleNameSelected": {
+        "value": "{{value}}, selected"
+      }
+    }
   }
 }

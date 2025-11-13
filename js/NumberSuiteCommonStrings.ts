@@ -48,6 +48,11 @@ type StringsType = {
   'noVoiceFoundDescriptionStringProperty': LocalizedStringProperty;
   'yourDeviceMaySupportDescriptionStringProperty': LocalizedStringProperty;
   'oneTwoThreeStringProperty': LocalizedStringProperty;
+  'a11y': {
+    'carouselItemNode': {
+      'accessibleNameSelectedStringProperty': LocalizedStringProperty;
+    }
+  }
 };
 
 const NumberSuiteCommonStrings = getStringModule( 'NUMBER_SUITE_COMMON' ) as StringsType;

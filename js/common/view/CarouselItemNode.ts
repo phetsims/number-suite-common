@@ -9,6 +9,7 @@
  * @author Chris Klusendorf (PhET Interactive Simulations)
  */
 
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
@@ -19,6 +20,7 @@ import HighlightOverlay from '../../../../scenery/js/overlays/HighlightOverlay.j
 import Color from '../../../../scenery/js/util/Color.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import numberSuiteCommon from '../../numberSuiteCommon.js';
+import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 
 const WIDTH = 200;
 const PADDING = 5;
@@ -48,7 +50,8 @@ export default class CarouselItemNode<T> extends Rectangle {
       cursor: 'pointer',
 
       // So that the item is tab-navigable and can be activated with the FireListener
-      tagName: 'button'
+      tagName: 'button',
+      accessibleName: string
     } );
     text.center = this.center;
     this.addChild( text );
@@ -70,10 +73,16 @@ export default class CarouselItemNode<T> extends Rectangle {
       this.stroke = isOver ? HighlightOverlay.getInnerGroupHighlightColor() : Color.TRANSPARENT;
     } );
 
+    const selectedAccessibleNameProperty = new PatternStringProperty(
+      NumberSuiteCommonStrings.a11y.carouselItemNode.accessibleNameSelectedStringProperty, {
+        value: string
+      } );
+
     const listener = ( selection: T | null ) => {
 
       // identifies the selected locale
       this.fill = selection === value ? PhetColorScheme.PHET_LOGO_BLUE : null;
+      this.accessibleName = selection === value ? selectedAccessibleNameProperty : string;
     };
     property.link( listener );
 
@@ -82,6 +91,7 @@ export default class CarouselItemNode<T> extends Rectangle {
       property.unlink( listener );
       this.removeInputListener( fireListener );
       fireListener.dispose();
+      selectedAccessibleNameProperty.dispose();
     };
   }
 
