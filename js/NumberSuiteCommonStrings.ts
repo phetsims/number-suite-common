@@ -51,6 +51,12 @@ type StringsType = {
   'a11y': {
     'carouselItemNode': {
       'accessibleNameSelectedStringProperty': LocalizedStringProperty;
+    };
+    'languageCarousel': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
+    };
+    'voiceCarousel': {
+      'accessibleNameStringProperty': LocalizedStringProperty;
     }
   }
 };

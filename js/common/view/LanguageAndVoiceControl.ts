@@ -9,6 +9,7 @@
 
 import DerivedProperty from '../../../../axon/js/DerivedProperty.js';
 import Multilink from '../../../../axon/js/Multilink.js';
+import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js';
 import TProperty from '../../../../axon/js/TProperty.js';
 import { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
 import optionize, { combineOptions, EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
@@ -86,7 +87,12 @@ export default class LanguageAndVoiceControl extends HBox {
           )
         };
       } );
-    const languageCarousel = new Carousel( languageCarouselItems, CAROUSEL_OPTIONS );
+
+    const languageCarousel = new Carousel( languageCarouselItems, combineOptions<CarouselOptions>( {}, CAROUSEL_OPTIONS, {
+      accessibleName: new PatternStringProperty( NumberSuiteCommonStrings.a11y.languageCarousel.accessibleNameStringProperty, {
+        value: new DerivedProperty( [ localeProperty ], StringUtils.localeToLocalizedName )
+      } )
+    } ) );
 
     // Scroll the carousel so that the initial selection is shown. See https://github.com/phetsims/number-suite-common/issues/38
     const selectedNode = _.find( languageCarouselItems, item => item.locale === localeProperty.value )!;
@@ -151,6 +157,9 @@ export default class LanguageAndVoiceControl extends HBox {
     super( options );
 
     // Rebuild the voiceCarousel with the available voices when the locale changes or when voices become available
+    const voiceCarouselAccessibleNameProperty = new PatternStringProperty( NumberSuiteCommonStrings.a11y.voiceCarousel.accessibleNameStringProperty, {
+      value: new DerivedProperty( [ voiceProperty ], voice => voice ? voice.name : '' )
+    } );
     Multilink.multilink(
       [ localeProperty, utteranceQueue.announcer.voicesProperty, utteranceQueue.announcer.isInitializedProperty ],
       ( locale, voices, isInitialized ) => {
@@ -176,7 +185,9 @@ export default class LanguageAndVoiceControl extends HBox {
               } );
 
             voiceCarousel.dispose();
-            voiceCarousel = new Carousel( voiceCarouselItems, CAROUSEL_OPTIONS );
+            voiceCarousel = new Carousel( voiceCarouselItems, combineOptions<CarouselOptions>( {}, CAROUSEL_OPTIONS, {
+              accessibleName: voiceCarouselAccessibleNameProperty
+            } ) );
 
             // Set the children so the new carousel is visible.
             voiceVBox.children = [ voiceCarouselLabel, voiceCarousel ];

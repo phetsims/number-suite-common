@@ -106,6 +106,16 @@
       "accessibleNameSelected": {
         "value": "{{value}}, selected"
       }
+    },
+    "languageCarousel": {
+      "accessibleName": {
+        "value": "Language, {{value}}"
+      }
+    },
+    "voiceCarousel": {
+      "accessibleName": {
+        "value": "Voice, {{value}}"
+      }
     }
   }
 }
