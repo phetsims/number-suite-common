@@ -15,7 +15,6 @@ import StrictOmit from '../../../../phet-core/js/types/StrictOmit.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text, { TextOptions } from '../../../../scenery/js/nodes/Text.js';
 import AccordionBox, { AccordionBoxOptions } from '../../../../sun/js/AccordionBox.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 type SelfOptions = {
@@ -90,5 +89,4 @@ class NumberSuiteCommonAccordionBox extends AccordionBox {
   }
 }
 
-numberSuiteCommon.register( 'NumberSuiteCommonAccordionBox', NumberSuiteCommonAccordionBox );
 export default NumberSuiteCommonAccordionBox;

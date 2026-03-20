@@ -12,7 +12,6 @@ import CountingCommonConstants from '../../../counting-common/js/common/Counting
 import { Locale } from '../../../joist/js/i18n/localeProperty.js';
 import PhetFont from '../../../scenery-phet/js/PhetFont.js';
 import SceneryPhetConstants from '../../../scenery-phet/js/SceneryPhetConstants.js';
-import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 
 // Maps a number to the stringProperty of the translated word that corresponds to the number.
@@ -95,5 +94,4 @@ const NumberSuiteCommonConstants = {
   PREFERENCES_DESCRIPTION_Y_SPACING: 5
 };
 
-numberSuiteCommon.register( 'NumberSuiteCommonConstants', NumberSuiteCommonConstants );
 export default NumberSuiteCommonConstants;

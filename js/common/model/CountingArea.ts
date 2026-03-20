@@ -21,7 +21,6 @@ import Vector2 from '../../../../dot/js/Vector2.js';
 import arrayRemove from '../../../../phet-core/js/arrayRemove.js';
 import optionize from '../../../../phet-core/js/optionize.js';
 import TenFrame from '../../lab/model/TenFrame.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import GroupAndLinkType from './GroupAndLinkType.js';
 
@@ -695,5 +694,4 @@ class CountingArea extends CountingCommonModel {
   }
 }
 
-numberSuiteCommon.register( 'CountingArea', CountingArea );
 export default CountingArea;

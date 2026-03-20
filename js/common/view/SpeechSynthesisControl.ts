@@ -12,7 +12,6 @@ import optionize from '../../../../phet-core/js/optionize.js';
 import PickOptional from '../../../../phet-core/js/types/PickOptional.js';
 import VBox, { VBoxOptions } from '../../../../scenery/js/layout/nodes/VBox.js';
 import { NodeOptions, NodeTranslationOptions } from '../../../../scenery/js/nodes/Node.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NoVoiceWarningButton, { NoVoiceWarningButtonOptions } from './NoVoiceWarningButton.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
@@ -76,5 +75,3 @@ export default class SpeechSynthesisControl extends VBox {
     super( options );
   }
 }
-
-numberSuiteCommon.register( 'SpeechSynthesisControl', SpeechSynthesisControl );

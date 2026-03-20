@@ -18,7 +18,6 @@ import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPr
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import TenFrame from '../model/TenFrame.js';
 import LabScreenView from './LabScreenView.js';
@@ -64,5 +63,4 @@ class TenFrameCreatorPanel extends NumberSuiteCommonPanel {
   }
 }
 
-numberSuiteCommon.register( 'TenFrameCreatorPanel', TenFrameCreatorPanel );
 export default TenFrameCreatorPanel;

@@ -12,7 +12,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Carousel from '../../../../sun/js/Carousel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CardCreatorNode from './CardCreatorNode.js';
 import LabScreenView from './LabScreenView.js';
 import NumberCardNode from './NumberCardNode.js';
@@ -92,5 +91,4 @@ class NumberCardCreatorCarousel extends Carousel {
   }
 }
 
-numberSuiteCommon.register( 'NumberCardCreatorCarousel', NumberCardCreatorCarousel );
 export default NumberCardCreatorCarousel;

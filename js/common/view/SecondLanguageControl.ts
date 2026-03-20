@@ -22,7 +22,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import allowLinksProperty from '../../../../scenery/js/util/allowLinksProperty.js';
 import ToggleSwitch, { ToggleSwitchOptions } from '../../../../sun/js/ToggleSwitch.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import LanguageAndVoiceControl from './LanguageAndVoiceControl.js';
@@ -156,5 +155,3 @@ class AdditionalDescriptionNode extends VBox {
     super.dispose();
   }
 }
-
-numberSuiteCommon.register( 'SecondLanguageControl', SecondLanguageControl );

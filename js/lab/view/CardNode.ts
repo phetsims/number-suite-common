@@ -19,7 +19,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Animation from '../../../../twixt/js/Animation.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 // constants
 const WIDTH = 50;
@@ -121,5 +120,4 @@ class CardNode extends Node {
   }
 }
 
-numberSuiteCommon.register( 'CardNode', CardNode );
 export default CardNode;

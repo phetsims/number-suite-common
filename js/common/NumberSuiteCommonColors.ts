@@ -19,5 +19,4 @@ const NumberSuiteCommonColors = {
   } )
 };
 
-numberSuiteCommon.register( 'NumberSuiteCommonColors', NumberSuiteCommonColors );
 export default NumberSuiteCommonColors;

@@ -13,7 +13,6 @@ import Tandem from '../../../tandem/js/Tandem.js';
 import labScreenIcon_png from '../../images/labScreenIcon_png.js';
 import NumberSuiteCommonPreferences from '../common/model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonColors from '../common/NumberSuiteCommonColors.js';
-import numberSuiteCommon from '../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../NumberSuiteCommonStrings.js';
 import LabModel from './model/LabModel.js';
 import LabScreenView from './view/LabScreenView.js';
@@ -41,5 +40,4 @@ class LabScreen<T extends NumberSuiteCommonPreferences> extends Screen<LabModel,
   }
 }
 
-numberSuiteCommon.register( 'LabScreen', LabScreen );
 export default LabScreen;

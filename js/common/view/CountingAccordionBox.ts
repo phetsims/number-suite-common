@@ -22,7 +22,6 @@ import Image from '../../../../scenery/js/nodes/Image.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import RectangularRadioButtonGroup, { RectangularRadioButtonGroupItem } from '../../../../sun/js/buttons/RectangularRadioButtonGroup.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import CountingArea from '../model/CountingArea.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
@@ -124,5 +123,4 @@ class CountingAccordionBox extends NumberSuiteCommonAccordionBox {
   }
 }
 
-numberSuiteCommon.register( 'CountingAccordionBox', CountingAccordionBox );
 export default CountingAccordionBox;

@@ -7,7 +7,6 @@
  */
 
 import { QueryStringMachine } from '../../../query-string-machine/js/QueryStringMachineModule.js';
-import numberSuiteCommon from '../numberSuiteCommon.js';
 
 const NumberSuiteCommonQueryParameters = QueryStringMachine.getAll( {
 
@@ -40,5 +39,4 @@ if ( NumberSuiteCommonQueryParameters.secondLocale !== null ) {
   NumberSuiteCommonQueryParameters.secondLocale = phet.chipper.getValidRuntimeLocale( remappedLocale );
 }
 
-numberSuiteCommon.register( 'NumberSuiteCommonQueryParameters', NumberSuiteCommonQueryParameters );
 export default NumberSuiteCommonQueryParameters;

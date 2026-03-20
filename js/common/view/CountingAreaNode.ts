@@ -25,7 +25,6 @@ import Node, { NodeOptions } from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import ClosestDragForwardingListener from '../../../../sun/js/ClosestDragForwardingListener.js';
 import DraggableTenFrameNode from '../../lab/view/DraggableTenFrameNode.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingArea, { CountingObjectSerialization } from '../model/CountingArea.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import CountingObjectCreatorPanel, { CountingObjectCreatorPanelOptions } from './CountingObjectCreatorPanel.js';
@@ -535,5 +534,4 @@ class CountingAreaNode extends Node {
   }
 }
 
-numberSuiteCommon.register( 'CountingAreaNode', CountingAreaNode );
 export default CountingAreaNode;

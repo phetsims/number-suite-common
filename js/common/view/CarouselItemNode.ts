@@ -19,7 +19,6 @@ import Text from '../../../../scenery/js/nodes/Text.js';
 import HighlightOverlay from '../../../../scenery/js/overlays/HighlightOverlay.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 
 const WIDTH = 200;
@@ -100,5 +99,3 @@ export default class CarouselItemNode<T> extends Rectangle {
     super.dispose();
   }
 }
-
-numberSuiteCommon.register( 'CarouselItemNode', CarouselItemNode );

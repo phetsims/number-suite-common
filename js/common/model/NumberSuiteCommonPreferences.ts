@@ -11,7 +11,6 @@ import BooleanProperty from '../../../../axon/js/BooleanProperty.js';
 import Disposable from '../../../../axon/js/Disposable.js';
 import Property from '../../../../axon/js/Property.js';
 import localeProperty, { Locale, LocaleProperty } from '../../../../joist/js/i18n/localeProperty.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonQueryParameters from '../NumberSuiteCommonQueryParameters.js';
 
 class NumberSuiteCommonPreferences {
@@ -70,5 +69,4 @@ class NumberSuiteCommonPreferences {
   }
 }
 
-numberSuiteCommon.register( 'NumberSuiteCommonPreferences', NumberSuiteCommonPreferences );
 export default NumberSuiteCommonPreferences;

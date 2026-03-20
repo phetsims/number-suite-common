@@ -16,7 +16,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Path from '../../../../scenery/js/nodes/Path.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 
 type SelfOptions = EmptySelfOptions;
@@ -47,5 +46,4 @@ class NoVoiceWarningDialog extends OopsDialog {
   }
 }
 
-numberSuiteCommon.register( 'NoVoiceWarningDialog', NoVoiceWarningDialog );
 export default NoVoiceWarningDialog;

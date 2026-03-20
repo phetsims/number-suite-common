@@ -16,7 +16,6 @@ import TProperty from '../../../../axon/js/TProperty.js';
 import { TReadOnlyProperty } from '../../../../axon/js/TReadOnlyProperty.js';
 import localeProperty, { Locale } from '../../../../joist/js/i18n/localeProperty.js';
 import SpeechSynthesisAnnouncer, { SpeechSynthesisAnnouncerOptions } from '../../../../utterance-queue/js/SpeechSynthesisAnnouncer.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer {
 
@@ -73,5 +72,4 @@ class NumberSuiteCommonSpeechSynthesisAnnouncer extends SpeechSynthesisAnnouncer
   }
 }
 
-numberSuiteCommon.register( 'NumberSuiteCommonSpeechSynthesisAnnouncer', NumberSuiteCommonSpeechSynthesisAnnouncer );
 export default NumberSuiteCommonSpeechSynthesisAnnouncer;

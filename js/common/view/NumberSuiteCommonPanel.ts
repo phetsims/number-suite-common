@@ -9,7 +9,6 @@
 import optionize, { EmptySelfOptions } from '../../../../phet-core/js/optionize.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Panel, { PanelOptions } from '../../../../sun/js/Panel.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 type SelfOptions = EmptySelfOptions;
 export type NumberSuiteCommonPanelOptions = SelfOptions & Pick<PanelOptions, 'xMargin'>;
@@ -28,5 +27,4 @@ class NumberSuiteCommonPanel extends Panel {
   }
 }
 
-numberSuiteCommon.register( 'NumberSuiteCommonPanel', NumberSuiteCommonPanel );
 export default NumberSuiteCommonPanel;

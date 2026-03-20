@@ -25,7 +25,6 @@ import Color from '../../../../scenery/js/util/Color.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import ToggleSwitch, { ToggleSwitchOptions } from '../../../../sun/js/ToggleSwitch.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
@@ -108,5 +107,3 @@ export default class AutoHearControl extends Node {
     missingVoiceWarningNode.top = control.bottom + 24;
   }
 }
-
-numberSuiteCommon.register( 'AutoHearControl', AutoHearControl );

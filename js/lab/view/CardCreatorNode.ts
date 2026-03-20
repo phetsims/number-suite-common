@@ -18,7 +18,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Animation from '../../../../twixt/js/Animation.js';
 import Easing from '../../../../twixt/js/Easing.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CardNode from './CardNode.js';
 import LabScreenView from './LabScreenView.js';
 import NumberCardNode, { NumberCardNodeOptions } from './NumberCardNode.js';
@@ -142,5 +141,4 @@ class CardCreatorNode extends Node {
   }
 }
 
-numberSuiteCommon.register( 'CardCreatorNode', CardCreatorNode );
 export default CardCreatorNode;

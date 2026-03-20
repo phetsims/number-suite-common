@@ -19,7 +19,6 @@ import Color from '../../../../scenery/js/util/Color.js';
 import bullhornSolidShape from '../../../../sherpa/js/fontawesome-5/bullhornSolidShape.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonSpeechSynthesisAnnouncer from './NumberSuiteCommonSpeechSynthesisAnnouncer.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
@@ -60,5 +59,4 @@ class SpeechSynthesisButton extends RectangularPushButton {
   }
 }
 
-numberSuiteCommon.register( 'SpeechSynthesisButton', SpeechSynthesisButton );
 export default SpeechSynthesisButton;

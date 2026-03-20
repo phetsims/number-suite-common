@@ -18,7 +18,6 @@ import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
 import Circle from '../../../../scenery/js/nodes/Circle.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import Path, { PathOptions } from '../../../../scenery/js/nodes/Path.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 
 // types
@@ -172,5 +171,4 @@ class TenFrameNode extends Node {
   }
 }
 
-numberSuiteCommon.register( 'TenFrameNode', TenFrameNode );
 export default TenFrameNode;

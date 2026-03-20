@@ -13,7 +13,6 @@ import TProperty from '../../../../axon/js/TProperty.js';
 import TModel from '../../../../joist/js/TModel.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import CountingArea from '../../common/model/CountingArea.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from './TenFrame.js';
 
 // constants
@@ -85,5 +84,4 @@ class LabModel implements TModel {
   }
 }
 
-numberSuiteCommon.register( 'LabModel', LabModel );
 export default LabModel;

@@ -13,7 +13,6 @@ import Node from '../../../../scenery/js/nodes/Node.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonPanel from '../../common/view/NumberSuiteCommonPanel.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import CardCreatorNode from './CardCreatorNode.js';
 import LabScreenView from './LabScreenView.js';
@@ -107,5 +106,4 @@ class SymbolCardCreatorPanel extends NumberSuiteCommonPanel {
   }
 }
 
-numberSuiteCommon.register( 'SymbolCardCreatorPanel', SymbolCardCreatorPanel );
 export default SymbolCardCreatorPanel;

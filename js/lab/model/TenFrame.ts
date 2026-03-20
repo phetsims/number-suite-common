@@ -18,7 +18,6 @@ import Vector2Property from '../../../../dot/js/Vector2Property.js';
 
 // eslint-disable-next-line phet/no-view-imported-from-model
 import TenFrameNode from '../../common/view/TenFrameNode.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 
 // constants
 const SQUARE_SIDE_LENGTH = 60;
@@ -191,5 +190,4 @@ class TenFrame extends Disposable {
   }
 }
 
-numberSuiteCommon.register( 'TenFrame', TenFrame );
 export default TenFrame;

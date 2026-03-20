@@ -16,7 +16,6 @@ import DragListener from '../../../../scenery/js/listeners/DragListener.js';
 import { PressListenerEvent } from '../../../../scenery/js/listeners/PressListener.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import TenFrameNode from '../../common/view/TenFrameNode.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import TenFrame from '../model/TenFrame.js';
 
 const RETURN_BUTTON_MARGIN = 5;
@@ -143,5 +142,4 @@ class DraggableTenFrameNode extends Node {
   }
 }
 
-numberSuiteCommon.register( 'DraggableTenFrameNode', DraggableTenFrameNode );
 export default DraggableTenFrameNode;

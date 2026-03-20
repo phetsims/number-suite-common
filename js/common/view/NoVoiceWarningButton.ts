@@ -16,7 +16,6 @@ import Color from '../../../../scenery/js/util/Color.js';
 import exclamationTriangleSolidShape from '../../../../sherpa/js/fontawesome-5/exclamationTriangleSolidShape.js';
 import RectangularPushButton, { RectangularPushButtonOptions } from '../../../../sun/js/buttons/RectangularPushButton.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NoVoiceWarningDialog from './NoVoiceWarningDialog.js';
 import { OopsDialogOptions } from '../../../../scenery-phet/js/OopsDialog.js';
@@ -49,5 +48,4 @@ class NoVoiceWarningButton extends RectangularPushButton {
   }
 }
 
-numberSuiteCommon.register( 'NoVoiceWarningButton', NoVoiceWarningButton );
 export default NoVoiceWarningButton;

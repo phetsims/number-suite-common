@@ -18,7 +18,6 @@ import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import { TextOptions } from '../../../../scenery/js/nodes/Text.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import CountingArea from '../model/CountingArea.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
@@ -88,5 +87,4 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
   }
 }
 
-numberSuiteCommon.register( 'TotalAccordionBox', TotalAccordionBox );
 export default TotalAccordionBox;

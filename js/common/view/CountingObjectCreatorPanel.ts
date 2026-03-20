@@ -16,7 +16,6 @@ import HBox from '../../../../scenery/js/layout/nodes/HBox.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import ArrowButton, { ArrowButtonOptions } from '../../../../sun/js/buttons/ArrowButton.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import CountingArea from '../model/CountingArea.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import CountingAreaNode from './CountingAreaNode.js';
@@ -94,5 +93,4 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
   }
 }
 
-numberSuiteCommon.register( 'CountingObjectCreatorPanel', CountingObjectCreatorPanel );
 export default CountingObjectCreatorPanel;

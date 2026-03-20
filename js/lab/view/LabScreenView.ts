@@ -28,7 +28,6 @@ import Easing from '../../../../twixt/js/Easing.js';
 import NumberSuiteCommonPreferences from '../../common/model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../../common/NumberSuiteCommonConstants.js';
 import CountingAreaNode from '../../common/view/CountingAreaNode.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import LabModel from '../model/LabModel.js';
 import TenFrame from '../model/TenFrame.js';
 import DraggableTenFrameNode from './DraggableTenFrameNode.js';
@@ -392,5 +391,4 @@ class LabScreenView<T extends NumberSuiteCommonPreferences> extends ScreenView {
   }
 }
 
-numberSuiteCommon.register( 'LabScreenView', LabScreenView );
 export default LabScreenView;

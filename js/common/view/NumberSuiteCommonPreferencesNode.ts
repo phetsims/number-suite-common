@@ -14,7 +14,6 @@ import HBox, { HBoxOptions } from '../../../../scenery/js/layout/nodes/HBox.js';
 import VBox from '../../../../scenery/js/layout/nodes/VBox.js';
 import Node from '../../../../scenery/js/nodes/Node.js';
 import LabScreen from '../../lab/LabScreen.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonPreferences from '../model/NumberSuiteCommonPreferences.js';
 import NumberSuiteCommonConstants from '../NumberSuiteCommonConstants.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
@@ -76,5 +75,3 @@ export default class NumberSuiteCommonPreferencesNode extends HBox {
     return ( _.find( phet.joist.sim.screens, screen => screen instanceof constructor ) !== undefined );
   }
 }
-
-numberSuiteCommon.register( 'NumberSuiteCommonPreferencesNode', NumberSuiteCommonPreferencesNode );

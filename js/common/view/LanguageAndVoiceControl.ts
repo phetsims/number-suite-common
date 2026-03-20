@@ -25,7 +25,6 @@ import Color from '../../../../scenery/js/util/Color.js';
 import Carousel, { CarouselItem, CarouselOptions } from '../../../../sun/js/Carousel.js';
 import PageControl from '../../../../sun/js/PageControl.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
-import numberSuiteCommon from '../../numberSuiteCommon.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
 import CarouselItemNode from './CarouselItemNode.js';
 import NumberSuiteCommonUtteranceQueue from './NumberSuiteCommonUtteranceQueue.js';
@@ -229,5 +228,3 @@ class NoVoiceDescriptionNode extends VBox {
     } );
   }
 }
-
-numberSuiteCommon.register( 'LanguageAndVoiceControl', LanguageAndVoiceControl );
