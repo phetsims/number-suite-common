@@ -63,4 +63,6 @@ type StringsType = {
 
 const NumberSuiteCommonStrings = getStringModule( 'NUMBER_SUITE_COMMON' ) as StringsType;
 
+numberSuiteCommon.register( 'NumberSuiteCommonStrings', NumberSuiteCommonStrings );
+
 export default NumberSuiteCommonStrings;
