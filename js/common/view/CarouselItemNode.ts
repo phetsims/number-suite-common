@@ -13,10 +13,10 @@ import PatternStringProperty from '../../../../axon/js/PatternStringProperty.js'
 import TProperty from '../../../../axon/js/TProperty.js';
 import PreferencesDialogConstants from '../../../../joist/js/preferences/PreferencesDialogConstants.js';
 import PhetColorScheme from '../../../../scenery-phet/js/PhetColorScheme.js';
+import HighlightPath from '../../../../scenery/js/accessibility/HighlightPath.js';
 import FireListener from '../../../../scenery/js/listeners/FireListener.js';
 import Rectangle from '../../../../scenery/js/nodes/Rectangle.js';
 import Text from '../../../../scenery/js/nodes/Text.js';
-import HighlightOverlay from '../../../../scenery/js/overlays/HighlightOverlay.js';
 import Color from '../../../../scenery/js/util/Color.js';
 import Tandem from '../../../../tandem/js/Tandem.js';
 import NumberSuiteCommonStrings from '../../NumberSuiteCommonStrings.js';
@@ -69,7 +69,7 @@ export default class CarouselItemNode<T> extends Rectangle {
     fireListener.isOverProperty.link( isOver => {
 
       // makes the mouse interactive, keep the same dimensions so the layout will not change
-      this.stroke = isOver ? HighlightOverlay.getInnerGroupHighlightColor() : Color.TRANSPARENT;
+      this.stroke = isOver ? HighlightPath.INNER_GROUP_FOCUS_COLOR : Color.TRANSPARENT;
     } );
 
     const selectedAccessibleNameProperty = new PatternStringProperty(
