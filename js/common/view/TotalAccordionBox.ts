@@ -72,11 +72,10 @@ class TotalAccordionBox extends NumberSuiteCommonAccordionBox {
       spacing: options.arrowButtonSpacing
     } );
 
-    // disable the arrow buttons when the currentNumberProperty value is at its min or max range
+    // disable the arrow buttons when the currentNumberProperty value is at its min or max
     const currentNumberPropertyObserver = ( currentNumber: number ) => {
-      assert && assert( countingArea.sumProperty.range, 'Range is required for sumProperty in countingAreas' );
-      upArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.max;
-      downArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.min;
+      upArrowButton.enabled = currentNumber < countingArea.highestCount;
+      downArrowButton.enabled = currentNumber > 0;
     };
     countingArea.sumProperty.link( currentNumberPropertyObserver );
 

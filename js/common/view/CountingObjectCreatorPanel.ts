@@ -60,8 +60,13 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
       NumberSuiteCommonConstants.CREATOR_ICON_HEIGHT
     );
 
-    const countingCreatorNode = new CountingCreatorNode( 0, countingAreaNode, countingArea.sumProperty,
-      countingArea.resetEmitter, countingAreaNode.addAndDragCountingObject.bind( countingAreaNode ), {
+    const countingCreatorNode = new CountingCreatorNode(
+      0,
+      countingAreaNode,
+      countingArea.sumProperty,
+      countingArea.highestCount,
+      countingArea.resetEmitter,
+      countingAreaNode.addAndDragCountingObject.bind( countingAreaNode ), {
         countingObjectTypeProperty: countingAreaNode.countingObjectTypeProperty,
         groupingEnabledProperty: countingAreaNode.countingArea.groupingEnabledProperty,
         backTargetOffset: new Vector2( -5, -5 ),
@@ -84,10 +89,10 @@ class CountingObjectCreatorPanel extends NumberSuiteCommonPanel {
 
     this.countingCreatorNode = countingCreatorNode;
 
-    // disable the arrow buttons when the currentNumberProperty value is at its min or max range
+    // disable the arrow buttons when the currentNumberProperty value is at its min or max
     const currentNumberPropertyObserver = ( currentNumber: number ) => {
-      upArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.max;
-      downArrowButton.enabled = currentNumber !== countingArea.sumProperty.range.min;
+      upArrowButton.enabled = currentNumber < countingArea.highestCount;
+      downArrowButton.enabled = currentNumber > 0;
     };
     countingArea.sumProperty.link( currentNumberPropertyObserver );
   }

@@ -364,7 +364,7 @@ class CountingArea extends CountingCommonModel {
 
     const countingObjectWidth = CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.width;
     const countingObjectHeight = CountingCommonConstants.SINGLE_COUNTING_OBJECT_BOUNDS.height;
-    const numberOfRows = this.sumProperty.range.max / NUMBER_OF_ORGANIZE_ROWS;
+    const numberOfRows = Math.ceil( this.highestCount / NUMBER_OF_ORGANIZE_ROWS );
 
     // N countingObjects across + margins to the right for all columns except the last one.
     const contentWidth = NUMBER_OF_ORGANIZE_ROWS * ( countingObjectWidth + ORGANIZED_COUNTING_OBJECT_MARGIN ) -
