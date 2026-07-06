@@ -16,6 +16,7 @@ import CountingObject from '../../../../counting-common/js/common/model/Counting
 import CountingObjectType from '../../../../counting-common/js/common/model/CountingObjectType.js';
 import { CountingObjectNodeMap } from '../../../../counting-common/js/common/view/CountingCommonScreenView.js';
 import CountingObjectNode from '../../../../counting-common/js/common/view/CountingObjectNode.js';
+import type { CountingObjectDropResult } from '../../../../counting-common/js/common/view/CountingObjectNode.js';
 import Bounds2 from '../../../../dot/js/Bounds2.js';
 import Vector2 from '../../../../dot/js/Vector2.js';
 import optionize from '../../../../phet-core/js/optionize.js';
@@ -287,9 +288,9 @@ class CountingAreaNode extends Node {
    * The implementation of checking for tenFrames first matches the current design, but a new or changed design could
    * require a different order of checking.
    */
-  public handleDroppedCountingObject( draggedCountingObject: CountingObject ): void {
+  public handleDroppedCountingObject( draggedCountingObject: CountingObject ): CountingObjectDropResult {
     if ( this.tryToAddToTenFrame( draggedCountingObject ) ) {
-      return;
+      return 'none';
     }
 
     // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
@@ -303,7 +304,7 @@ class CountingAreaNode extends Node {
       child => child instanceof CountingObjectNode && child.countingObject.includeInSumProperty.value ) as CountingObjectNode[];
 
     if ( allCountingObjectNodes.length === 0 || !draggedCountingObject.includeInSumProperty.value ) {
-      return;
+      return 'none';
     }
 
     // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
@@ -326,15 +327,17 @@ class CountingAreaNode extends Node {
               right: COUNTING_OBJECT_REPEL_DISTANCE
             };
           } );
+          return 'repelled';
         }
       }
       else {
         // TODO: duplication https://github.com/phetsims/number-suite-common/issues/41
         // allow any two numbers to be combined
         this.countingArea.collapseNumberModels( this.countingAreaBoundsProperty.value, draggedCountingObject, droppedCountingObject );
-        return; // No need to re-layer or try combining with others
+        return 'combined'; // No need to re-layer or try combining with others
       }
     }
+    return 'none';
   }
 
   /**
